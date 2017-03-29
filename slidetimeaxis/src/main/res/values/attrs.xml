@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <declare-styleable name="xlhStep">
+        <attr name="stepCount" format="integer"></attr>
+        <attr name="currentStep" format="integer"></attr>
+        <attr name="barHeight" format="dimension"></attr>
+        <attr name="barColor" format="color"></attr>
+        <attr name="stepSelectedColor" format="color"></attr>
+        <attr name="stepNormalColor" format="color"></attr>
+        <attr name="progressColor" format="color"></attr>
+        <attr name="stepRadius" format="dimension"></attr>
+        <attr name="canDrag" format="boolean"></attr>
+    </declare-styleable>
+
+</resources>

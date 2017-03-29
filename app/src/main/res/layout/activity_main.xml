@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xlh="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.lyf.slidetimeaxis.XLHStepView
+        android:id="@+id/zidingyi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        xlh:barColor="#51C6EF"
+        xlh:canDrag="true"
+        xlh:currentStep="3"
+        xlh:progressColor="#085EB3"
+        xlh:stepCount="3"
+        xlh:stepNormalColor="#76BD30"
+        xlh:stepSelectedColor="#F66936" >
+    </com.lyf.slidetimeaxis.XLHStepView>
+</RelativeLayout>
