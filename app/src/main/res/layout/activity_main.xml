@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.lyf.slidetimeaxis.XLHStepView
+  <!--  <com.lyf.slidetimeaxis.XLHStepView
         android:id="@+id/zidingyi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,5 +19,10 @@
         xlh:stepCount="3"
         xlh:stepNormalColor="#76BD30"
         xlh:stepSelectedColor="#F66936" >
-    </com.lyf.slidetimeaxis.XLHStepView>
+    </com.lyf.slidetimeaxis.XLHStepView>-->
+
+    <com.lyf.slidetime.ReadView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>
