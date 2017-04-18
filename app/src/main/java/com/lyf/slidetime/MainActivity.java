@@ -3,10 +3,17 @@ package com.lyf.slidet;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.lyf.slidetime.AppUtils;
+import com.lyf.slidetime.MyObserver;
+import com.lyf.slidetime.NetWork;
 import com.lyf.slidetime.ReadView;
+import com.lyf.slidetime.javabean.Book;
 import com.lyf.slidetimeaxis.XLHStepView;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     private String str ="新华社北京4月19日电  中共中央总书记、国家主席、中央军委主席、中央网络安全和信息化领导小组组长习近平19日上午在京主持召开网络安全和信息化工作座谈会并发表重要讲话，强调按照创新、协调、绿色、开放、共享的发展理念推动我国经济社会发展，是当前和今后一个时期我国发展的总要求和大趋势，我国网信事业发展要适应这个大趋势，在践行新发展理念上先行一步，推进网络强国建设，推动我国网信事业发展，让互联网更好造福国家和人民。\n" +
@@ -40,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             "中央网络安全和信息化领导小组成员，中央和国家机关有关部门负责同志，部分省市党委宣传部部长，各省区市网信办主任，部分中央新闻单位和中央新闻网站负责同志，有关专家学者，部分网信企业负责人等参加座谈会。";
 
     private ReadView rv;
-    private String title="第二章 御龙划水2"; //章节名
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,17 +55,91 @@ public class MainActivity extends AppCompatActivity {
         AppUtils.init(this);
         setContentView(R.layout.activity_main);
         rv = (ReadView) findViewById(R.id.rv);
-        rv.drawCurPageBitmap(title,str2,2);
+
+        NetWork.getNetService()
+                .getRegister("万事如易全文阅读", 1 + "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyObserver<Book>() {
+                    @Override
+                    protected void onSuccess(Book data, String resultMsg) {
+                        System.out.println("ddd");
+                        if (data != null) {
+
+                            rv.drawCurPageBitmap(data.getTitle(),data.getContent(),1);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(String resultMsg) {
+                        System.out.println("res:"+resultMsg);
+                        Toast.makeText(getApplicationContext(),"resultMsg:"+resultMsg,0).show();
+                    }
+
+                    @Override
+                    public void onExit() {
+                        Toast.makeText(getApplicationContext(),"resu",0).show();
+                    }
+                });
+
         rv.setmLoadPageListener(new ReadView.LoadPageListener() {
             @Override
             public void prePage(int chapter) {
                 //TODO 根据书名和chapter 去数据库或者网络加载数据
-                rv.drawPrePage("第一章 御龙划水",str);
+
+                NetWork.getNetService()
+                        .getRegister("万事如易全文阅读", chapter + "")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MyObserver<Book>() {
+                            @Override
+                            protected void onSuccess(Book data, String resultMsg) {
+                                if (data != null) {
+
+                                    rv.drawPrePage(data.getTitle(),data.getContent());
+                                }
+                            }
+
+                            @Override
+                            public void onFail(String resultMsg) {
+
+                            }
+
+                            @Override
+                            public void onExit() {
+
+                            }
+                        });
             }
 
             @Override
             public void nextPage(int chapter) {
-                rv.drawNextPage("第三章 御龙划水3",str3);
+
+
+                NetWork.getNetService()
+                        .getRegister("万事如易全文阅读", chapter + "")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MyObserver<Book>() {
+                            @Override
+                            protected void onSuccess(Book data, String resultMsg) {
+                                if (data != null) {
+
+                                   rv.drawNextPage(data.getTitle(),data.getContent());
+                                }
+                            }
+
+                            @Override
+                            public void onFail(String resultMsg) {
+
+                            }
+
+                            @Override
+                            public void onExit() {
+
+                            }
+                        });
+
             }
         });
     }

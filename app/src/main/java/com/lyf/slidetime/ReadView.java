@@ -134,25 +134,27 @@ public class ReadView extends View {
      * @param canvas
      */
     private void drawNextPageBitmap(Canvas canvas) {
-
-        if (mEndPos < str.length()) {
-            //记录下一页的开始位置
-            mBeginPos = mEndPos;
-            //画文字
-            drawContent(canvas,str);
-            //先将当前页面的文本拷贝
-            mPrePageCanvas.drawBitmap(mCurPageBitmap,0,0,null);
-            //将下一页的文本拷贝到当前页面
-            mCurrentPageCanvas.drawBitmap(mNextPageBitmap,0,0,null);
-            postInvalidate();
-        } else {
-            //加载下一章节的内容
-            if (mLoadPageListener != null) {
-                currentChapter++;
-                mLoadPageListener.nextPage(currentChapter);
+        if (str != null) {
+            if (mEndPos < str.length()) {
+                //记录下一页的开始位置
+                mBeginPos = mEndPos;
+                //画文字
+                drawContent(canvas,str);
+                //先将当前页面的文本拷贝
+                mPrePageCanvas.drawBitmap(mCurPageBitmap,0,0,null);
+                //将下一页的文本拷贝到当前页面
+                mCurrentPageCanvas.drawBitmap(mNextPageBitmap,0,0,null);
+                postInvalidate();
             } else {
-                //如果加载到的内容为空,就表示最后一章或者失败
-            }
+                //加载下一章节的内容
+                if (mLoadPageListener != null) {
+                    currentChapter++;
+                    mLoadPageListener.nextPage(currentChapter);
+                } else {
+                    //如果加载到的内容为空,就表示最后一章或者失败
+                }
+        }
+
 
 
         }
@@ -252,35 +254,38 @@ public class ReadView extends View {
         this.currentChapter = chapter;
         //画文字
         drawContent(mCurrentPageCanvas,str);
+        postInvalidate();
     }
 
 
     private void drawContent(Canvas canvas,String content) {
+        if (content != null) {
+            //画背景
+            canvas.drawColor(Color.WHITE);
+            //画标题
+            canvas.drawText(title, mTitleSize*2, mTitleSize, mTitlePaint);
+            //画正文
+            int y = mLineSpace+mFontSize+mTitleSize;
+            for (int i = 0; i < mPageLineCount; i++) {
+                int x = paddingLeft;
+                for (int j = 0; j < mLineCount; j++) {
+                    if (mEndPos < content.length()&&mEndPos>=0) {
+                        char c = content.charAt(mEndPos);
+                        //绘制正文
+                        canvas.drawText(String.valueOf(c), x, y, mPaint);
+                        //每次加上文字的宽度
+                        x += mFontSize;
+                        //记录绘制的文字个数
+                        mEndPos++;
+                    }
 
-        //画背景
-        canvas.drawColor(Color.WHITE);
-        //画标题
-        canvas.drawText(title, mTitleSize*2, mTitleSize, mTitlePaint);
-        //画正文
-        int y = mLineSpace+mFontSize+mTitleSize;
-        for (int i = 0; i < mPageLineCount; i++) {
-            int x = paddingLeft;
-            for (int j = 0; j < mLineCount; j++) {
-                if (mEndPos < content.length()&&mEndPos>=0) {
-                    char c = content.charAt(mEndPos);
-                    //绘制正文
-                    canvas.drawText(String.valueOf(c), x, y, mPaint);
-                    //每次加上文字的宽度
-                    x += mFontSize;
-                    //记录绘制的文字个数
-                    mEndPos++;
                 }
-
+                //每次加上文字的高度
+                y += mFontSize;
+                y+= mLineSpace;
             }
-            //每次加上文字的高度
-            y += mFontSize;
-            y+= mLineSpace;
         }
+
 
     }
 
