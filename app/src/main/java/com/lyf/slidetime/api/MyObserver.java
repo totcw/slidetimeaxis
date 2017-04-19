@@ -1,6 +1,6 @@
-package com.lyf.slidetime;
+package com.lyf.slidetime.api;
 
-import com.lyf.slidetime.javabean.Book;
+import com.lyf.slidetime.BaseCallModel;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -45,11 +45,7 @@ public abstract class MyObserver<T> extends Subscriber<BaseCallModel<T>> {
             if (baseCallModel.getCode() == 0) {//token失效
                 onExit();
             }else if (baseCallModel.getCode() == 1) {//成功
-                Book book = new Book();
-                book.setContent(baseCallModel.getContent());
-                book.setTitle(baseCallModel.getTitle());
-
-                onSuccess(book,baseCallModel.getResultMsg());
+                onSuccess(baseCallModel.getData(),baseCallModel.getResultMsg());
             } else {//错误
                 onFail(baseCallModel.getResultMsg());
             }
@@ -74,7 +70,7 @@ public abstract class MyObserver<T> extends Subscriber<BaseCallModel<T>> {
      * @param data
      * @param resultMsg
      */
-    protected abstract void onSuccess(Book data, String resultMsg);
+    protected abstract void onSuccess(T data, String resultMsg);
 
     /**
      * 请求错误的方法

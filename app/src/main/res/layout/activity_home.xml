@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <!-- 底部布局 -->
+    <LinearLayout
+        android:id="@+id/linear_activity_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lv_divider"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="horizontal">
+
+            <com.betterda.mylibrary.view.IndicatorView
+                android:id="@+id/idv_activity_main_shouye"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"></com.betterda.mylibrary.view.IndicatorView>
+
+
+            <com.betterda.mylibrary.view.IndicatorView
+                android:id="@+id/idv_activity_main_find"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"></com.betterda.mylibrary.view.IndicatorView>
+
+            <com.betterda.mylibrary.view.IndicatorView
+                android:id="@+id/idv_activity_main_my"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"></com.betterda.mylibrary.view.IndicatorView>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+
+        android:id="@+id/frame_activity_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/linear_activity_home">
+
+    </FrameLayout>
+
+
+</RelativeLayout>

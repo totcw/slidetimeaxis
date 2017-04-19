@@ -1,8 +1,10 @@
-package com.lyf.slidetime;
+package com.lyf.slidetime.api;
 
 
-
+import com.lyf.slidetime.BaseCallModel;
+import com.lyf.slidetime.application.MyApplication;
 import com.lyf.slidetime.utils.Constants;
+import com.lyf.slidetime.utils.NetworkUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,13 +42,13 @@ public class NetWork {
      */
     public static NetService getNetService() {
 
-        //unsubscribe(subscription);
+
         if (netService == null) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(Constants.Url.URL)
                     .client(okHttpClient.newBuilder()
-                            //.addInterceptor(interceptor)//添加拦截器
-                            //.cache(new Cache(new File(MyApplication.getInstance().getCacheDir(), "responses"),10 * 1024 * 1024)) //创建一个10M的缓存目录
+                            .addInterceptor(interceptor)//添加拦截器
+                            .cache(new Cache(new File(MyApplication.getInstance().getCacheDir(), "responses"),10 * 1024 * 1024)) //创建一个10M的缓存目录
                             .build())
                             .addConverterFactory(gsonConverterFactory)
                             .addCallAdapterFactory(rxJavaCallAdapterFactory)
@@ -60,7 +62,7 @@ public class NetWork {
     /**
      * 定义拦截器
      */
-/*   static Interceptor interceptor = new Interceptor() {
+   static Interceptor interceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
             //设置请求时
@@ -88,7 +90,7 @@ public class NetWork {
             return response;
 
         }
-    };*/
+    };
 
 
 

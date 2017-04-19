@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lyf.slidetime;
+package com.lyf.slidetime.utils;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -24,6 +24,8 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.lyf.slidetime.utils.AppUtils;
 
 import java.lang.reflect.Field;
 

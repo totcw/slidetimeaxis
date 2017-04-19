@@ -7,8 +7,8 @@ package com.lyf.slidetime;
 public class BaseCallModel<T> {
     private int  code;
     private String resultMsg;
-    private String content;
-    private String title;
+   // private String content;
+   // private String title;
     private T data;
 
     public int getCode() {
@@ -35,7 +35,7 @@ public class BaseCallModel<T> {
         this.data = data;
     }
 
-    public String getContent() {
+ /*   public String getContent() {
         return content;
     }
 
@@ -49,5 +49,5 @@ public class BaseCallModel<T> {
 
     public void setTitle(String title) {
         this.title = title;
-    }
+    }*/
 }

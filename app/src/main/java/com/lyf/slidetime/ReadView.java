@@ -5,12 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
+
+import com.lyf.slidetime.utils.ScreenUtils;
 
 /**
  * Created by Administrator on 2017/4/18.
@@ -95,6 +96,7 @@ public class ReadView extends View {
     private String str = "";//正文内容
     private String title; //章节名
     private int total;//书本总的章节数
+    private boolean isLodaing;//是否正在加载数据,用来判断没加载完,不重复发起请求
 
     public ReadView(Context context) {
 
@@ -159,13 +161,18 @@ public class ReadView extends View {
                     return;
                 }
                 //加载下一章节的内容
-                if (mLoadPageListener != null) {
-                    currentChapter++;
-                    mLoadPageListener.nextPage(currentChapter);
-                } else {
-                    //如果加载到的内容为空,就表示最后一章或者失败
-                    Toast.makeText(mContext,"mLoadpageListerner=null",0).show();
+                if (!isLodaing) {
+
+                    if (mLoadPageListener != null) {
+                        isLodaing = true;
+                        currentChapter++;
+                        mLoadPageListener.nextPage(currentChapter);
+                    } else {
+                        //如果加载到的内容为空,就表示最后一章或者失败
+                        Toast.makeText(mContext,"mLoadpageListerner=null",0).show();
+                    }
                 }
+
             }
 
 
@@ -222,13 +229,18 @@ public class ReadView extends View {
                 //没有上一章
                 return;
             }
-            if (mLoadPageListener != null) {
-                currentChapter--;
-                mLoadPageListener.prePage(currentChapter);
-                //drawPrePage(canvas);
-            } else {
-                Toast.makeText(mContext, "mLoadPageListener为null", 0).show();
+            if (!isLodaing) {
+
+                if (mLoadPageListener != null) {
+                    isLodaing = true;
+                    currentChapter--;
+                    mLoadPageListener.prePage(currentChapter);
+                    //drawPrePage(canvas);
+                } else {
+                    Toast.makeText(mContext, "mLoadPageListener为null", 0).show();
+                }
             }
+
         }
 
     }
@@ -380,5 +392,13 @@ public class ReadView extends View {
             this.currentChapter = currentChapter;
         }
 
+    }
+
+    /**
+     * 设置是否加载完成
+     * @param lodaing
+     */
+    public void setLodaing(boolean lodaing) {
+        isLodaing = lodaing;
     }
 }
