@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SlideTime</string>
+    <string name="fragment_shouye_bookname">书名</string>
+    <string name="fragment_shouye_author">作者</string>
+    <string name="fragment_shouye_time">更新时间</string>
+    <string name="fragment_shouye_status">已完结</string>
+    <string name="fragment_shouye_read">继续阅读</string>
 </resources>

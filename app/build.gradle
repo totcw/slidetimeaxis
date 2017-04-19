@@ -40,5 +40,10 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
 
     compile 'com.betterda:mylibrary:2.5.3'
+
+    /*vlayout*/
+    compile ('com.alibaba.android:vlayout:1.0.4@aar') {
+        transitive = true
+    }
 }
 

@@ -4,12 +4,76 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_blue">
+
+
+        <ImageView
+            android:id="@+id/iv_shouye_bookimage"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="@mipmap/zwt" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/iv_shouye_bookname"
+                style="@style/textview_wrap"
+                android:layout_marginTop="10dp"
+                android:maxLines="1"
+                android:text="@string/fragment_shouye_bookname" />
+
+            <TextView
+                android:id="@+id/iv_shouye_author"
+                style="@style/textview_wrap"
+                android:layout_marginTop="10dp"
+                android:maxLines="1"
+                android:text="@string/fragment_shouye_author" />
+
+            <TextView
+                android:id="@+id/iv_shouye_time"
+                style="@style/textview_wrap"
+                android:layout_marginTop="10dp"
+                android:maxLines="1"
+                android:text="@string/fragment_shouye_time" />
+
+            <TextView
+                android:id="@+id/iv_shouye_status"
+                style="@style/textview_wrap"
+                android:layout_marginTop="10dp"
+                android:maxLines="1"
+                android:text="@string/fragment_shouye_status" />
+
+
+            <TextView
+                android:id="@+id/iv_shouye_read"
+                android:layout_width="120dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_corner_blue"
+                android:gravity="center"
+                android:text="@string/fragment_shouye_read"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_shouye"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="首页"
-        />
+        android:layout_margin="10dp">
 
+    </android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>
