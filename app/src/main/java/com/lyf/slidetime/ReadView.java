@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 /**
  * Created by Administrator on 2017/4/18.
@@ -22,6 +23,7 @@ public class ReadView extends View {
     protected Bitmap mCurPageBitmap, mNextPageBitmap, mPrePageBitmap;
     protected Canvas mCurrentPageCanvas, mNextPageCanvas, mPrePageCanvas;
 
+    private Context mContext;
 
     /**
      * 正文字体大小
@@ -54,7 +56,7 @@ public class ReadView extends View {
      */
     private int paddingright = ScreenUtils.dpToPxInt(3);
 
-     /**
+    /**
      * 正文距离屏幕底部的距离
      */
     private int paddingbottom = ScreenUtils.dpToPxInt(10);
@@ -92,6 +94,7 @@ public class ReadView extends View {
 
     private String str = "";//正文内容
     private String title; //章节名
+    private int total;//书本总的章节数
 
     public ReadView(Context context) {
 
@@ -100,8 +103,9 @@ public class ReadView extends View {
 
     public ReadView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
         mScreenWidth = ScreenUtils.getScreenWidth();
-        mScreenHeight = ScreenUtils.getScreenHeight()-ScreenUtils.getStatusBarHeight(context);
+        mScreenHeight = ScreenUtils.getScreenHeight() - ScreenUtils.getStatusBarHeight(context);
 
         mCurPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
         mNextPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
@@ -113,8 +117,8 @@ public class ReadView extends View {
         mFontSize = ScreenUtils.dpToPxInt(16);
         mTitleSize = ScreenUtils.dpToPxInt(30);
         mLineSpace = mFontSize / 5 * 2;
-        mPageLineCount = (mScreenHeight-paddingbottom-mTitleSize)/ (mFontSize + mLineSpace);
-        mLineCount = (mScreenWidth-paddingLeft-paddingright )/ (mFontSize );
+        mPageLineCount = (mScreenHeight - paddingbottom - mTitleSize) / (mFontSize + mLineSpace);
+        mLineCount = (mScreenWidth - paddingLeft - paddingright) / (mFontSize);
 
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -126,11 +130,11 @@ public class ReadView extends View {
         mTitlePaint.setColor(Color.BLACK);
 
 
-
     }
 
     /**
      * 加载下一页的数据
+     *
      * @param canvas
      */
     private void drawNextPageBitmap(Canvas canvas) {
@@ -139,22 +143,30 @@ public class ReadView extends View {
                 //记录下一页的开始位置
                 mBeginPos = mEndPos;
                 //画文字
-                drawContent(canvas,str);
-                //先将当前页面的文本拷贝
-                mPrePageCanvas.drawBitmap(mCurPageBitmap,0,0,null);
-                //将下一页的文本拷贝到当前页面
-                mCurrentPageCanvas.drawBitmap(mNextPageBitmap,0,0,null);
-                postInvalidate();
+                if (drawContent(canvas, str)) {
+                    //先将当前页面的文本拷贝
+                    mPrePageCanvas.drawBitmap(mCurPageBitmap, 0, 0, null);
+                    //将下一页的文本拷贝到当前页面
+                    mCurrentPageCanvas.drawBitmap(mNextPageBitmap, 0, 0, null);
+                    postInvalidate();
+                }
+
             } else {
+                //加载下一章节
+                if (currentChapter >= total) {
+                    currentChapter = total;
+                    //没有下一章
+                    return;
+                }
                 //加载下一章节的内容
                 if (mLoadPageListener != null) {
                     currentChapter++;
                     mLoadPageListener.nextPage(currentChapter);
                 } else {
                     //如果加载到的内容为空,就表示最后一章或者失败
+                    Toast.makeText(mContext,"mLoadpageListerner=null",0).show();
                 }
-        }
-
+            }
 
 
         }
@@ -163,43 +175,50 @@ public class ReadView extends View {
 
     /**
      * 绘制下一页
+     *
      * @param
      */
-    public void drawNextPage(String title ,String content) {
+    public void drawNextPage(String title, String content) {
         this.title = title;
         this.str = content;
         if (TextUtils.isEmpty(str)) {
             //如果加载到的内容为空,就表示最后一章或者失败
+            Toast.makeText(mContext, "没有更多章节了", 0).show();
 
         } else {
             mBeginPos = mEndPos = 0;
-            drawContent(mNextPageCanvas, str);
-            //先将当前页面的文本拷贝
-            mPrePageCanvas.drawBitmap(mCurPageBitmap,0,0,null);
-            //将下一页的文本拷贝到当前页面
-            mCurrentPageCanvas.drawBitmap(mNextPageBitmap,0,0,null);
-            postInvalidate();
+            if (drawContent(mNextPageCanvas, str)) {
+                //先将当前页面的文本拷贝
+                mPrePageCanvas.drawBitmap(mCurPageBitmap, 0, 0, null);
+                //将下一页的文本拷贝到当前页面
+                mCurrentPageCanvas.drawBitmap(mNextPageBitmap, 0, 0, null);
+                postInvalidate();
+            }
+
+
         }
     }
-
 
 
     private void drawPrePageBitmap(Canvas canvas) {
 
         if (mBeginPos > 0) {
-            mBeginPos=mEndPos = mBeginPos - (mPageLineCount * mLineCount);
+            mBeginPos = mEndPos = mBeginPos - (mPageLineCount * mLineCount);
             if (mBeginPos < 0) {
-                mBeginPos = mEndPos =0;
+                mBeginPos = mEndPos = 0;
             }
-            drawContent(canvas,str);
-            //先将当前页面的文本拷贝
-            mNextPageCanvas.drawBitmap(mCurPageBitmap,0,0,null);
-            //将上一页的文本拷贝到当前页面
-            mCurrentPageCanvas.drawBitmap(mPrePageBitmap,0,0,null);
-            postInvalidate();
+            if (drawContent(canvas, str)) {
+                //先将当前页面的文本拷贝
+                mNextPageCanvas.drawBitmap(mCurPageBitmap, 0, 0, null);
+                //将上一页的文本拷贝到当前页面
+                mCurrentPageCanvas.drawBitmap(mPrePageBitmap, 0, 0, null);
+                postInvalidate();
+            }
+
         } else {
             //加载上一章节
             if (currentChapter <= 1) {
+                currentChapter = 1;
                 //没有上一章
                 return;
             }
@@ -208,37 +227,42 @@ public class ReadView extends View {
                 mLoadPageListener.prePage(currentChapter);
                 //drawPrePage(canvas);
             } else {
-                //如果加载到的内容为空,就表示最后一章或者失败
+                Toast.makeText(mContext, "mLoadPageListener为null", 0).show();
             }
         }
 
     }
+
     /**
      * 绘制上一章的最后一页
+     *
      * @param
      */
-    public void drawPrePage(String title,String content) {
+    public void drawPrePage(String title, String content) {
         this.title = title;
         this.str = content;
         if (TextUtils.isEmpty(str)) {
             //如果加载到的内容为空,就表示失败
+            Toast.makeText(mContext, "加载前面一页的内容为空", 0).show();
         } else {
             int length = str.length();
             //上一章完整的页数
             int count = length % (mPageLineCount * mLineCount);
-            int page = length/(mPageLineCount * mLineCount);
+            int page = length / (mPageLineCount * mLineCount);
             if (count == 0) {
                 //如果count==0,表示页数刚刚好好
-                mBeginPos = mEndPos = (page-1)*(mPageLineCount * mLineCount);
+                mBeginPos = mEndPos = (page - 1) * (mPageLineCount * mLineCount);
             } else {
                 mBeginPos = mEndPos = page * (mPageLineCount * mLineCount);
             }
-            drawContent(mPrePageCanvas,str);
-            //先将当前页面的文本拷贝
-            mNextPageCanvas.drawBitmap(mCurPageBitmap,0,0,null);
-            //将上一页的文本拷贝到当前页面
-            mCurrentPageCanvas.drawBitmap(mPrePageBitmap,0,0,null);
-            postInvalidate();
+            if (drawContent(mPrePageCanvas, str)) {
+                //先将当前页面的文本拷贝
+                mNextPageCanvas.drawBitmap(mCurPageBitmap, 0, 0, null);
+                //将上一页的文本拷贝到当前页面
+                mCurrentPageCanvas.drawBitmap(mPrePageBitmap, 0, 0, null);
+                postInvalidate();
+            }
+
         }
 
 
@@ -246,30 +270,36 @@ public class ReadView extends View {
 
     /**
      * 加载当前页的数据
-     * @param content
+     * @param title 章节名
+     * @param content 正文
+     * @param chapter 当前第几章
+     * @param total 总的章节数
      */
-    public void drawCurPageBitmap(String title,String content,int chapter) {
+    public void drawCurPageBitmap(String title, String content, int chapter,int total) {
         this.str = content;
         this.title = title;
+        this.total = total;
         this.currentChapter = chapter;
         //画文字
-        drawContent(mCurrentPageCanvas,str);
-        postInvalidate();
+        if (drawContent(mCurrentPageCanvas, str)) {
+            postInvalidate();
+        }
+
     }
 
 
-    private void drawContent(Canvas canvas,String content) {
+    private boolean drawContent(Canvas canvas, String content) {
         if (content != null) {
             //画背景
             canvas.drawColor(Color.WHITE);
             //画标题
-            canvas.drawText(title, mTitleSize*2, mTitleSize, mTitlePaint);
+            canvas.drawText(title, mTitleSize * 2, mTitleSize, mTitlePaint);
             //画正文
-            int y = mLineSpace+mFontSize+mTitleSize;
+            int y = mLineSpace + mFontSize + mTitleSize;
             for (int i = 0; i < mPageLineCount; i++) {
                 int x = paddingLeft;
                 for (int j = 0; j < mLineCount; j++) {
-                    if (mEndPos < content.length()&&mEndPos>=0) {
+                    if (mEndPos < content.length() && mEndPos >= 0) {
                         char c = content.charAt(mEndPos);
                         //绘制正文
                         canvas.drawText(String.valueOf(c), x, y, mPaint);
@@ -282,10 +312,11 @@ public class ReadView extends View {
                 }
                 //每次加上文字的高度
                 y += mFontSize;
-                y+= mLineSpace;
+                y += mLineSpace;
             }
+            return true;
         }
-
+        return false;
 
     }
 
@@ -306,7 +337,7 @@ public class ReadView extends View {
                 if (actiondownX >= mScreenWidth / 3 && actiondownX <= mScreenWidth * 2 / 3
                         && actiondownY >= mScreenHeight / 3 && actiondownY <= mScreenHeight * 2 / 3) {
                     center = true;
-                } else{
+                } else {
                     center = false;
                     if (actiondownX < mScreenWidth / 2) {// 从左翻
                         drawPrePageBitmap(mPrePageCanvas);
@@ -327,18 +358,27 @@ public class ReadView extends View {
         this.mLoadPageListener = mLoadPageListener;
     }
 
-    public interface LoadPageListener{
+    public interface LoadPageListener {
 
         /**
          * 加载上一章节
          */
         void prePage(int chapter);
+
         /**
          * 加载下一章节
+         *
          * @param chapter
          * @return
          */
         void nextPage(int chapter);
+
     }
 
+    public void setCurrentChapter(int currentChapter) {
+        if (currentChapter >0 && currentChapter < total) {
+            this.currentChapter = currentChapter;
+        }
+
+    }
 }
