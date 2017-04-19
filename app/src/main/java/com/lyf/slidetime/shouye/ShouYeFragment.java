@@ -1,20 +1,23 @@
 package com.lyf.slidetime.shouye;
 
-import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lyf.slidetime.R;
 import com.lyf.slidetime.base.BaseFragment;
+import com.lyf.slidetime.javabean.BookCase;
+import com.lyf.slidetime.myadapter.BookCaseItemAdapter;
 import com.lyf.slidetime.shouye.contract.ShouYeContract;
 import com.lyf.slidetime.shouye.presenter.ShouYePresenterImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -39,6 +42,9 @@ public class ShouYeFragment extends BaseFragment<ShouYeContract.Presenter> imple
     @BindView(R.id.rv_shouye)
     RecyclerView rvShouye;
 
+    private List<BookCase> list;
+    private BookCaseItemAdapter mBookCaseItemAdapter;
+
     @Override
     public View initView(LayoutInflater inflater) {
         return inflater.inflate(R.layout.fragment_shouye, null);
@@ -52,6 +58,13 @@ public class ShouYeFragment extends BaseFragment<ShouYeContract.Presenter> imple
     @Override
     public void initData() {
         super.initData();
+        list = new ArrayList<>();
+        list.add(null);
+        list.add(null);
+
+        rvShouye.setLayoutManager(new GridLayoutManager(getmActivity(),3));
+        mBookCaseItemAdapter = new BookCaseItemAdapter(getmActivity(), list);
+        rvShouye.setAdapter(mBookCaseItemAdapter);
 
     }
 
