@@ -38,6 +38,7 @@ public class NetWork {
 
     /**
      * 通过retrofit返回接口的实现类
+     *
      * @return
      */
     public static NetService getNetService() {
@@ -48,11 +49,11 @@ public class NetWork {
                     .baseUrl(Constants.Url.URL)
                     .client(okHttpClient.newBuilder()
                             .addInterceptor(interceptor)//添加拦截器
-                            .cache(new Cache(new File(MyApplication.getInstance().getCacheDir(), "responses"),10 * 1024 * 1024)) //创建一个10M的缓存目录
+                            .cache(new Cache(new File(MyApplication.getInstance().getCacheDir(), "responses"), 10 * 1024 * 1024)) //创建一个10M的缓存目录
                             .build())
-                            .addConverterFactory(gsonConverterFactory)
-                            .addCallAdapterFactory(rxJavaCallAdapterFactory)
-                            .build();
+                    .addConverterFactory(gsonConverterFactory)
+                    .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                    .build();
             netService = retrofit.create(NetService.class);
         }
 
@@ -62,7 +63,7 @@ public class NetWork {
     /**
      * 定义拦截器
      */
-   static Interceptor interceptor = new Interceptor() {
+    static Interceptor interceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
             //设置请求时
@@ -93,21 +94,17 @@ public class NetWork {
     };
 
 
-
-
-
-
     /**
      * 用Transformers 预处理observable,比如写好observeOn避免每次调用都要写这个 ,然后使用compose连接
-     *这里多一个参数为了确定T
+     * 这里多一个参数为了确定T
      */
 
     public static <T> Observable.Transformer<BaseCallModel<T>, BaseCallModel<T>> handleResult(BaseCallModel<T> baseCallModel) {
-        return  new Observable.Transformer<BaseCallModel<T>,BaseCallModel<T>>(){
+        return new Observable.Transformer<BaseCallModel<T>, BaseCallModel<T>>() {
 
             @Override
             public Observable<BaseCallModel<T>> call(Observable<BaseCallModel<T>> baseCallModelObservable) {
-                return  baseCallModelObservable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
+                return baseCallModelObservable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
             }
         };
     }
@@ -115,6 +112,7 @@ public class NetWork {
 
     /**
      * 取消订阅
+     *
      * @param subscription
      */
     public static void unsubscribe(Subscription subscription) {
