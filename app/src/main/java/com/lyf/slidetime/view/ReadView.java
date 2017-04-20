@@ -1,4 +1,4 @@
-package com.lyf.slidetime;
+package com.lyf.slidetime.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;

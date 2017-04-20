@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/linear_item_find"
+    android:background="@drawable/shape_rect_white"
+    android:gravity="center"
+    android:layout_height="60dp">
+
+    <TextView
+        android:id="@+id/tv_item_find"
+        style="@style/textview_wrap"
+        android:textColor="@color/shouye_renmen_tv"
+        />
+
+</LinearLayout>

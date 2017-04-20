@@ -1,4 +1,4 @@
-package com.lyf.slidetime;
+package com.lyf.slidetime.javabean;
 
 /**
  * 定义一个网络请求的回调基类

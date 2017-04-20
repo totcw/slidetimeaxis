@@ -1,12 +1,13 @@
-package com.lyf.slidet;
+package com.lyf.slidetime.readbook;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.betterda.mylibrary.ShapeLoadingDialog;
-import com.lyf.slidetime.BaseCallModel;
+import com.lyf.slidetime.javabean.BaseCallModel;
 import com.lyf.slidetime.R;
-import com.lyf.slidetime.ReadView;
+import com.lyf.slidetime.view.ReadView;
 import com.lyf.slidetime.api.MyObserver;
 import com.lyf.slidetime.api.NetWork;
 import com.lyf.slidetime.base.BaseActivity;
@@ -17,11 +18,29 @@ import com.lyf.slidetime.utils.UiUtils;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends BaseActivity {
+/**
+ * @author : lyf
+ * @version : 1.0.0
+ * @版权：版权所有 (厦门北特达软件有限公司) 2017
+ * @email:totcw@qq.com
+ * @see:
+ * @创建日期： 2017/4/20
+ * @功能说明： 阅读界面
+ * @begin
+ * @修改记录:
+ * @修改后版本:
+ * @修改人:
+ * @修改内容:
+ * @end
+ */
+
+public class ReadBookActivity extends BaseActivity {
 
     private ReadView rv;
-    private String bookName = "痞女军王全文阅读";
-    private int total = 94;
+    private String bookName;
+    private int chapter = 1;//当前阅读章节
+    private int position = 0;//当前章节阅读位置
+    private int total = 1;
     private ShapeLoadingDialog dialog;
 
     @Override
@@ -35,47 +54,40 @@ public class MainActivity extends BaseActivity {
         super.initView();
         setContentView(R.layout.activity_main);
         rv = (ReadView) findViewById(R.id.rv);
+
+    }
+
+    /**
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/4/20
+     * @功能说明： 获取传递过来的数据
+     */
+    private void getIntents() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            bookName = intent.getStringExtra("bookname");
+            total = intent.getIntExtra("total", 1);
+            chapter = intent.getIntExtra("chapter", 1);
+            position = intent.getIntExtra("position", 0);
+        }
     }
 
     @Override
     public void init() {
         super.init();
         dialog = UiUtils.createDialog(getmActivity(), "正在加载...");
-
-        mRxManager.add(NetWork.getNetService()
-                .getRegister(bookName, 92 + "")
-                .compose(NetWork.handleResult(new BaseCallModel<Book>()))
-                .subscribe(new MyObserver<Book>() {
-                    @Override
-                    protected void onSuccess(Book data, String resultMsg) {
-
-                        if (data != null && !TextUtils.isEmpty(data.getContent())) {
-
-                            rv.drawCurPageBitmap(data.getTitle(), data.getContent(), 92, total);
-                        } else {
-                            Toast.makeText(getApplicationContext(), "加载当前内容失败", 0).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFail(String resultMsg) {
-                        System.out.println("res:" + resultMsg);
-                        Toast.makeText(getApplicationContext(), "resultMsg:" + resultMsg, 0).show();
-                    }
-
-                    @Override
-                    public void onExit() {
-                        Toast.makeText(getApplicationContext(), "resu", 0).show();
-                    }
-                }));
-
+        getIntents();
+        getData();
 
         rv.setmLoadPageListener(new ReadView.LoadPageListener() {
             @Override
             public void prePage(final int chapter) {
                 //TODO 根据书名和chapter 去数据库或者网络加载数据
 
-              //  UiUtils.showDialog(getmActivity(),dialog);
+                  UiUtils.showDialog(getmActivity(),dialog);
                 mRxManager.add(NetWork.getNetService()
                         .getRegister(bookName, chapter + "")
                         .subscribeOn(Schedulers.io())
@@ -92,18 +104,18 @@ public class MainActivity extends BaseActivity {
                                     Toast.makeText(getApplicationContext(), "加载上一页失败", 0).show();
                                 }
                                 rv.setLodaing(false);
-                              //  UiUtils.dissmissDialog(getmActivity(),dialog);
+                                  UiUtils.dissmissDialog(getmActivity(),dialog);
                             }
 
                             @Override
                             public void onFail(String resultMsg) {
-                               // UiUtils.dissmissDialog(getmActivity(),dialog);
+                                 UiUtils.dissmissDialog(getmActivity(),dialog);
                                 rv.setLodaing(false);
                             }
 
                             @Override
                             public void onExit() {
-                               // UiUtils.dissmissDialog(getmActivity(),dialog);
+                                 UiUtils.dissmissDialog(getmActivity(),dialog);
                                 rv.setLodaing(false);
                             }
                         }));
@@ -111,7 +123,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void nextPage(final int chapter) {
-              //  UiUtils.showDialog(getmActivity(),dialog);
+                  UiUtils.showDialog(getmActivity(),dialog);
                 mRxManager.add(NetWork.getNetService()
                         .getRegister(bookName, chapter + "")
                         .subscribeOn(Schedulers.io())
@@ -126,24 +138,64 @@ public class MainActivity extends BaseActivity {
                                     rv.setCurrentChapter(chapter - 1);
                                     Toast.makeText(getApplicationContext(), "加载下一页失败", 0).show();
                                 }
-                              //  UiUtils.dissmissDialog(getmActivity(),dialog);
+                                  UiUtils.dissmissDialog(getmActivity(),dialog);
                                 rv.setLodaing(false);
                             }
 
                             @Override
                             public void onFail(String resultMsg) {
-                                //UiUtils.dissmissDialog(getmActivity(),dialog);
+                                UiUtils.dissmissDialog(getmActivity(),dialog);
                                 rv.setLodaing(false);
                             }
 
                             @Override
                             public void onExit() {
-                               // UiUtils.dissmissDialog(getmActivity(),dialog);
+                                UiUtils.dissmissDialog(getmActivity(),dialog);
                                 rv.setLodaing(false);
                             }
                         }));
 
             }
         });
+    }
+
+    /**
+     *@author : lyf
+     *@email:totcw@qq.com
+     *@创建日期： 2017/4/20
+     *@功能说明： 加载当前章节的内容
+     *@param
+     *@return
+     */
+    private void getData() {
+        UiUtils.showDialog(getmActivity(),dialog);
+        mRxManager.add(NetWork.getNetService()
+                .getRegister(bookName, chapter + "")
+                .compose(NetWork.handleResult(new BaseCallModel<Book>()))
+                .subscribe(new MyObserver<Book>() {
+                    @Override
+                    protected void onSuccess(Book data, String resultMsg) {
+
+                        if (data != null && !TextUtils.isEmpty(data.getContent())) {
+
+                            rv.drawCurPageBitmap(data.getTitle(), data.getContent(), chapter, total);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "加载当前内容失败", 0).show();
+                        }
+                        UiUtils.dissmissDialog(getmActivity(),dialog);
+                    }
+
+                    @Override
+                    public void onFail(String resultMsg) {
+
+                        Toast.makeText(getApplicationContext(), "resultMsg:" + resultMsg, 0).show();
+                        UiUtils.dissmissDialog(getmActivity(),dialog);
+                    }
+
+                    @Override
+                    public void onExit() {
+                        UiUtils.dissmissDialog(getmActivity(),dialog);
+                    }
+                }));
     }
 }

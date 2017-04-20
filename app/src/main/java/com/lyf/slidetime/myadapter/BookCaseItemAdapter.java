@@ -1,15 +1,23 @@
 package com.lyf.slidetime.myadapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lyf.slidetime.R;
 import com.lyf.slidetime.db.BookCaseDao;
+import com.lyf.slidetime.home.HomeActivity;
+import com.lyf.slidetime.interfac.SetReadListener;
+import com.lyf.slidetime.javabean.BookCase;
+import com.lyf.slidetime.readbook.ReadBookActivity;
+import com.lyf.slidetime.utils.UiUtils;
 
 import java.util.List;
 
@@ -22,14 +30,15 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
 
     private static final int TYPE_ITEM = 0;//普通item
     private static final int TYPE_ADD = 1;//最后一个添加按钮
-    private BookCaseDao mBookCaseDao;
-    private Context mContext;
-    private List<T> data;
-    public BookCaseItemAdapter(Context mContext,  List<T> data ) {
+
+    private Activity mContext;
+    private List<BookCase> data;
+    private SetReadListener mSetReadListener;
+    public BookCaseItemAdapter(Activity mContext, List<BookCase> data , SetReadListener listener) {
 
         this.data = data;
         this.mContext = mContext;
-        mBookCaseDao = new BookCaseDao(mContext);
+        this.mSetReadListener = listener;
     }
 
 
@@ -48,21 +57,35 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
     @Override
     public void onBindViewHolder( RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof AddHolder) {
+            //添加
             ((AddHolder) holder).mLinearBookcaseAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(mContext,"添加",0).show();
-                    mBookCaseDao.add();
+                    ((HomeActivity) mContext).toFind();
+
                 }
             });
         } else if (holder instanceof MainViewHolder) {
-           ((MainViewHolder) holder).mLinearBookcase.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   Toast.makeText(mContext,"查询",0).show();
-                   mBookCaseDao.query("Jne");
-               }
-           });
+            if (data != null && position < data.size() && data.get(position) != null) {
+                final BookCase bookCase = data.get(position);
+                ((MainViewHolder) holder).tv_name.setText(bookCase.getBookname());
+                //进入书本阅读
+                ((MainViewHolder) holder).mLinearBookcase.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mContext, ReadBookActivity.class);
+                        intent.putExtra("bookname", bookCase.getBookname());
+                        intent.putExtra("chapter", bookCase.getCurPage());
+                        intent.putExtra("position", bookCase.getPosition());
+                        intent.putExtra("total", bookCase.getTotal());
+                        UiUtils.startIntent(mContext,intent);
+                        if (mSetReadListener != null) {
+                            mSetReadListener.read(bookCase);
+                        }
+                    }
+                });
+            }
+
         }
     }
 
@@ -92,9 +115,11 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
         LinearLayout mLinearBookcase;
+        TextView tv_name;
         public MainViewHolder(View itemView) {
             super(itemView);
             mLinearBookcase = (LinearLayout) itemView.findViewById(R.id.linear_rv_bookcase);
+            tv_name = (TextView) itemView.findViewById(R.id.tv_rv_bookcase_bookimage);
         }
     }
 

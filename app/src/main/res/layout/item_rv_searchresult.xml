@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/linear_item_searchresult"
+    android:layout_height="wrap_content">
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <ImageView
+            android:id="@+id/iv_shouye_bookimage"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="@mipmap/zwt" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/iv_shouye_bookname"
+                style="@style/textview_wrap"
+                android:layout_marginTop="10dp"
+                android:maxLines="1"
+                android:textColor="@color/shouye_renmen_tv"
+                android:text="@string/fragment_shouye_bookname" />
+
+            <TextView
+                android:id="@+id/iv_shouye_author"
+                style="@style/textview_wrap"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/shouye_renmen_tv"
+                android:maxLines="1"
+                android:text="@string/fragment_shouye_author" />
+
+            <TextView
+                android:id="@+id/iv_shouye_time"
+                style="@style/textview_wrap"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/shouye_renmen_tv"
+                android:maxLines="1"
+                android:text="@string/fragment_shouye_time" />
+
+            <TextView
+                android:id="@+id/iv_shouye_status"
+                style="@style/textview_wrap"
+                android:textColor="@color/shouye_renmen_tv"
+                android:layout_marginTop="10dp"
+                android:maxLines="1"
+                android:text="@string/fragment_shouye_status" />
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

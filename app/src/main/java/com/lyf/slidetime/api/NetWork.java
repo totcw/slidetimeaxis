@@ -1,7 +1,7 @@
 package com.lyf.slidetime.api;
 
 
-import com.lyf.slidetime.BaseCallModel;
+import com.lyf.slidetime.javabean.BaseCallModel;
 import com.lyf.slidetime.application.MyApplication;
 import com.lyf.slidetime.utils.Constants;
 import com.lyf.slidetime.utils.NetworkUtils;

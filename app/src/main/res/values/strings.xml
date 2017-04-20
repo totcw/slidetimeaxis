@@ -5,5 +5,7 @@
     <string name="fragment_shouye_time">更新时间</string>
     <string name="fragment_shouye_status">已完结</string>
     <string name="fragment_shouye_read">继续阅读</string>
+    <string name="fragment_shouye_addcase">加入书架</string>
     <string name="item_rv_bookcase_bookname">书名</string>
+    <string name="fragment_find_searche">搜索</string>
 </resources>

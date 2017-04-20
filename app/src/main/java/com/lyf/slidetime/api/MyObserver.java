@@ -1,6 +1,6 @@
 package com.lyf.slidetime.api;
 
-import com.lyf.slidetime.BaseCallModel;
+import com.lyf.slidetime.javabean.BaseCallModel;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;

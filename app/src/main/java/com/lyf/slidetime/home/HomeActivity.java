@@ -104,4 +104,9 @@ public class HomeActivity extends BaseActivity<HomeContract.Presenter> implement
         }
 
     }
+
+    public void toFind() {
+        switchTo(mIdvFind);
+        getPresenter().switchToFragment(R.id.idv_activity_main_find);
+    }
 }
