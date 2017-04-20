@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.lyf.slidetime.R;
 import com.lyf.slidetime.base.BaseActivity;
 import com.lyf.slidetime.book.contract.BookContract;
-import com.lyf.slidetime.book.presenter.BookPresenterImpl;
+
 import com.lyf.slidetime.db.BookCaseDao;
 import com.lyf.slidetime.javabean.BookCase;
 
@@ -56,7 +56,7 @@ public class BookCaseActivity extends BaseActivity<BookContract.Presenter> imple
 
     @Override
     protected BookContract.Presenter onLoadPresenter() {
-        return new BookPresenterImpl();
+        return null;
     }
 
     @Override
