@@ -1,13 +1,17 @@
-package com.lyf.slidet;
+package com.lyf.slidetime;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.lyf.slidetime.application.MyApplication;
+import com.lyf.slidetime.db.BookDao;
+import com.lyf.slidetime.javabean.Book;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -22,5 +26,11 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.lyf.slidetime", appContext.getPackageName());
+    }
+
+    @Test
+    public void testDb() throws Exception{
+        BookDao dao = MyApplication.getInstance().getDaoSession().getBookDao();
+        dao.insert(new Book("gl","测试"));
     }
 }

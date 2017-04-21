@@ -2,8 +2,10 @@ package com.lyf.slidetime.application;
 
 import android.app.Activity;
 import android.app.Application;
+import android.database.sqlite.SQLiteDatabase;
 
-
+import com.lyf.slidetime.db.DaoMaster;
+import com.lyf.slidetime.db.DaoSession;
 import com.lyf.slidetime.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -14,14 +16,15 @@ import java.util.List;
  * Created by Administrator on 2016/7/28.
  */
 public class MyApplication extends Application {
+    private DaoMaster.DevOpenHelper mHelper;
+    private SQLiteDatabase db;
+    private DaoMaster mDaoMaster;
+    private DaoSession mDaoSession;
+    private static final String DB_NAME = "book_reader.db";
+    private List<Activity> list;
 
-    private List<Activity> list ;
 
-
-
-    private static  MyApplication instance ;
-
-
+    private static MyApplication instance;
 
 
     @Override
@@ -29,25 +32,41 @@ public class MyApplication extends Application {
         super.onCreate();
         instance = this;
 
-        if (null == list){
+        if (null == list) {
             list = new ArrayList<>();
         }
         AppUtils.init(this);
 
         //捕获异常
-       // CrashHandler.getInstance().init(getApplicationContext());
-
+        // CrashHandler.getInstance().init(getApplicationContext());
+        //初始化GreenDao
+        initGreenDao();
 
     }
 
+    private void initGreenDao() {
+        mHelper = new DaoMaster.DevOpenHelper(this, DB_NAME, null);
+        db = mHelper.getWritableDatabase();
+        // 注意：该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。
+        mDaoMaster = new DaoMaster(db);
+        mDaoSession = mDaoMaster.newSession();
+    }
 
+    public DaoSession getDaoSession() {
+        return mDaoSession;
+    }
+
+    public SQLiteDatabase getDb() {
+        return db;
+    }
 
     /**
      * 将activity添加到容器中
+     *
      * @param activity
      */
-    public  void addActivity(Activity activity){
-        if (null != list){
+    public void addActivity(Activity activity) {
+        if (null != list) {
             list.add(activity);
         }
 
@@ -56,9 +75,9 @@ public class MyApplication extends Application {
     /**
      * 退出程序
      */
-    public  void exitProgress(){
+    public void exitProgress() {
 
-        if(null != list) {
+        if (null != list) {
 
             for (Activity activity : list) {
                 activity.finish();
@@ -74,6 +93,7 @@ public class MyApplication extends Application {
 
     /**
      * 当activity销毁时调用该方法,防止内存泄漏
+     *
      * @param activity
      */
     public void removeAcitivty(Activity activity) {
@@ -87,7 +107,6 @@ public class MyApplication extends Application {
     public static MyApplication getInstance() {
         return instance;
     }
-
 
 
 }
