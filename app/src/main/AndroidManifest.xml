@@ -32,7 +32,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="com.lyf.bookreader.readbook.ReadBookActivity"
+            android:name="com.lyf.bookreader.readbook.BookReadActivity"
             android:screenOrientation="portrait">
         </activity>
 

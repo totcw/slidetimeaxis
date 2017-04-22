@@ -1,5 +1,7 @@
 package com.lyf.bookreader.search.contract;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.lyf.bookreader.base.IModel;
 import com.lyf.bookreader.base.IPresenter;
 import com.lyf.bookreader.base.IView;
@@ -23,14 +25,15 @@ import com.lyf.bookreader.base.IView;
 public class SearchContract {
 
 
-public interface View extends IView{
-}
+    public interface View extends IView {
+    }
 
-public interface Presenter extends IPresenter<View>{
-}
+    public interface Presenter extends IPresenter<View> {
+        RecyclerView.Adapter getAdapter();
+    }
 
-public interface Model extends IModel{
-}
+    public interface Model extends IModel {
+    }
 
 
 }

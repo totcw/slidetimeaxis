@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.PopupWindow;
 
+import com.betterda.mylibrary.LoadingPager;
 import com.lyf.bookreader.utils.RxManager;
 import com.lyf.bookreader.utils.UiUtils;
 
@@ -43,12 +44,13 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
         }
         initView();
         ButterKnife.bind(this);
-        initListener();
-        init();
         if (getPresenter() != null) {
             //开始presenter的逻辑
             getPresenter().start();
         }
+        initListener();
+        init();
+
 
 
     }
@@ -89,6 +91,11 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
      * @return
      */
     protected abstract P onLoadPresenter();
+
+    @Override
+    public LoadingPager getLoadpager() {
+        return null;
+    }
 
     /**
      * 关闭activity的方法

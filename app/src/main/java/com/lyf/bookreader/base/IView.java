@@ -3,6 +3,7 @@ package com.lyf.bookreader.base;
 import android.app.Activity;
 import android.content.Context;
 
+import com.betterda.mylibrary.LoadingPager;
 import com.lyf.bookreader.utils.RxManager;
 
 
@@ -18,4 +19,5 @@ public interface IView {
 
     RxManager getRxManager();
 
+    LoadingPager getLoadpager();
 }

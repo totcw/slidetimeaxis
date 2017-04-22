@@ -20,16 +20,25 @@ import com.lyf.bookreader.base.IView;
  * @end
  */
 
-public class BookContract {
+public class BookDetailContract {
+
 
     public interface View extends IView {
+        /**
+         * 设置最近读的书籍信息
+         */
+        void setBookInformation(String author, String bookname, String time, String finish);
+
+        //设置加入书架按钮的状态
+        void setAddBookcaseStatus(boolean isVisable);
     }
 
     public interface Presenter extends IPresenter<View> {
+        //加入书架
+        void addToBookcase();
     }
 
     public interface Model extends IModel {
     }
-
 
 }
