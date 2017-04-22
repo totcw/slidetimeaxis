@@ -1,5 +1,6 @@
 package com.lyf.bookreader.javabean;
 
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 
@@ -11,17 +12,14 @@ import org.greenrobot.greendao.annotation.Generated;
 public class Chapter {
     private String content;//每一章节的内容
     private String title; //章节名
-
-    @Generated(hash = 1372161843)
+    @Generated(hash = 1559191096)
     public Chapter(String content, String title) {
         this.content = content;
         this.title = title;
     }
-
-    @Generated(hash = 1839243756)
+    @Generated(hash = 393170288)
     public Chapter() {
     }
-
     public String getContent() {
         return content;
     }

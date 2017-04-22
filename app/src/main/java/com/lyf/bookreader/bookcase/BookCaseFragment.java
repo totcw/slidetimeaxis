@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lyf.bookreader.R;
+import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.base.BaseFragment;
 import com.lyf.bookreader.db.BookCaseDao;
 import com.lyf.bookreader.javabean.BookCase;
@@ -101,8 +102,8 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
      * @功能说明：获取书架的数据
      */
     private void getData() {
-        mBookCaseDao = new BookCaseDao(getmActivity());
-        List<BookCase> mBookCaseList = mBookCaseDao.queryAll();
+        mBookCaseDao = MyApplication.getInstance().getDaoSession().getBookCaseDao();
+        List<BookCase> mBookCaseList = mBookCaseDao.loadAll();
         if (mBookCaseList != null) {
             this.mBookCaseList.clear();
             this.mBookCaseList.addAll(mBookCaseList);

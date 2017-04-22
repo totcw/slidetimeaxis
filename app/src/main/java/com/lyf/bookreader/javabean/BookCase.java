@@ -1,5 +1,6 @@
 package com.lyf.bookreader.javabean;
 
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 
@@ -7,6 +8,7 @@ import org.greenrobot.greendao.annotation.Generated;
  * 书架实体类
  * Created by lyf on 2017/4/19.
  */
+@Entity
 public class BookCase {
     private String bookname;//书名
     private String author; //作者
@@ -30,7 +32,6 @@ public class BookCase {
         this.total = total;
         this.type = type;
     }
-
     @Generated(hash = 563409161)
     public BookCase() {
     }

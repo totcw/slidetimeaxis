@@ -6,11 +6,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lyf.bookreader.R;
+import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.bookdetail.contract.BookContract;
 
 import com.lyf.bookreader.db.BookCaseDao;
 import com.lyf.bookreader.javabean.BookCase;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -51,7 +54,7 @@ public class BookCaseActivity extends BaseActivity<BookContract.Presenter> imple
     private String finish; //完结状态
     private String img; //书本图片url
     private String type; //书本类型
-    private int  total; //书本总的章节数
+    private int total; //书本总的章节数
 
     private BookCaseDao mBookCaseDao;
 
@@ -74,16 +77,20 @@ public class BookCaseActivity extends BaseActivity<BookContract.Presenter> imple
         time = getIntent().getStringExtra("time");
         finish = getIntent().getStringExtra("finish");
         img = getIntent().getStringExtra("img");
-        total = getIntent().getIntExtra("total",0);
+        total = getIntent().getIntExtra("total", 0);
         type = getIntent().getStringExtra("type");
-        mBookCaseDao = new BookCaseDao(getmActivity());
+        mBookCaseDao = MyApplication.getInstance().getDaoSession().getBookCaseDao();
         setBookInformation();
-        BookCase bookCase = mBookCaseDao.query(bookname);
-        if (bookCase != null && bookCase.getBookname() != null) {
-            mIvAddbookcaseAdd.setVisibility(View.GONE);
-        } else {
-            mIvAddbookcaseAdd.setVisibility(View.VISIBLE);
+        List<BookCase> bookCases = mBookCaseDao.queryBuilder().where(BookCaseDao.Properties.Bookname.eq(bookname)).list();
+        if (bookCases != null && bookCases.size() > 0) {
+            BookCase bookCase = bookCases.get(0);
+            if (bookCase != null && bookCase.getBookname() != null) {
+                mIvAddbookcaseAdd.setVisibility(View.GONE);
+            } else {
+                mIvAddbookcaseAdd.setVisibility(View.VISIBLE);
+            }
         }
+
     }
 
     /**
@@ -92,14 +99,14 @@ public class BookCaseActivity extends BaseActivity<BookContract.Presenter> imple
     private void setBookInformation() {
         mIvAddbookcaseAuthor.setText(author);
         mIvAddbookcaseBookname.setText(bookname);
-        mIvAddbookcaseTime.setText("最近更新时间:"+time);
+        mIvAddbookcaseTime.setText("最近更新时间:" + time);
         mIvAddbookcaseStatus.setText(finish);
         mIvAddbookcaseAdd.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.iv_addbookcase_add)
     public void onClick() {
-        Toast.makeText(getmActivity(),"加入书架",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getmActivity(), "加入书架", Toast.LENGTH_SHORT).show();
         BookCase bookCase = new BookCase();
         bookCase.setBookname(bookname);
         bookCase.setAuthor(author);
@@ -110,7 +117,7 @@ public class BookCaseActivity extends BaseActivity<BookContract.Presenter> imple
         bookCase.setPosition(0);
         bookCase.setTotal(total);
         bookCase.setType(type);
-        if (mBookCaseDao.add(bookCase) > 0) {
+        if (mBookCaseDao.insert(bookCase) > 0) {
             mIvAddbookcaseAdd.setVisibility(View.GONE);
         }
     }
