@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lyf.slidetime">
+    package="com.lyf.bookreader">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:name="com.lyf.slidetime.application.MyApplication"
+        android:name="com.lyf.bookreader.application.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.lyf.slidetime.home.HomeActivity"
+            android:name="com.lyf.bookreader.home.HomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,15 +24,15 @@
         </activity>
 
         <activity
-            android:name=".search.SearchResultActivity"
+            android:name="com.lyf.bookreader.search.SearchResultActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".book.BookCaseActivity"
+            android:name="com.lyf.bookreader.book.BookCaseActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".readbook.ReadBookActivity"
+            android:name="com.lyf.bookreader.readbook.ReadBookActivity"
             android:screenOrientation="portrait">
         </activity>
 

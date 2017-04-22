@@ -5,11 +5,11 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.lyf.slidetime"
+        applicationId "com.lyf.bookreader"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 100000
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -23,7 +23,7 @@ android {
         //数据库schema版本，也可以理解为数据库版本号
         schemaVersion 1
         //设置DaoMaster 、DaoSession、Dao包名
-        daoPackage 'com.lyf.slidetime.db'
+        daoPackage 'com.lyf.bookreader.db'
         //设置DaoMaster 、DaoSession、Dao目录
         targetGenDir 'src/main/java'
         //设置生成单元测试目录

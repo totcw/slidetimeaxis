@@ -21,7 +21,7 @@
         xlh:stepSelectedColor="#F66936" >
     </com.lyf.slidetimeaxis.XLHStepView>-->
 
-    <com.lyf.slidetime.view.ReadView
+    <com.lyf.bookreader.view.ReadView
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
