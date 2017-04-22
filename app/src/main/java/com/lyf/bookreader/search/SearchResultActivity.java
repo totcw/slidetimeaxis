@@ -1,6 +1,5 @@
 package com.lyf.bookreader.search;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -8,11 +7,9 @@ import com.betterda.mylibrary.LoadingPager;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.search.contract.SearchContract;
-import com.lyf.bookreader.search.presenter.SearchPresenterImpl;
 import com.zhy.base.adapter.recyclerview.DividerItemDecoration;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * @author : lyf
@@ -40,7 +37,8 @@ public class SearchResultActivity extends BaseActivity<SearchContract.Presenter>
 
     @Override
     protected SearchContract.Presenter onLoadPresenter() {
-        return new SearchPresenterImpl();
+//        return new SearchPresenterImpl();
+        return null;
     }
 
     @Override
@@ -76,7 +74,7 @@ public class SearchResultActivity extends BaseActivity<SearchContract.Presenter>
 
 
     @Override
-    public LoadingPager getLoadpager() {
+    public LoadingPager getLoadPager() {
         return mLoadpagerSearchresult;
     }
 

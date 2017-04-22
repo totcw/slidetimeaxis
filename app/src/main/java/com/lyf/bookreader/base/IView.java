@@ -19,5 +19,5 @@ public interface IView {
 
     RxManager getRxManager();
 
-    LoadingPager getLoadpager();
+    LoadingPager getLoadPager();
 }

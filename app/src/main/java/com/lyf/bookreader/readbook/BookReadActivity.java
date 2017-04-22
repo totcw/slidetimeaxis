@@ -1,26 +1,12 @@
 package com.lyf.bookreader.readbook;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.widget.Toast;
 
-import com.betterda.mylibrary.ShapeLoadingDialog;
 import com.lyf.bookreader.R;
-import com.lyf.bookreader.api.MyObserver;
-import com.lyf.bookreader.api.NetWork;
 import com.lyf.bookreader.base.BaseActivity;
-import com.lyf.bookreader.javabean.BaseCallModel;
-import com.lyf.bookreader.javabean.Chapter;
 import com.lyf.bookreader.readbook.contract.BookReadContract;
-import com.lyf.bookreader.readbook.presenter.BookReadPresenterImpl;
-import com.lyf.bookreader.utils.UiUtils;
 import com.lyf.bookreader.view.ReadView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author : lyf
@@ -47,7 +33,8 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
 
     @Override
     protected BookReadContract.Presenter onLoadPresenter() {
-        return new BookReadPresenterImpl();
+        //return new BookReadPresenterImpl();
+        return null;
     }
 
 

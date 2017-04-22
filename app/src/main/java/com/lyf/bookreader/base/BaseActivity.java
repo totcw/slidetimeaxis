@@ -93,7 +93,7 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
     protected abstract P onLoadPresenter();
 
     @Override
-    public LoadingPager getLoadpager() {
+    public LoadingPager getLoadPager() {
         return null;
     }
 

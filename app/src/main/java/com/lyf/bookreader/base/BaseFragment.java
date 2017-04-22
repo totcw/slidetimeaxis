@@ -61,7 +61,7 @@ public abstract class BaseFragment <P extends IPresenter> extends Fragment imple
             getPresenter().start();
         }
         initData();
-        initListenr();
+        initListener();
 
 
     }
@@ -72,7 +72,7 @@ public abstract class BaseFragment <P extends IPresenter> extends Fragment imple
     /**
      * 设置监听
      */
-    public void initListenr() {
+    public void initListener() {
 
     }
 
@@ -113,7 +113,7 @@ public abstract class BaseFragment <P extends IPresenter> extends Fragment imple
 
 
     @Override
-    public LoadingPager getLoadpager() {
+    public LoadingPager getLoadPager() {
         return null;
     }
 
