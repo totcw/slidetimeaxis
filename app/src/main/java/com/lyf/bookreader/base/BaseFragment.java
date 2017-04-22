@@ -55,13 +55,13 @@ public abstract class BaseFragment <P extends IPresenter> extends Fragment imple
     public void onActivityCreated(Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
-
-        initData();
-        initListenr();
         if(getPresenter() != null) {
             //开始presenter的逻辑
             getPresenter().start();
         }
+        initData();
+        initListenr();
+
 
     }
 

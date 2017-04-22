@@ -37,7 +37,7 @@ public class BookStoreFragment extends BaseFragment<BookStoreContract.Presenter>
 
     @Override
     public View initView(LayoutInflater inflater) {
-        return inflater.inflate(R.layout.fragment_find, null);
+        return inflater.inflate(R.layout.fragment_bookstore, null);
     }
 
     @Override

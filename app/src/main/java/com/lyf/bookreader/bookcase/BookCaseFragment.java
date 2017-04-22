@@ -12,11 +12,9 @@ import android.widget.Toast;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.base.BaseFragment;
-import com.lyf.bookreader.db.BookCaseDao;
 import com.lyf.bookreader.javabean.BookCase;
-import com.lyf.bookreader.adapter.BookCaseItemAdapter;
 import com.lyf.bookreader.bookcase.contract.BookCaseContract;
-import com.lyf.bookreader.bookcase.presenter.ShouYePresenterImpl;
+import com.lyf.bookreader.bookcase.presenter.BookCasePresenterImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,30 +53,28 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
     @BindView(R.id.iv_shouye_read)
     TextView ivShouyeRead;
     @BindView(R.id.rv_shouye)
-    RecyclerView rvShouye;
+    RecyclerView mBookCaseRecycleview;
 
-    private List<BookCase> mBookCaseList; //存放书本信息的容器
-    private BookCaseItemAdapter mBookCaseItemAdapter; //适配器
-    private BookCaseDao mBookCaseDao;
+
 
     @Override
     public View initView(LayoutInflater inflater) {
-        return inflater.inflate(R.layout.fragment_shouye, null);
+        return inflater.inflate(R.layout.fragment_bookcase, null);
     }
 
     @Override
     protected BookCaseContract.Presenter onLoadPresenter() {
-        return new ShouYePresenterImpl();
+        return new BookCasePresenterImpl();
     }
 
     @Override
     public void initData() {
         super.initData();
-        mBookCaseList = new ArrayList<>();
+
 
         initRecycleview();
 
-        getData();
+        getPresenter().getData();
     }
 
     /**
@@ -89,39 +85,22 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            getData();
+            getPresenter().getData();
         }
     }
 
-    /**
-     * @param
-     * @return
-     * @author : lyf
-     * @email:totcw@qq.com
-     * @创建日期： 2017/4/20
-     * @功能说明：获取书架的数据
-     */
-    private void getData() {
-        mBookCaseDao = MyApplication.getInstance().getDaoSession().getBookCaseDao();
-        List<BookCase> mBookCaseList = mBookCaseDao.loadAll();
-        if (mBookCaseList != null) {
-            this.mBookCaseList.clear();
-            this.mBookCaseList.addAll(mBookCaseList);
-            mBookCaseItemAdapter.notifyDataSetChanged();
-        }
-    }
+
 
     private void initRecycleview() {
-        rvShouye.setLayoutManager(new GridLayoutManager(getmActivity(), 3));
-        rvShouye.addItemDecoration(new RecyclerView.ItemDecoration() {
+        mBookCaseRecycleview.setLayoutManager(new GridLayoutManager(getmActivity(), 3));
+        mBookCaseRecycleview.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 outRect.set(5, 5, 5, 5);
             }
         });
-        mBookCaseItemAdapter = new BookCaseItemAdapter(getmActivity(), mBookCaseList);
 
-        rvShouye.setAdapter(mBookCaseItemAdapter);
+        mBookCaseRecycleview.setAdapter(getPresenter().getAdapter());
     }
 
 

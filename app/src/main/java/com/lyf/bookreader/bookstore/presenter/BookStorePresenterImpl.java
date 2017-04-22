@@ -46,7 +46,7 @@ public class BookStorePresenterImpl extends BasePresenter<BookStoreContract.View
         mBookStoreList.add("恐怖");
         mBookStoreList.add("科幻");
         mBookStoreList.add("其他");
-        return new CommonAdapter<String>(getView().getmActivity(), R.layout.item_rv_find, mBookStoreList) {
+        return new CommonAdapter<String>(getView().getmActivity(), R.layout.item_rv_bookstore, mBookStoreList) {
             @Override
             public void convert(ViewHolder holder, final String o) {
                 holder.setText(R.id.tv_item_find,o);

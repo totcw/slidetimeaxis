@@ -42,13 +42,14 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
             getPresenter().attachView(this);
         }
         initView();
-        ButterKnife.bind(this);
-        initListener();
-        init();
         if (getPresenter() != null) {
             //开始presenter的逻辑
             getPresenter().start();
         }
+        ButterKnife.bind(this);
+        initListener();
+        init();
+
 
 
     }
