@@ -20,8 +20,8 @@ import java.util.List;
  * Created by Administrator on 2016/12/08
  */
 
-public class FindPresenterImpl extends BasePresenter<BookStoreContract.View, BookStoreContract.Model> implements BookStoreContract.Presenter {
-    private List<String> list;
+public class BookStorePresenterImpl extends BasePresenter<BookStoreContract.View, BookStoreContract.Model> implements BookStoreContract.Presenter {
+    private List<String> mBookStoreList;
 
     @Override
     public void start() {
@@ -36,17 +36,17 @@ public class FindPresenterImpl extends BasePresenter<BookStoreContract.View, Boo
 
     @Override
     public RecyclerView.Adapter getAdapter() {
-        list = new ArrayList<>();
-        list.add("玄幻");
-        list.add("武侠");
-        list.add("都市");
-        list.add("言情");
-        list.add("穿越");
-        list.add("网游");
-        list.add("恐怖");
-        list.add("科幻");
-        list.add("其他");
-        return new CommonAdapter<String>(getView().getmActivity(), R.layout.item_rv_find, list) {
+        mBookStoreList = new ArrayList<>();
+        mBookStoreList.add("玄幻");
+        mBookStoreList.add("武侠");
+        mBookStoreList.add("都市");
+        mBookStoreList.add("言情");
+        mBookStoreList.add("穿越");
+        mBookStoreList.add("网游");
+        mBookStoreList.add("恐怖");
+        mBookStoreList.add("科幻");
+        mBookStoreList.add("其他");
+        return new CommonAdapter<String>(getView().getmActivity(), R.layout.item_rv_find, mBookStoreList) {
             @Override
             public void convert(ViewHolder holder, final String o) {
                 holder.setText(R.id.tv_item_find,o);
@@ -55,7 +55,6 @@ public class FindPresenterImpl extends BasePresenter<BookStoreContract.View, Boo
                     public void onClick(View v) {
                         Intent intent = new Intent(getView().getmActivity(), SearchResultActivity.class);
                         intent.putExtra("type",o);
-
                         UiUtils.startIntent(getView().getmActivity(),intent);
                     }
                 });

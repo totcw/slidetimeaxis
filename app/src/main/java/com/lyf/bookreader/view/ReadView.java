@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.lyf.bookreader.utils.ScreenUtils;
 
 /**
+ * 阅读控件
  * Created by Administrator on 2017/4/18.
  */
 

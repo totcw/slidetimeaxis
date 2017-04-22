@@ -1,4 +1,4 @@
-package com.lyf.bookreader.book;
+package com.lyf.bookreader.bookdetail;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
-import com.lyf.bookreader.book.contract.BookContract;
+import com.lyf.bookreader.bookdetail.contract.BookContract;
 
 import com.lyf.bookreader.db.BookCaseDao;
 import com.lyf.bookreader.javabean.BookCase;
@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * @email:totcw@qq.com
  * @see:
  * @创建日期： 2017/4/20
- * @功能说明： 书本界面
+ * @功能说明： 书本详情界面
  * @begin
  * @修改记录:
  * @修改后版本:
@@ -45,13 +45,14 @@ public class BookCaseActivity extends BaseActivity<BookContract.Presenter> imple
     @BindView(R.id.iv_addbookcase_add)
     TextView mIvAddbookcaseAdd;
 
-    private String bookname;
-    private String author;
-    private String time;
-    private String finish;
-    private String img;
-    private String type;
-    private int  total;
+    private String bookname;//书名
+    private String author;//作者
+    private String time;//时间
+    private String finish; //完结状态
+    private String img; //书本图片url
+    private String type; //书本类型
+    private int  total; //书本总的章节数
+
     private BookCaseDao mBookCaseDao;
 
     @Override
@@ -76,7 +77,7 @@ public class BookCaseActivity extends BaseActivity<BookContract.Presenter> imple
         total = getIntent().getIntExtra("total",0);
         type = getIntent().getStringExtra("type");
         mBookCaseDao = new BookCaseDao(getmActivity());
-        setText();
+        setBookInformation();
         BookCase bookCase = mBookCaseDao.query(bookname);
         if (bookCase != null && bookCase.getBookname() != null) {
             mIvAddbookcaseAdd.setVisibility(View.GONE);
@@ -85,7 +86,10 @@ public class BookCaseActivity extends BaseActivity<BookContract.Presenter> imple
         }
     }
 
-    private void setText() {
+    /**
+     * 设置书本信息
+     */
+    private void setBookInformation() {
         mIvAddbookcaseAuthor.setText(author);
         mIvAddbookcaseBookname.setText(bookname);
         mIvAddbookcaseTime.setText("最近更新时间:"+time);

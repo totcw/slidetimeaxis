@@ -14,6 +14,7 @@ import rx.subjects.ReplaySubject;
 import rx.subjects.Subject;
 
 /**
+ *
  * Created by Administrator on 2016/8/2.
  */
 public class RxBus {

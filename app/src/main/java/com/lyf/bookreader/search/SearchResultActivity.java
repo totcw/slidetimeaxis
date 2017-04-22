@@ -11,7 +11,7 @@ import com.lyf.bookreader.api.MyObserver;
 import com.lyf.bookreader.api.NetWork;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.base.IPresenter;
-import com.lyf.bookreader.book.BookCaseActivity;
+import com.lyf.bookreader.bookdetail.BookCaseActivity;
 import com.lyf.bookreader.javabean.BaseCallModel;
 import com.lyf.bookreader.javabean.BookCase;
 import com.lyf.bookreader.utils.UiUtils;
@@ -79,7 +79,7 @@ public class SearchResultActivity extends BaseActivity {
     private void getData() {
         mLoadpagerSearchresult.setLoadVisable();
         type = "全本" + type + "小说";
-        mRxManager.add(NetWork.getNetService().getBook(type)
+        mRxManager.add(NetWork.getNetService().getBookList(type)
                 .compose(NetWork.handleResult(new BaseCallModel<List<BookCase>>()))
                 .subscribe(new MyObserver<List<BookCase>>() {
                     @Override

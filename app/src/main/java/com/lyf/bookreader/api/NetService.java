@@ -3,7 +3,7 @@ package com.lyf.bookreader.api;
 
 
 import com.lyf.bookreader.javabean.BaseCallModel;
-import com.lyf.bookreader.javabean.Book;
+import com.lyf.bookreader.javabean.Chapter;
 import com.lyf.bookreader.javabean.BookCase;
 
 import java.util.List;
@@ -19,26 +19,29 @@ import rx.Observable;
  */
 public interface NetService {
     /**
-     *
-     *
-     * @return
+     *@author : lyf
+     *@email:totcw@qq.com
+     *@创建日期： 2017/4/20
+     *@功能说明： 根据书名和章节数 加载书的内容
+     *@param
+     *@return
      */
     @FormUrlEncoded
     @POST("Test")
-    Observable<BaseCallModel<Book>> getRegister(@Field("bookname") String bookname,
-                                                @Field("page") String page);
+    Observable<BaseCallModel<Chapter>> getChpater(@Field("bookname") String bookname,
+                                                  @Field("page") String page);
 
  /**
   *@author : lyf
   *@email:totcw@qq.com
   *@创建日期： 2017/4/20
-  *@功能说明：
+  *@功能说明： 根据书的类型获取书籍
   *@param
   *@return
   */
     @FormUrlEncoded
     @POST("BookCase")
-    Observable<BaseCallModel<List<BookCase>>> getBook(@Field("type") String type);
+    Observable<BaseCallModel<List<BookCase>>> getBookList(@Field("type") String type);
 
 
 

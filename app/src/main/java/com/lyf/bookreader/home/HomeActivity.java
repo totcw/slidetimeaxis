@@ -15,7 +15,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 首页
+ * app的主体界面
  */
 
 public class HomeActivity extends BaseActivity<HomeContract.Presenter> implements HomeContract.View {
@@ -105,7 +105,10 @@ public class HomeActivity extends BaseActivity<HomeContract.Presenter> implement
 
     }
 
-    public void toFind() {
+    /**
+     * 跳转至书城
+     */
+    public void toBookStore() {
         switchTo(mIdvFind);
         getPresenter().switchToFragment(R.id.idv_activity_main_find);
     }

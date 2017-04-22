@@ -1,4 +1,4 @@
-package com.lyf.bookreader.book.contract;
+package com.lyf.bookreader.bookdetail.contract;
 
 import com.lyf.bookreader.base.IModel;
 import com.lyf.bookreader.base.IPresenter;

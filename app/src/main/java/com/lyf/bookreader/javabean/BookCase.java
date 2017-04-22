@@ -4,7 +4,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 
 /**
- * 书架
+ * 书架实体类
  * Created by lyf on 2017/4/19.
  */
 public class BookCase {

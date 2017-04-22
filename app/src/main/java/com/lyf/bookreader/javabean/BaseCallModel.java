@@ -5,11 +5,9 @@ package com.lyf.bookreader.javabean;
  * Created by Administrator on 2016/7/27.
  */
 public class BaseCallModel<T> {
-    private int  code;
-    private String resultMsg;
-   // private String content;
-   // private String title;
-    private T data;
+    private int  code; //服务器返回的状态码
+    private String resultMsg;//返回的结果信息
+    private T data; //返回的数据
 
     public int getCode() {
         return code;
@@ -35,19 +33,5 @@ public class BaseCallModel<T> {
         this.data = data;
     }
 
- /*   public String getContent() {
-        return content;
-    }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }*/
 }

@@ -1,4 +1,4 @@
-package com.lyf.bookreader.myadapter;
+package com.lyf.bookreader.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.home.HomeActivity;
-import com.lyf.bookreader.interfac.SetReadListener;
 import com.lyf.bookreader.javabean.BookCase;
 import com.lyf.bookreader.readbook.ReadBookActivity;
 import com.lyf.bookreader.utils.UiUtils;
@@ -30,12 +29,12 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
 
     private Activity mContext;
     private List<BookCase> data;
-    private SetReadListener mSetReadListener;
-    public BookCaseItemAdapter(Activity mContext, List<BookCase> data , SetReadListener listener) {
+
+    public BookCaseItemAdapter(Activity mContext, List<BookCase> data ) {
 
         this.data = data;
         this.mContext = mContext;
-        this.mSetReadListener = listener;
+
     }
 
 
@@ -58,7 +57,7 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
             ((AddHolder) holder).mLinearBookcaseAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((HomeActivity) mContext).toFind();
+                    ((HomeActivity) mContext).toBookStore();
 
                 }
             });
@@ -76,9 +75,7 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
                         intent.putExtra("position", bookCase.getPosition());
                         intent.putExtra("total", bookCase.getTotal());
                         UiUtils.startIntent(mContext,intent);
-                        if (mSetReadListener != null) {
-                            mSetReadListener.read(bookCase);
-                        }
+
                     }
                 });
             }

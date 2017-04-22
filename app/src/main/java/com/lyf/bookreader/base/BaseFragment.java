@@ -28,7 +28,7 @@ public abstract class BaseFragment <P extends IPresenter> extends Fragment imple
     protected RxManager mRxManager;
     private PopupWindow popupWindow;
     private AlertDialog.Builder builder;
-    private boolean isDismiss;//token 失效对话框 是否已经显示
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

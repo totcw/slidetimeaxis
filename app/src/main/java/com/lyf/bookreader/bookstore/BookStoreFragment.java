@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseFragment;
 import com.lyf.bookreader.bookstore.contract.BookStoreContract;
-import com.lyf.bookreader.bookstore.presenter.FindPresenterImpl;
+import com.lyf.bookreader.bookstore.presenter.BookStorePresenterImpl;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,13 +42,13 @@ public class BookStoreFragment extends BaseFragment<BookStoreContract.Presenter>
 
     @Override
     protected BookStoreContract.Presenter onLoadPresenter() {
-        return new FindPresenterImpl();
+        return new BookStorePresenterImpl();
     }
 
     @Override
     public void initData() {
         super.initData();
-        initRv();
+        initRececleview();
     }
 
     /**
@@ -59,7 +59,7 @@ public class BookStoreFragment extends BaseFragment<BookStoreContract.Presenter>
      * @创建日期： 2017/4/20
      * @功能说明： 初始化recycleview
      */
-    private void initRv() {
+    private void initRececleview() {
 
         mRvFind.setLayoutManager(new GridLayoutManager(getmActivity(), 3));
         mRvFind.setAdapter(getPresenter().getAdapter());

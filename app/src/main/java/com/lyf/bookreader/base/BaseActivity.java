@@ -24,14 +24,12 @@ import butterknife.ButterKnife;
  */
 
 public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivity implements IView {
-    private String[] REQUEST_PERMISSIONS = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.CALL_PHONE};
-    private static final int REQUEST_PERMISSION_CODE_TAKE_PIC = 9; //权限的请求码
+
     protected P mPresenter;
     protected RxManager mRxManager;
     private PopupWindow popupWindow;
     private AlertDialog.Builder builder;
-    private boolean isDismiss;//token 失效对话框 是否已经显示
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,24 +54,7 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //统一检查权限
- /*       PermissionUtil.checkPermission(getmActivity(), REQUEST_PERMISSIONS, new PermissionUtil.permissionInterface() {
-            @Override
-            public void success() {
 
-            }
-
-            @Override
-            public void fail(List<String> permissions) {
-                //没有权限就回到欢迎页面
-                UiUtils.startIntent(getmActivity(), WelcomeActivity.class);
-
-            }
-        });*/
-    }
 
     /**
      * 处理业务逻辑
@@ -117,7 +98,6 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
         UiUtils.setOverdepengingOut(getmActivity());
 
     }
-
 
 
 

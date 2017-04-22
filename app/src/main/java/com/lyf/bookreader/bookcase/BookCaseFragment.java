@@ -12,9 +12,8 @@ import android.widget.Toast;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseFragment;
 import com.lyf.bookreader.db.BookCaseDao;
-import com.lyf.bookreader.interfac.SetReadListener;
 import com.lyf.bookreader.javabean.BookCase;
-import com.lyf.bookreader.myadapter.BookCaseItemAdapter;
+import com.lyf.bookreader.adapter.BookCaseItemAdapter;
 import com.lyf.bookreader.bookcase.contract.BookCaseContract;
 import com.lyf.bookreader.bookcase.presenter.ShouYePresenterImpl;
 
@@ -31,7 +30,7 @@ import butterknife.OnClick;
  * @email:totcw@qq.com
  * @see:
  * @创建日期： 2017/4/20
- * @功能说明：
+ * @功能说明：  数据界面
  * @begin
  * @修改记录:
  * @修改后版本:
@@ -40,8 +39,7 @@ import butterknife.OnClick;
  * @end
  */
 
-public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> implements BookCaseContract.View, SetReadListener {
-
+public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> implements BookCaseContract.View {
 
     @BindView(R.id.iv_shouye_bookimage)
     ImageView ivShouyeBookimage;
@@ -58,13 +56,10 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
     @BindView(R.id.rv_shouye)
     RecyclerView rvShouye;
 
-    private List<BookCase> list;
-    private BookCaseItemAdapter mBookCaseItemAdapter;
+    private List<BookCase> mBookCaseList; //存放书本信息的容器
+    private BookCaseItemAdapter mBookCaseItemAdapter; //适配器
     private BookCaseDao mBookCaseDao;
-    private int chapter ;
-    private int position;
-    private int mTotal;
-    private String bookname;
+
     @Override
     public View initView(LayoutInflater inflater) {
         return inflater.inflate(R.layout.fragment_shouye, null);
@@ -78,13 +73,17 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
     @Override
     public void initData() {
         super.initData();
-        list = new ArrayList<>();
+        mBookCaseList = new ArrayList<>();
 
-        initRv();
+        initRecycleview();
 
         getData();
     }
 
+    /**
+     * 当前fragment是否显示的回调方法
+     * @param hidden true 表示隐藏
+     */
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -105,13 +104,13 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
         mBookCaseDao = new BookCaseDao(getmActivity());
         List<BookCase> mBookCaseList = mBookCaseDao.queryAll();
         if (mBookCaseList != null) {
-            list.clear();
-            list.addAll(mBookCaseList);
+            this.mBookCaseList.clear();
+            this.mBookCaseList.addAll(mBookCaseList);
             mBookCaseItemAdapter.notifyDataSetChanged();
         }
     }
 
-    private void initRv() {
+    private void initRecycleview() {
         rvShouye.setLayoutManager(new GridLayoutManager(getmActivity(), 3));
         rvShouye.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -119,7 +118,7 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
                 outRect.set(5, 5, 5, 5);
             }
         });
-        mBookCaseItemAdapter = new BookCaseItemAdapter(getmActivity(), list, this);
+        mBookCaseItemAdapter = new BookCaseItemAdapter(getmActivity(), mBookCaseList);
 
         rvShouye.setAdapter(mBookCaseItemAdapter);
     }
@@ -128,41 +127,16 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
     @OnClick({R.id.iv_shouye_bookimage, R.id.iv_shouye_read})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_shouye_bookimage:
+            case R.id.iv_shouye_bookimage: //最近看的书籍
+
                 break;
-            case R.id.iv_shouye_read:
-               /* Intent intent = new Intent(getmActivity(), ReadBookActivity.class);
-                intent.putExtra("bookname", bookname);
-                intent.putExtra("chapter", chapter);
-                intent.putExtra("position", position);
-                intent.putExtra("total", mTotal);
-                UiUtils.startIntent(getmActivity(),intent);*/
+            case R.id.iv_shouye_read: //继续阅读
+
                 Toast.makeText(getmActivity(),"此功能暂未开通",Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
 
-    @Override
-    public void read(BookCase bookCase) {
-        if (bookCase != null) {
-            if (ivShouyeBookname != null) {
-                ivShouyeBookname.setText(bookCase.getBookname());
-            }
-            if (ivShouyeAuthor != null) {
-                ivShouyeAuthor.setText(bookCase.getAuthor());
-            }
-            if (ivShouyeTime != null) {
-                ivShouyeTime.setText("更新时间:"+bookCase.getTime());
-            }
-            if (ivShouyeStatus != null) {
-                ivShouyeStatus.setText(bookCase.getFinish());
-            }
-            chapter = bookCase.getCurPage();
-            position = bookCase.getPosition();
-            mTotal = bookCase.getTotal();
-            bookname = bookCase.getBookname();
 
-        }
-    }
 }

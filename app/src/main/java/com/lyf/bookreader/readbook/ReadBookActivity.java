@@ -7,12 +7,12 @@ import android.widget.Toast;
 import com.betterda.mylibrary.ShapeLoadingDialog;
 import com.lyf.bookreader.javabean.BaseCallModel;
 import com.lyf.bookreader.R;
+import com.lyf.bookreader.javabean.Chapter;
 import com.lyf.bookreader.view.ReadView;
 import com.lyf.bookreader.api.MyObserver;
 import com.lyf.bookreader.api.NetWork;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.base.IPresenter;
-import com.lyf.bookreader.javabean.Book;
 import com.lyf.bookreader.utils.UiUtils;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -36,12 +36,12 @@ import rx.schedulers.Schedulers;
 
 public class ReadBookActivity extends BaseActivity {
 
-    private ReadView rv;
-    private String bookName;
+    private ReadView mReadView; //阅读控件
+    private String bookName; //书名
     private int chapter = 1;//当前阅读章节
     private int position = 0;//当前章节阅读位置
     private int total = 1;
-    private ShapeLoadingDialog dialog;
+    private ShapeLoadingDialog dialog; //加载对话框
 
     @Override
     protected IPresenter onLoadPresenter() {
@@ -53,9 +53,96 @@ public class ReadBookActivity extends BaseActivity {
     public void initView() {
         super.initView();
         setContentView(R.layout.activity_main);
-        rv = (ReadView) findViewById(R.id.rv);
+        mReadView = (ReadView) findViewById(R.id.rv);
 
     }
+
+
+
+    @Override
+    public void init() {
+        super.init();
+        dialog = UiUtils.createDialog(getmActivity(), "正在加载...");
+        getIntents();
+        getData();
+
+        mReadView.setmLoadPageListener(new ReadView.LoadPageListener() {
+            @Override
+            public void prePage(final int chapter) {
+                //TODO 根据书名和chapter 去数据库或者网络加载数据
+
+                UiUtils.showDialog(getmActivity(),dialog);
+                mRxManager.add(NetWork.getNetService()
+                        .getChpater(bookName, chapter + "")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MyObserver<Chapter>() {
+                            @Override
+                            protected void onSuccess(Chapter data, String resultMsg) {
+                                if (data != null && !TextUtils.isEmpty(data.getContent())) {
+
+                                    mReadView.drawPrePage(data.getTitle(), data.getContent());
+                                } else {
+                                    //加载内存失败 记得要将章节调回去
+                                    mReadView.setCurrentChapter(chapter + 1);
+                                    Toast.makeText(getApplicationContext(), "加载上一页失败", Toast.LENGTH_SHORT).show();
+                                }
+                                mReadView.setLodaing(false);
+                                  UiUtils.dissmissDialog(getmActivity(),dialog);
+                            }
+
+                            @Override
+                            public void onFail(String resultMsg) {
+                                 UiUtils.dissmissDialog(getmActivity(),dialog);
+                                mReadView.setLodaing(false);
+                            }
+
+                            @Override
+                            public void onExit() {
+                                 UiUtils.dissmissDialog(getmActivity(),dialog);
+                                mReadView.setLodaing(false);
+                            }
+                        }));
+            }
+
+            @Override
+            public void nextPage(final int chapter) {
+                  UiUtils.showDialog(getmActivity(),dialog);
+                mRxManager.add(NetWork.getNetService()
+                        .getChpater(bookName, chapter + "")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MyObserver<Chapter>() {
+                            @Override
+                            protected void onSuccess(Chapter data, String resultMsg) {
+                                if (data != null && !TextUtils.isEmpty(data.getContent())) {
+
+                                    mReadView.drawNextPage(data.getTitle(), data.getContent());
+                                } else {
+                                    mReadView.setCurrentChapter(chapter - 1);
+                                    Toast.makeText(getApplicationContext(), "加载下一页失败", Toast.LENGTH_SHORT).show();
+                                }
+                                  UiUtils.dissmissDialog(getmActivity(),dialog);
+                                mReadView.setLodaing(false);
+                            }
+
+                            @Override
+                            public void onFail(String resultMsg) {
+                                UiUtils.dissmissDialog(getmActivity(),dialog);
+                                mReadView.setLodaing(false);
+                            }
+
+                            @Override
+                            public void onExit() {
+                                UiUtils.dissmissDialog(getmActivity(),dialog);
+                                mReadView.setLodaing(false);
+                            }
+                        }));
+
+            }
+        });
+    }
+
 
     /**
      * @param
@@ -75,90 +162,6 @@ public class ReadBookActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void init() {
-        super.init();
-        dialog = UiUtils.createDialog(getmActivity(), "正在加载...");
-        getIntents();
-        getData();
-
-        rv.setmLoadPageListener(new ReadView.LoadPageListener() {
-            @Override
-            public void prePage(final int chapter) {
-                //TODO 根据书名和chapter 去数据库或者网络加载数据
-
-                  UiUtils.showDialog(getmActivity(),dialog);
-                mRxManager.add(NetWork.getNetService()
-                        .getRegister(bookName, chapter + "")
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new MyObserver<Book>() {
-                            @Override
-                            protected void onSuccess(Book data, String resultMsg) {
-                                if (data != null && !TextUtils.isEmpty(data.getContent())) {
-
-                                    rv.drawPrePage(data.getTitle(), data.getContent());
-                                } else {
-                                    //加载内存失败 记得要将章节调回去
-                                    rv.setCurrentChapter(chapter + 1);
-                                    Toast.makeText(getApplicationContext(), "加载上一页失败", Toast.LENGTH_SHORT).show();
-                                }
-                                rv.setLodaing(false);
-                                  UiUtils.dissmissDialog(getmActivity(),dialog);
-                            }
-
-                            @Override
-                            public void onFail(String resultMsg) {
-                                 UiUtils.dissmissDialog(getmActivity(),dialog);
-                                rv.setLodaing(false);
-                            }
-
-                            @Override
-                            public void onExit() {
-                                 UiUtils.dissmissDialog(getmActivity(),dialog);
-                                rv.setLodaing(false);
-                            }
-                        }));
-            }
-
-            @Override
-            public void nextPage(final int chapter) {
-                  UiUtils.showDialog(getmActivity(),dialog);
-                mRxManager.add(NetWork.getNetService()
-                        .getRegister(bookName, chapter + "")
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new MyObserver<Book>() {
-                            @Override
-                            protected void onSuccess(Book data, String resultMsg) {
-                                if (data != null && !TextUtils.isEmpty(data.getContent())) {
-
-                                    rv.drawNextPage(data.getTitle(), data.getContent());
-                                } else {
-                                    rv.setCurrentChapter(chapter - 1);
-                                    Toast.makeText(getApplicationContext(), "加载下一页失败", Toast.LENGTH_SHORT).show();
-                                }
-                                  UiUtils.dissmissDialog(getmActivity(),dialog);
-                                rv.setLodaing(false);
-                            }
-
-                            @Override
-                            public void onFail(String resultMsg) {
-                                UiUtils.dissmissDialog(getmActivity(),dialog);
-                                rv.setLodaing(false);
-                            }
-
-                            @Override
-                            public void onExit() {
-                                UiUtils.dissmissDialog(getmActivity(),dialog);
-                                rv.setLodaing(false);
-                            }
-                        }));
-
-            }
-        });
-    }
-
     /**
      *@author : lyf
      *@email:totcw@qq.com
@@ -170,15 +173,15 @@ public class ReadBookActivity extends BaseActivity {
     private void getData() {
         UiUtils.showDialog(getmActivity(),dialog);
         mRxManager.add(NetWork.getNetService()
-                .getRegister(bookName, chapter + "")
-                .compose(NetWork.handleResult(new BaseCallModel<Book>()))
-                .subscribe(new MyObserver<Book>() {
+                .getChpater(bookName, chapter + "")
+                .compose(NetWork.handleResult(new BaseCallModel<Chapter>()))
+                .subscribe(new MyObserver<Chapter>() {
                     @Override
-                    protected void onSuccess(Book data, String resultMsg) {
+                    protected void onSuccess(Chapter data, String resultMsg) {
 
                         if (data != null && !TextUtils.isEmpty(data.getContent())) {
 
-                            rv.drawCurPageBitmap(data.getTitle(), data.getContent(), chapter, total);
+                            mReadView.drawCurPageBitmap(data.getTitle(), data.getContent(), chapter, total);
                         } else {
                             Toast.makeText(getApplicationContext(), "加载当前内容失败", Toast.LENGTH_SHORT).show();
                         }
