@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import com.betterda.mylibrary.LoadingPager;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
-import com.lyf.bookreader.search.contract.SearchContract;
+import com.lyf.bookreader.search.contract.SearchResultContract;
 import com.zhy.base.adapter.recyclerview.DividerItemDecoration;
 
 import butterknife.BindView;
@@ -27,16 +27,16 @@ import butterknife.BindView;
  * @end
  */
 
-public class SearchResultActivity extends BaseActivity<SearchContract.Presenter> implements SearchContract.View {
+public class SearchResultActivity extends BaseActivity<SearchResultContract.Presenter> implements SearchResultContract.View {
 
 
     @BindView(R.id.rv_serachresult)
     RecyclerView mRvSerachresult;
     @BindView(R.id.loadpager_searchresult)
-    LoadingPager mLoadpagerSearchresult;
+    LoadingPager mLoadPagerSearchResult;
 
     @Override
-    protected SearchContract.Presenter onLoadPresenter() {
+    protected SearchResultContract.Presenter onLoadPresenter() {
 //        return new SearchPresenterImpl();
         return null;
     }
@@ -51,7 +51,7 @@ public class SearchResultActivity extends BaseActivity<SearchContract.Presenter>
     @Override
     public void init() {
         super.init();
-        initRecycleview();
+        initRecycleView();
 
 
     }
@@ -65,7 +65,7 @@ public class SearchResultActivity extends BaseActivity<SearchContract.Presenter>
      * @创建日期： 2017/4/20
      * @功能说明：初始化recycleview
      */
-    private void initRecycleview() {
+    private void initRecycleView() {
 
         mRvSerachresult.setLayoutManager(new LinearLayoutManager(getmActivity()));
         mRvSerachresult.addItemDecoration(new DividerItemDecoration(getmActivity(), DividerItemDecoration.VERTICAL_LIST));
@@ -75,7 +75,7 @@ public class SearchResultActivity extends BaseActivity<SearchContract.Presenter>
 
     @Override
     public LoadingPager getLoadPager() {
-        return mLoadpagerSearchresult;
+        return mLoadPagerSearchResult;
     }
 
 
