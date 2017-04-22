@@ -6,14 +6,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lyf.bookreader.R;
-import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.base.BaseActivity;
-import com.lyf.bookreader.bookdetail.contract.BookContract;
-
-import com.lyf.bookreader.db.BookCaseDao;
+import com.lyf.bookreader.bookdetail.contract.BookDetailContract;
+import com.lyf.bookreader.bookdetail.presenter.BookDetailPresenterImpl;
 import com.lyf.bookreader.javabean.BookCase;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,7 +30,7 @@ import butterknife.OnClick;
  * @end
  */
 
-public class BookCaseActivity extends BaseActivity<BookContract.Presenter> implements BookContract.View {
+public class BookCaseActivity extends BaseActivity<BookDetailContract.Presenter> implements BookDetailContract.View {
     @BindView(R.id.iv_addbookcase_bookimage)
     ImageView mIvAddbookcaseBookimage;
     @BindView(R.id.iv_addbookcase_bookname)
@@ -48,19 +44,11 @@ public class BookCaseActivity extends BaseActivity<BookContract.Presenter> imple
     @BindView(R.id.iv_addbookcase_add)
     TextView mIvAddbookcaseAdd;
 
-    private String bookname;//书名
-    private String author;//作者
-    private String time;//时间
-    private String finish; //完结状态
-    private String img; //书本图片url
-    private String type; //书本类型
-    private int total; //书本总的章节数
 
-    private BookCaseDao mBookCaseDao;
 
     @Override
-    protected BookContract.Presenter onLoadPresenter() {
-        return null;
+    protected BookDetailContract.Presenter onLoadPresenter() {
+        return new BookDetailPresenterImpl();
     }
 
     @Override
@@ -72,31 +60,15 @@ public class BookCaseActivity extends BaseActivity<BookContract.Presenter> imple
     @Override
     public void init() {
         super.init();
-        bookname = getIntent().getStringExtra("bookname");
-        author = getIntent().getStringExtra("author");
-        time = getIntent().getStringExtra("time");
-        finish = getIntent().getStringExtra("finish");
-        img = getIntent().getStringExtra("img");
-        total = getIntent().getIntExtra("total", 0);
-        type = getIntent().getStringExtra("type");
-        mBookCaseDao = MyApplication.getInstance().getDaoSession().getBookCaseDao();
-        setBookInformation();
-        List<BookCase> bookCases = mBookCaseDao.queryBuilder().where(BookCaseDao.Properties.Bookname.eq(bookname)).list();
-        if (bookCases != null && bookCases.size() > 0) {
-            BookCase bookCase = bookCases.get(0);
-            if (bookCase != null && bookCase.getBookname() != null) {
-                mIvAddbookcaseAdd.setVisibility(View.GONE);
-            } else {
-                mIvAddbookcaseAdd.setVisibility(View.VISIBLE);
-            }
-        }
+
 
     }
 
     /**
      * 设置书本信息
      */
-    private void setBookInformation() {
+    public void setBookInformation(String author,String bookname,String time,String finish) {
+
         mIvAddbookcaseAuthor.setText(author);
         mIvAddbookcaseBookname.setText(bookname);
         mIvAddbookcaseTime.setText("最近更新时间:" + time);
@@ -104,21 +76,18 @@ public class BookCaseActivity extends BaseActivity<BookContract.Presenter> imple
         mIvAddbookcaseAdd.setVisibility(View.GONE);
     }
 
-    @OnClick(R.id.iv_addbookcase_add)
-    public void onClick() {
-        Toast.makeText(getmActivity(), "加入书架", Toast.LENGTH_SHORT).show();
-        BookCase bookCase = new BookCase();
-        bookCase.setBookname(bookname);
-        bookCase.setAuthor(author);
-        bookCase.setFinish(finish);
-        bookCase.setTime(time);
-        bookCase.setImg(img);
-        bookCase.setCurPage(1);
-        bookCase.setPosition(0);
-        bookCase.setTotal(total);
-        bookCase.setType(type);
-        if (mBookCaseDao.insert(bookCase) > 0) {
+    @Override
+    public void setAddBookcaseStatus(boolean isVisable) {
+        if (isVisable) {
+            mIvAddbookcaseAdd.setVisibility(View.VISIBLE);
+        } else {
             mIvAddbookcaseAdd.setVisibility(View.GONE);
         }
+    }
+
+    @OnClick(R.id.iv_addbookcase_add)
+    public void onClick() {
+        getPresenter().addToBookcase();
+
     }
 }

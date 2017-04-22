@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.home.HomeActivity;
 import com.lyf.bookreader.javabean.BookCase;
-import com.lyf.bookreader.readbook.ReadBookActivity;
+import com.lyf.bookreader.readbook.BookReadActivity;
 import com.lyf.bookreader.utils.UiUtils;
 
 import java.util.List;
@@ -69,7 +69,7 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
                 ((MainViewHolder) holder).mLinearBookcase.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(mContext, ReadBookActivity.class);
+                        Intent intent = new Intent(mContext, BookReadActivity.class);
                         intent.putExtra("bookname", bookCase.getBookname());
                         intent.putExtra("chapter", bookCase.getCurPage());
                         intent.putExtra("position", bookCase.getPosition());

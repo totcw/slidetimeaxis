@@ -25,17 +25,6 @@ public class BookStorePresenterImpl extends BasePresenter<BookStoreContract.View
 
     @Override
     public void start() {
-
-
-    }
-
-    @Override
-    public void destroy() {
-
-    }
-
-    @Override
-    public RecyclerView.Adapter getAdapter() {
         mBookStoreList = new ArrayList<>();
         mBookStoreList.add("玄幻");
         mBookStoreList.add("武侠");
@@ -46,6 +35,17 @@ public class BookStorePresenterImpl extends BasePresenter<BookStoreContract.View
         mBookStoreList.add("恐怖");
         mBookStoreList.add("科幻");
         mBookStoreList.add("其他");
+
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+    @Override
+    public RecyclerView.Adapter getAdapter() {
+
         return new CommonAdapter<String>(getView().getmActivity(), R.layout.item_rv_bookstore, mBookStoreList) {
             @Override
             public void convert(ViewHolder holder, final String o) {

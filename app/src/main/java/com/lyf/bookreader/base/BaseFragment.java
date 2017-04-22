@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
+import com.betterda.mylibrary.LoadingPager;
 import com.lyf.bookreader.utils.RxManager;
 import com.lyf.bookreader.utils.UiUtils;
 
@@ -111,7 +112,10 @@ public abstract class BaseFragment <P extends IPresenter> extends Fragment imple
     }
 
 
-
+    @Override
+    public LoadingPager getLoadpager() {
+        return null;
+    }
 
 
 

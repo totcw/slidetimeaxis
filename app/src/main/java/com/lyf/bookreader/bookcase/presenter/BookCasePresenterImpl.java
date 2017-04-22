@@ -29,7 +29,7 @@ public class BookCasePresenterImpl extends BasePresenter<BookCaseContract.View,B
     @Override
     public RecyclerView.Adapter getAdapter() {
         mBookCaseItemAdapter = new BookCaseItemAdapter(getView().getmActivity(), mBookCaseList);
-        return null;
+        return mBookCaseItemAdapter;
     }
     /**
      * @param

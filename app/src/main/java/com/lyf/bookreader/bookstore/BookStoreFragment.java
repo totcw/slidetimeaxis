@@ -32,7 +32,7 @@ public class BookStoreFragment extends BaseFragment<BookStoreContract.Presenter>
     }
 
     @BindView(R.id.rv_find)
-    RecyclerView mRvFind;
+    RecyclerView mRecycleviewFind;
 
 
     @Override
@@ -61,8 +61,8 @@ public class BookStoreFragment extends BaseFragment<BookStoreContract.Presenter>
      */
     private void initRececleview() {
 
-        mRvFind.setLayoutManager(new GridLayoutManager(getmActivity(), 3));
-        mRvFind.setAdapter(getPresenter().getAdapter());
+        mRecycleviewFind.setLayoutManager(new GridLayoutManager(getmActivity(), 3));
+        mRecycleviewFind.setAdapter(getPresenter().getAdapter());
 
     }
 
