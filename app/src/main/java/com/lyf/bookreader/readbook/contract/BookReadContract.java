@@ -16,7 +16,7 @@ public class BookReadContract {
     public interface View extends IView{
         ReadView getReadView();
 
-
+        //System.out.println("ff");
         TextView getBookReadMode();
 
         void showReadBar();

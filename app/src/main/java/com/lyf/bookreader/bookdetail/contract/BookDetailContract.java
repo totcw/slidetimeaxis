@@ -35,7 +35,7 @@ public class BookDetailContract {
 
     public interface Presenter extends IPresenter<View> {
         //加入书架
-        void addToBookcase();
+        void addToBookcase();////System.out.println("ff");
     }
 
     public interface Model extends IModel {

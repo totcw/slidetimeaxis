@@ -108,7 +108,7 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_shouye_bookimage: //最近看的书籍
-
+                System.out.println("ff");
                 break;
             case R.id.iv_shouye_read: //继续阅读
 

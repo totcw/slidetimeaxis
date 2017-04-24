@@ -25,7 +25,7 @@ public class BookCaseContract {
         RecyclerView.Adapter getAdapter();
 
         /**
-         * 获取服务器返回的数据
+         * 获取服务器  返回的数据
          */
         void getData();
     }

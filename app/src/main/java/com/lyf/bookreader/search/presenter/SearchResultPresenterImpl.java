@@ -8,7 +8,7 @@ import com.lyf.bookreader.R;
 import com.lyf.bookreader.api.MyObserver;
 import com.lyf.bookreader.api.NetWork;
 import com.lyf.bookreader.base.BasePresenter;
-import com.lyf.bookreader.bookdetail.BookCaseActivity;
+import com.lyf.bookreader.bookdetail.BookDetailActivity;
 import com.lyf.bookreader.javabean.BaseCallModel;
 import com.lyf.bookreader.javabean.BookCase;
 import com.lyf.bookreader.search.contract.SearchResultContract;
@@ -48,7 +48,7 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
                     holder.setOnClickListener(R.id.linear_item_searchresult, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(getView().getmActivity(), BookCaseActivity.class);
+                            Intent intent = new Intent(getView().getmActivity(), BookDetailActivity.class);
                             intent.putExtra("bookname", bookCase.getBookname());
                             intent.putExtra("author", bookCase.getAuthor());
                             intent.putExtra("time", bookCase.getTime());

@@ -7,5 +7,5 @@ import com.lyf.bookreader.bookcase.contract.BookCaseContract;
 */
 
 public class BookCaseModelImpl implements BookCaseContract.Model{
-
+    //
 }

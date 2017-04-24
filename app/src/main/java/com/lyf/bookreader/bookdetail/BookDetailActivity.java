@@ -28,7 +28,7 @@ import butterknife.OnClick;
  * @end
  */
 
-public class BookCaseActivity extends BaseActivity<BookDetailContract.Presenter> implements BookDetailContract.View {
+public class BookDetailActivity extends BaseActivity<BookDetailContract.Presenter> implements BookDetailContract.View {
     @BindView(R.id.iv_addbookcase_bookimage)
     ImageView mIvAddbookcaseBookimage;
     @BindView(R.id.iv_addbookcase_bookname)
@@ -47,7 +47,7 @@ public class BookCaseActivity extends BaseActivity<BookDetailContract.Presenter>
     @Override
     protected BookDetailContract.Presenter onLoadPresenter() {
        return new BookDetailPresenterImpl();
-
+//System.out.println("ff");
     }
 
     @Override

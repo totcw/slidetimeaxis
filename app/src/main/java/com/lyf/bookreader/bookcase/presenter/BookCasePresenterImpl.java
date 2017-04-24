@@ -52,7 +52,7 @@ public class BookCasePresenterImpl extends BasePresenter<BookCaseContract.View,B
 
     @Override
     public void destroy() {
-
+        System.out.println("ff");
     }
 
 }
