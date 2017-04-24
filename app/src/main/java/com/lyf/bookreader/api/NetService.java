@@ -1,16 +1,20 @@
 package com.lyf.bookreader.api;
 
 
-
 import com.lyf.bookreader.javabean.BaseCallModel;
+import com.lyf.bookreader.javabean.Book;
 import com.lyf.bookreader.javabean.Chapter;
 import com.lyf.bookreader.javabean.BookCase;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Streaming;
 import rx.Observable;
 
 /**
@@ -19,33 +23,43 @@ import rx.Observable;
  */
 public interface NetService {
     /**
-     *@author : lyf
-     *@email:totcw@qq.com
-     *@创建日期： 2017/4/20
-     *@功能说明： 根据书名和章节数 加载书的内容
-     *@param
-     *@return
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/4/20
+     * @功能说明： 根据书名和章节数 加载书的内容
      */
     @FormUrlEncoded
     @POST("Test")
     Observable<BaseCallModel<Chapter>> getChpater(@Field("bookname") String bookname,
                                                   @Field("page") String page);
 
- /**
-  *@author : lyf
-  *@email:totcw@qq.com
-  *@创建日期： 2017/4/20
-  *@功能说明： 根据书的类型获取书籍
-  *@param
-  *@return
-  */
+    /**
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/4/20
+     * @功能说明： 根据书的类型获取书籍
+     */
     @FormUrlEncoded
     @POST("BookCase")
     Observable<BaseCallModel<List<BookCase>>> getBookList(@Field("type") String type);
 
 
+    /**
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/4/20
+     * @功能说明： 根据书名和章节数 下载书籍
+     */
 
+    @GET("http://192.168.0.112:8080/book/{url}")
+    Observable<Book> getBook(@Path("url") String url);
 
-
-
+   /* @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
+    Observable<ChapterRead> getChapterRead(@Path("url") String url);*/
 }

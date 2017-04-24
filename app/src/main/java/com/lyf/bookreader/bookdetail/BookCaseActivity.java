@@ -3,13 +3,10 @@ package com.lyf.bookreader.bookdetail;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.bookdetail.contract.BookDetailContract;
-import com.lyf.bookreader.bookdetail.presenter.BookDetailPresenterImpl;
-import com.lyf.bookreader.javabean.BookCase;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -48,7 +45,8 @@ public class BookCaseActivity extends BaseActivity<BookDetailContract.Presenter>
 
     @Override
     protected BookDetailContract.Presenter onLoadPresenter() {
-        return new BookDetailPresenterImpl();
+      //  return new BookDetailPresenterImpl();
+        return null;
     }
 
     @Override

@@ -1,13 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xlh="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:background="@mipmap/theme_leather_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-
+    <!--阅读控件-->
     <com.lyf.bookreader.view.ReadView
         android:id="@+id/readview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <!--顶部控件-->
+    <LinearLayout
+        android:id="@+id/linear_bookread_top"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/reader_menu_bg_color"
+        android:clickable="true"
+
+        android:paddingRight="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageButton
+            android:id="@+id/iv_bookread_back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@null"
+            android:src="@mipmap/ab_back" />
+
+        <TextView
+            android:id="@+id/tv_bookread_source"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/book_read_change_source"
+            android:textColor="@color/book_read_top_text"
+            android:textSize="@dimen/book_read_top_text" />
+
+    </LinearLayout>
+
+
+    <!--底部控件-->
+    <LinearLayout
+        android:id="@+id/linear_bookread_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/reader_menu_bg_color"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_bookread_mode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/ic_menu_mode_night_normal"
+            android:gravity="center"
+            android:text="@string/book_read_mode_day"
+            android:textColor="@color/book_read_bottom_text"
+            android:textSize="@dimen/book_read_bottom_text" />
+
+        <TextView
+            android:id="@+id/tv_bookread_setting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/ic_menu_settings_normal"
+            android:gravity="center"
+            android:text="@string/book_read_settings"
+            android:textColor="@color/book_read_bottom_text"
+            android:textSize="@dimen/book_read_bottom_text" />
+
+        <TextView
+            android:id="@+id/tv_bookread_download"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/ic_reader_ab_download"
+            android:gravity="center"
+            android:text="@string/book_read_download"
+            android:textColor="@color/book_read_bottom_text"
+            android:textSize="@dimen/book_read_bottom_text" />
+
+
+        <TextView
+            android:id="@+id/tv_bookread_directory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/ic_menu_toc_normal"
+            android:gravity="center"
+            android:text="@string/book_read_toc"
+            android:textColor="@color/book_read_bottom_text"
+            android:textSize="@dimen/book_read_bottom_text" />
+
+    </LinearLayout>
+
+
+
 </RelativeLayout>

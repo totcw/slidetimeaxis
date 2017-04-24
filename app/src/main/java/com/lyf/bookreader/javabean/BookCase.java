@@ -3,6 +3,7 @@ package com.lyf.bookreader.javabean;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * 书架实体类
@@ -10,6 +11,8 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 @Entity
 public class BookCase {
+    @Id(autoincrement = true)
+    private long id;
     private String bookname;//书名
     private String author; //作者
     private String time; //最后更新时间
@@ -19,9 +22,11 @@ public class BookCase {
     private int position; //当前阅读的章节位置
     private int total;//总的章节数
     private String type;//书的类型
-    @Generated(hash = 2119959442)
-    public BookCase(String bookname, String author, String time, String finish,
-            String img, int curPage, int position, int total, String type) {
+    @Generated(hash = 671749655)
+    public BookCase(long id, String bookname, String author, String time,
+            String finish, String img, int curPage, int position, int total,
+            String type) {
+        this.id = id;
         this.bookname = bookname;
         this.author = author;
         this.time = time;
@@ -35,6 +40,15 @@ public class BookCase {
     @Generated(hash = 563409161)
     public BookCase() {
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getImg() {
         return img;
     }

@@ -6,8 +6,11 @@ package com.lyf.bookreader.utils;
 
 public class Constants {
 
+    public static final String CACHE_FILE_NAME = "slidetime";
+    public static final String ISNIGHT = "isNight";//是否是夜间模式
+
     public static class Url {
 
-        public static final String URL = "http://119.29.216.181:8080/book/";
+        public static final String URL = "http://192.168.0.112:8080/book/";
     }
 }

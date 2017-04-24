@@ -55,6 +55,7 @@ public class NetWork {
                     .addCallAdapterFactory(rxJavaCallAdapterFactory)
                     .build();
             netService = retrofit.create(NetService.class);
+
         }
 
         return netService;

@@ -350,6 +350,9 @@ public class ReadView extends View {
                 if (actiondownX >= mScreenWidth / 3 && actiondownX <= mScreenWidth * 2 / 3
                         && actiondownY >= mScreenHeight / 3 && actiondownY <= mScreenHeight * 2 / 3) {
                     center = true;
+                    if (mLoadPageListener != null) {
+                        mLoadPageListener.showReadBar();
+                    }
                 } else {
                     center = false;
                     if (actiondownX < mScreenWidth / 2) {// 从左翻
@@ -385,6 +388,11 @@ public class ReadView extends View {
          * @return
          */
         void nextPage(int chapter);
+
+        /**
+         * 显示阅读工具栏
+         */
+        void showReadBar();
 
     }
 

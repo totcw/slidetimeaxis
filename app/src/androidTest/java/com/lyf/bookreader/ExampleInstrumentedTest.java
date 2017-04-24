@@ -30,7 +30,6 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void testDb() throws Exception{
-        ChapterDao dao = MyApplication.getInstance().getDaoSession().getChapterDao();
-        dao.insert(new Chapter("gl","测试"));
+
     }
 }
