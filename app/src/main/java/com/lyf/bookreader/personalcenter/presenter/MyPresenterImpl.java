@@ -5,7 +5,7 @@ import com.lyf.bookreader.base.BasePresenter;
 import com.lyf.bookreader.personalcenter.contract.PersonalCenterContract;
 
 /**
-* Created by Administrator on 2016/12/08
+* Created b y Administrator on 2016/12/08
 */
 
 public class MyPresenterImpl extends BasePresenter<PersonalCenterContract.View,PersonalCenterContract.Model> implements PersonalCenterContract.Presenter{

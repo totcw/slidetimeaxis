@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/12/08
+ * Created by Admini str ator on 2016/12/08
  */
 
 public class BookStorePresenterImpl extends BasePresenter<BookStoreContract.View, BookStoreContract.Model> implements BookStoreContract.Presenter {

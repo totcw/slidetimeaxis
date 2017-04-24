@@ -8,7 +8,7 @@ import java.net.SocketTimeoutException;
 import rx.Subscriber;
 
 /**
- * 自定义的一个rxjava的oberser
+ * 自定义的一 个rxjava的oberser
  * Created by Administrator on 2016/8/4.
  */
 public abstract class MyObserver<T> extends Subscriber<BaseCallModel<T>> {

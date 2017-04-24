@@ -6,7 +6,7 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 
 /**
- * 代表每一章节的实体类
+ * 代表每 一章节的实体类
  * Created by Administrator on 2017/4/18.
  */
 

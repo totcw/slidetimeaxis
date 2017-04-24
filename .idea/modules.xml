@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SlideTime.iml" filepath="$PROJECT_DIR$/SlideTime.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/slidetimeaxis/slidetimeaxis.iml" filepath="$PROJECT_DIR$/slidetimeaxis/slidetimeaxis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/slidetimeaxis.iml" filepath="$PROJECT_DIR$/slidetimeaxis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/slidetimeaxis/slidetimeaxis-slidetimeaxis.iml" filepath="$PROJECT_DIR$/slidetimeaxis/slidetimeaxis-slidetimeaxis.iml" />
     </modules>
   </component>
 </project>

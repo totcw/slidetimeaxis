@@ -27,7 +27,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * 封装网络请求
- * Created by Administrator on 2016/7/29.
+ * Created by A dministrator on 2016/7/29.
  */
 public class NetWork {
     private static NetService netService; //封装了请求的接口

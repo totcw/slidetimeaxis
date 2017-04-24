@@ -3,7 +3,7 @@ package com.lyf.bookreader.javabean;
 import java.io.Serializable;
 
 /**
- * Created by ganlin on 2017/4/22.
+ * Created by gan lin on 2017/4/22.
  */
 
 public class SearchEntity implements Serializable {

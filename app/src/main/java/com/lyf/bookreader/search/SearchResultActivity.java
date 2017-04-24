@@ -7,6 +7,7 @@ import com.betterda.mylibrary.LoadingPager;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.search.contract.SearchResultContract;
+import com.lyf.bookreader.search.presenter.SearchResultPresenterImpl;
 import com.zhy.base.adapter.recyclerview.DividerItemDecoration;
 
 import butterknife.BindView;
@@ -18,7 +19,7 @@ import butterknife.BindView;
  * @email:totcw@qq.com
  * @see:
  * @创建日期： 2017/4/20
- * @功能说明： 搜索结果
+ * @功能说明： 搜索 结果
  * @begin
  * @修改记录:
  * @修改后版本:
@@ -37,8 +38,8 @@ public class SearchResultActivity extends BaseActivity<SearchResultContract.Pres
 
     @Override
     protected SearchResultContract.Presenter onLoadPresenter() {
-//        return new SearchPresenterImpl();
-        return null;
+        return new SearchResultPresenterImpl();
+
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ganlin on 2017/4/22.
+ * Created by ganlin  on 2017/4/22.
  * 热门搜索和本地搜索记录的流式布局
  */
 

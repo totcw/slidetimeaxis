@@ -1,7 +1,7 @@
 package com.lyf.bookreader.javabean;
 
 /**
- * 定义一个网络请求的回调基类
+ * 定义一个网络请 求的回调基类
  * Created by Administrator on 2016/7/27.
  */
 public class BaseCallModel<T> {

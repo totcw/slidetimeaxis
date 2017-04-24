@@ -6,20 +6,19 @@ import com.lyf.bookreader.search.contract.SearchContract;
 import java.util.List;
 
 /**
- * Created by ganlin on 2017/4/22.
+ * Created by lyf  on 2017/4/24.
  */
 
-public class SearchPresenterImpl extends BasePresenter<SearchContract.View, SearchContract.Model> implements SearchContract.Presenter {
+public class SearchPresenterImpl extends BasePresenter<SearchContract.View,SearchContract.Model> implements SearchContract.Presenter {
     @Override
-    public List getHotSearchList() {
+    public List<String> getHotSearchList() {
         return null;
     }
 
     @Override
-    public List getHistorySearchList() {
+    public List<String> getHistorySearchList() {
         return null;
     }
-
 
     @Override
     public void start() {

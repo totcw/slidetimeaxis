@@ -35,7 +35,7 @@ public class BookCasePresenterImpl extends BasePresenter<BookCaseContract.View,B
      * @param
      * @return
      * @author : lyf
-     * @email:totcw@qq.com
+     * @email:totcw @qq.com
      * @创建日期： 2017/4/20
      * @功能说明：获取书架的数据
      */

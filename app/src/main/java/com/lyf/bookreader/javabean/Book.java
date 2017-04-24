@@ -7,7 +7,7 @@ import org.greenrobot.greendao.annotation.Generated;
 /**
  * @author : lyf
  * @version : 1.0.0
- * @版权：版权所有 (厦门北特达软件有限公司) 2017
+ * @版权：版权所有 ( 厦门北特达软件有限公司) 2017
  * @email:totcw@qq.com
  * @see:
  * @创建日期： 2017/4/24

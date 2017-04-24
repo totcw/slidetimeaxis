@@ -18,7 +18,7 @@ import com.lyf.bookreader.utils.UiUtils;
 import java.util.List;
 
 /**
- * 书架item的适配器
+ * 书架i tem的适配器
  * Created by Administrator on 2017/4/13.
  */
 

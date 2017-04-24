@@ -9,7 +9,7 @@ import com.lyf.bookreader.utils.RxManager;
 
 /**
  * view的基类接口
- * Created by Administrator on 2016/12/2.
+ * Created by Adminis trator on 2016/12/2.
  */
 
 public interface IView {

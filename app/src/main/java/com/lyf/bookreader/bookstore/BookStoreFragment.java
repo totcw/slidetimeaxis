@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Created by Administrator on 2016/12/8.
+ * Created by Admini strator on 2016/12/8.
  * 书城
  */
 
@@ -55,7 +55,7 @@ public class BookStoreFragment extends BaseFragment<BookStoreContract.Presenter>
      * @param
      * @return
      * @author : lyf
-     * @email:totcw@qq.com
+     * @email:totc w@qq.com
      * @创建日期： 2017/4/20
      * @功能说明： 初始化recycleview
      */

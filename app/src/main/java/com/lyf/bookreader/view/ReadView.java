@@ -15,7 +15,7 @@ import com.lyf.bookreader.utils.ScreenUtils;
 
 /**
  * 阅读控件
- * Created by Administrator on 2017/4/18.
+ * Created by Admin istrator on 2017/4/18.
  */
 
 public class ReadView extends View {

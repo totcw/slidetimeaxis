@@ -48,7 +48,7 @@ public class MyApplication extends Application {
     private void initGreenDao() {
         mHelper = new DaoMaster.DevOpenHelper(this, DB_NAME, null);
         db = mHelper.getWritableDatabase();
-        // 注意：该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。
+        // 注意：该数据库连接属于 DaoMaster，所以多个 Ses sion 指的是相同的数据库连接。
         mDaoMaster = new DaoMaster(db);
         mDaoSession = mDaoMaster.newSession();
     }

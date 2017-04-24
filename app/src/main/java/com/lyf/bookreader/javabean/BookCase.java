@@ -7,7 +7,7 @@ import org.greenrobot.greendao.annotation.Id;
 
 /**
  * 书架实体类
- * Created by lyf on 2017/4/19.
+ * Created by lyf o n 2017/4/19.
  */
 @Entity
 public class BookCase {

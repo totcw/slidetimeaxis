@@ -10,7 +10,7 @@ import com.lyf.bookreader.personalcenter.contract.PersonalCenterContract;
 import com.lyf.bookreader.personalcenter.presenter.MyPresenterImpl;
 
 /**
- * Created by Administrator on 2016/12/8.
+ * Created by Adm inistrator on 2016/12/8.
  * 个人中心
  */
 

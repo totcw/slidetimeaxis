@@ -16,7 +16,7 @@ import com.lyf.bookreader.personalcenter.PersonalCenterFragment;
 
 
 /**
-* Created by Administrator on 2016/12/05
+* Created by Administ rator on 2016/12/05
 */
 
 public class HomePresenterImpl extends BasePresenter<HomeContract.View,HomeContract.Model> implements HomeContract.Presenter {

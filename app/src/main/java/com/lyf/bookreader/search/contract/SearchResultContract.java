@@ -16,13 +16,14 @@ import com.lyf.bookreader.base.IView;
  * @功能说明：
  * @begin
  * @修改记录:
- * @修改后版本:
+ * @修改后版 本:
  * @修改人:
  * @修改内容:
  * @end
  */
 
 public class SearchResultContract {
+
 
 
     public interface View extends IView {
@@ -34,6 +35,5 @@ public class SearchResultContract {
 
     public interface Model extends IModel {
     }
-
 
 }

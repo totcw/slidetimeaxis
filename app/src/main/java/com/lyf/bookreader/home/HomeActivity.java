@@ -15,7 +15,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * app的主体界面
+ * ap p的主体界面
  */
 
 public class HomeActivity extends BaseActivity<HomeContract.Presenter> implements HomeContract.View {

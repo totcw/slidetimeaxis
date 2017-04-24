@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 /**
  * 基类
- * Created by Administrator on 2016/12/2.
+ * Created by Administrato r on 2016/12/2.
  */
 
 public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivity implements IView {

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.Random;
 
 /**
- * Created by ganlin on 2017/4/22.
+ * Created by gan lin on 2017/4/22.
  * 热门词汇和本地搜索记录的item
  */
 

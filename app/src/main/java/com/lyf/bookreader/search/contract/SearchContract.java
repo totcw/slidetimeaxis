@@ -7,7 +7,7 @@ import com.lyf.bookreader.base.IView;
 import java.util.List;
 
 /**
- * Created by ganlin on 2017/4/22.
+ * Created by ganli n on 2017/4/22.
  */
 
 public class SearchContract {

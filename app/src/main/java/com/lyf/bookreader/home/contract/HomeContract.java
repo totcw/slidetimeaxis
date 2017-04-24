@@ -6,7 +6,7 @@ import com.lyf.bookreader.base.IPresenter;
 import com.lyf.bookreader.base.IView;
 
 /**
- * home的mvp接口管理
+ * h ome的mvp接口管理
  * Created by Administrator on 2016/12/5.
  */
 

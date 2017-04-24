@@ -1,7 +1,7 @@
 package com.lyf.bookreader.base;
 
 /**
- * 一个实现IPresenter的基类presenter 策略模式
+ * 一个实现IPresenter 的基类presenter 策略模式
  * Created by Administrator on 2016/12/2.
  */
 

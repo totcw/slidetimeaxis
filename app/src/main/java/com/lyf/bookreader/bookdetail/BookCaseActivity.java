@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.bookdetail.contract.BookDetailContract;
+import com.lyf.bookreader.bookdetail.presenter.BookDetailPresenterImpl;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,7 +19,7 @@ import butterknife.OnClick;
  * @email:totcw@qq.com
  * @see:
  * @创建日期： 2017/4/20
- * @功能说明： 书本详情界面
+ * @功能说明： 书本详情界  面
  * @begin
  * @修改记录:
  * @修改后版本:
@@ -45,8 +46,8 @@ public class BookCaseActivity extends BaseActivity<BookDetailContract.Presenter>
 
     @Override
     protected BookDetailContract.Presenter onLoadPresenter() {
-      //  return new BookDetailPresenterImpl();
-        return null;
+       return new BookDetailPresenterImpl();
+
     }
 
     @Override
@@ -55,15 +56,9 @@ public class BookCaseActivity extends BaseActivity<BookDetailContract.Presenter>
         setContentView(R.layout.activity_addbookcase);
     }
 
-    @Override
-    public void init() {
-        super.init();
-
-
-    }
 
     /**
-     * 设置书本信息
+     * 设置 书本信息
      */
     public void setBookInformation(String author,String bookname,String time,String finish) {
 
