@@ -65,5 +65,7 @@ dependencies {
     compile'org.greenrobot:greendao-generator:3.0.0'
 
     compile 'com.zhy:base-adapter:2.0.0'
+    /*xutils*/
+    compile 'org.xutils:xutils:3.3.32'
 }
 

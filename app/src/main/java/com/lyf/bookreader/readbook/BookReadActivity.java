@@ -57,7 +57,6 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
         super.initView();
         setContentView(R.layout.activity_bookread);
 
-//System.out.println("ff");
     }
 
 
@@ -91,6 +90,7 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
             case R.id.tv_bookread_setting:
                 break;
             case R.id.tv_bookread_download:
+                getPresenter().download();
                 break;
             case R.id.tv_bookread_directory:
                 break;

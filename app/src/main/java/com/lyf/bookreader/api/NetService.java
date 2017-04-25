@@ -48,18 +48,4 @@ public interface NetService {
     Observable<BaseCallModel<List<BookCase>>> getBookList(@Field("type") String type);
 
 
-    /**
-     * @param
-     * @return
-     * @author : lyf
-     * @email:totcw@qq.com
-     * @创建日期： 2017/4/20
-     * @功能说明： 根据书名和章节数 下载书籍
-     */
-
-    @GET("http://192.168.0.112:8080/book/{url}")
-    Observable<Book> getBook(@Path("url") String url);
-
-   /* @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
-    Observable<ChapterRead> getChapterRead(@Path("url") String url);*/
 }

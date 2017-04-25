@@ -24,6 +24,12 @@ public class BookReadContract {
 
     public interface Presenter extends IPresenter<View>{
         void changMode(boolean isNight);
+        /**
+         *@author : lyf
+         *@创建日期： 2017/4/25
+         *@功能说明： 缓存
+         */
+        void download();
     }
 
     public interface Model extends IModel{
