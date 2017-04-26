@@ -10,13 +10,17 @@ import com.betterda.mylibrary.ShapeLoadingDialog;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.api.MyObserver;
 import com.lyf.bookreader.api.NetWork;
+import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.base.BasePresenter;
+import com.lyf.bookreader.db.BookDao;
 import com.lyf.bookreader.javabean.BaseCallModel;
 import com.lyf.bookreader.javabean.Book;
 import com.lyf.bookreader.javabean.Chapter;
+import com.lyf.bookreader.readbook.DirectoryActivity;
 import com.lyf.bookreader.readbook.contract.BookReadContract;
 import com.lyf.bookreader.utils.CacheUtils;
 import com.lyf.bookreader.utils.Constants;
+import com.lyf.bookreader.utils.GsonParse;
 import com.lyf.bookreader.utils.UiUtils;
 import com.lyf.bookreader.view.ReadView;
 
@@ -24,24 +28,32 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.util.List;
+
 /**
  * 阅读界面
-* Created by lyf on 2017/04/22
-*/
+ * Created by lyf on 2017/04/22
+ */
 
-public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,BookReadContract.Model> implements BookReadContract.Presenter{
+public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, BookReadContract.Model> implements BookReadContract.Presenter {
     private String bookName; //书名
     private int chapter = 1;//当前阅读章节
     private int position = 0;//当前章节阅读位置
     private int total = 1;
     private ShapeLoadingDialog dialog; //加载对话框
+    private BookDao mBookDao;
+
     @Override
     public void start() {
         dialog = UiUtils.createDialog(getView().getmActivity(), "正在加载...");
+
+        mBookDao = MyApplication.getInstance().getDaoSession().getBookDao();
+
         getIntents();
+
         boolean isNight = CacheUtils.getBoolean(getView().getmActivity(), Constants.ISNIGHT, false);
         changMode(isNight);
-        getData(0);
+        loadCurrentChapter();
         setReadViewListener();
 
     }
@@ -51,12 +63,13 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
             @Override
             public void prePage(final int chapter) {
                 //TODO 根据书名和chapter 去数据库或者网络加载数据
-               getData(1);
+                BookReadPresenterImpl.this.chapter = chapter;
+                getData(1);
             }
 
             @Override
             public void nextPage(final int chapter) {
-              ;
+                BookReadPresenterImpl.this.chapter = chapter;
                 getData(2);
 
             }
@@ -73,7 +86,7 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
      * 日间/夜间模 式 切换
      */
     public void changMode(boolean isNight) {
-        CacheUtils.putBoolean(getView().getmActivity(),Constants.ISNIGHT,isNight);
+        CacheUtils.putBoolean(getView().getmActivity(), Constants.ISNIGHT, isNight);
         getView().getBookReadMode().setText(getView().getmActivity().getString(isNight ? R.string.book_read_mode_day_manual_setting
                 : R.string.book_read_mode_night_manual_setting));
         Drawable drawable = ContextCompat.getDrawable(getView().getmActivity(), isNight ? R.mipmap.ic_menu_mode_day_normal
@@ -82,8 +95,6 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
         getView().getBookReadMode().setCompoundDrawables(null, drawable, null, null);
 
     }
-
-
 
 
     /**
@@ -100,11 +111,20 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
             bookName = intent.getStringExtra("bookname");
             total = intent.getIntExtra("total", 1);
             chapter = intent.getIntExtra("chapter", 1);
+            chapter = intent.getIntExtra("chapter", 1);
             position = intent.getIntExtra("position", 0);
         }
     }
 
 
+    public void loadCurrentChapter() {
+        List<Book> bookList = mBookDao.loadAll();
+        if (bookList != null && bookList.size() > 0) {
+            UiUtils.showToast(getView().getmActivity(), "d");
+        }
+
+        getData(0);
+    }
 
     /**
      * @param
@@ -112,7 +132,7 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
      * @author : lyf
      * @email:totcw@qq.com
      * @创建日期： 2017/4/20
-     * @功能说明： 加载当前章节的内容
+     * @功能说明： 从服务器加载当前章节的内容
      */
     private void getData(final int type) {
         UiUtils.showDialog(getView().getmActivity(), dialog);
@@ -133,11 +153,11 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
                     }
 
 
-
                     @Override
                     public void onFail(String resultMsg) {
-
-                        Toast.makeText(getView().getmActivity(), "resultMsg:" + resultMsg, Toast.LENGTH_SHORT).show();
+                        UiUtils.showToast(getView().getmActivity(), resultMsg);
+                        getView().getReadView().setCurrentChapter(chapter - 1);
+                        getView().getReadView().setLodaing(false);
                         UiUtils.dissmissDialog(getView().getmActivity(), dialog);
                     }
 
@@ -150,6 +170,7 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
 
     /**
      * 获取下一章节的内容
+     *
      * @param data
      */
     private void getNextContent(Chapter data) {
@@ -166,6 +187,7 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
 
     /**
      * 获取前一章节的内容
+     *
      * @param data
      */
     private void getPreContent(Chapter data) {
@@ -184,6 +206,7 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
 
     /**
      * 加载当前章节的内容
+     *
      * @param data
      */
     private void getCurContent(Chapter data) {
@@ -198,16 +221,16 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
 
     @Override
     public void download() {
-        UiUtils.showToast(getView().getmActivity(),"缓存");
-        RequestParams params=new RequestParams("http://192.168.0.112:8080/book/BookDownload");
-        params.addBodyParameter("bookname",bookName);
-        params.addBodyParameter("page",chapter+"");
-        params.addBodyParameter("total",total+"");
+        UiUtils.showToast(getView().getmActivity(), "缓存");
+        RequestParams params = new RequestParams("http://192.168.0.112:8080/book/BookDownload");
+        params.addBodyParameter("bookname", bookName);
+        params.addBodyParameter("page", chapter + "");
+        params.addBodyParameter("total", total + "");
         //设置断点续传
         params.setAutoResume(true);
         params.setMaxRetryCount(0);
-        params.setConnectTimeout(1000*3600*10);//设置为10个小时
-        Callback.Cancelable cancelable = x.http().get(params, new Callback.CacheCallback<String>() {
+        params.setConnectTimeout(1000 * 3600 * 10);//设置为10个小时
+        Callback.Cancelable cancelable = x.http().post(params, new Callback.CacheCallback<String>() {
             @Override
             public boolean onCache(String result) {
                 return false;
@@ -215,13 +238,23 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
 
             @Override
             public void onSuccess(String result) {
-               // Toast.makeText(getView().getmActivity(),result,0).show();
-                System.out.println(result);
+                List<Book> bookList = GsonParse.getListBook(result);
+                if (bookList != null) {
+                    for (Book book : bookList) {
+                        if (book != null) {
+                            long insert = mBookDao.insert(book);
+
+                        }
+                    }
+                }
+
+
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
 
+                UiUtils.showToast(getView().getmActivity(), ex.toString());
             }
 
             @Override
@@ -234,6 +267,14 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View,B
 
             }
         });
+
+    }
+
+    @Override
+    public void getDirectory() {
+        Intent intent = new Intent(getView().getmActivity(), DirectoryActivity.class);
+        intent.putExtra("bookname", bookName);
+        UiUtils.startIntent(getView().getmActivity(), intent);
     }
 
     @Override

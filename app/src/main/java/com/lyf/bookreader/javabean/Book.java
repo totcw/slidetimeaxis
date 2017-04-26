@@ -22,7 +22,7 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class Book {
     @Id(autoincrement = true)
-    private long id;
+    private Long id;
     private String bookname; //书名
     private int  page ; //代表每一章的章节数字
     private String  chaptername ;//章节名
@@ -38,22 +38,14 @@ public class Book {
     public Book() {
     }
 
-    @Generated(hash = 909938122)
-    public Book(long id, String bookname, int page, String chaptername,
+    @Generated(hash = 1495440271)
+    public Book(Long id, String bookname, int page, String chaptername,
             String content) {
         this.id = id;
         this.bookname = bookname;
         this.page = page;
         this.chaptername = chaptername;
         this.content = content;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getBookname() {
@@ -97,5 +89,13 @@ public class Book {
                 ", chaptername='" + chaptername + '\'' +
                 ", content='" + content + '\'' +
                 '}';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

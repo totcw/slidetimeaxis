@@ -48,4 +48,17 @@ public interface NetService {
     Observable<BaseCallModel<List<BookCase>>> getBookList(@Field("type") String type);
 
 
+    /**
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/4/20
+     * @功能说明： 获取书的目录
+     */
+    @FormUrlEncoded
+    @POST("BookDirectory")
+    Observable<BaseCallModel<List<Book>>> getBookDirectory(@Field("bookname") String bookname);
+
+
 }

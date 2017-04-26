@@ -170,13 +170,15 @@ public class ReadView extends View {
                         mLoadPageListener.nextPage(currentChapter);
                     } else {
                         //如果加载到的内容为空,就表示最后一章或者失败
-                        Toast.makeText(mContext,"mLoadpageListerner=null",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "mLoadpageListerner=null", Toast.LENGTH_SHORT).show();
                     }
                 }
 
             }
 
 
+        } else {
+            Toast.makeText(mContext,"str=null",Toast.LENGTH_SHORT).show();
         }
 
     }

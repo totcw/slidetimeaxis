@@ -1,8 +1,8 @@
 package com.lyf.bookreader.api;
 
 
-import com.lyf.bookreader.javabean.BaseCallModel;
 import com.lyf.bookreader.application.MyApplication;
+import com.lyf.bookreader.javabean.BaseCallModel;
 import com.lyf.bookreader.utils.Constants;
 import com.lyf.bookreader.utils.NetworkUtils;
 
@@ -32,10 +32,9 @@ import rx.schedulers.Schedulers;
  */
 public class NetWork {
     private static NetService netService; //封装了请求的接口
-    private static OkHttpClient okHttpClient = new OkHttpClient();
+
     private static Converter.Factory gsonConverterFactory = GsonConverterFactory.create();
     private static CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
-
 
     /**
      * 通过retrofit返回接口的实现类
@@ -48,10 +47,7 @@ public class NetWork {
         if (netService == null) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(Constants.Url.URL)
-                    .client(okHttpClient.newBuilder()
-                            .addInterceptor(interceptor)//添加拦截器
-                            .cache(new Cache(new File(MyApplication.getInstance().getCacheDir(), "responses"), 10 * 1024 * 1024)) //创建一个10M的缓存目录
-                            .build())
+                    .client(getBuilder(60).build())
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(rxJavaCallAdapterFactory)
                     .build();
@@ -61,6 +57,7 @@ public class NetWork {
 
         return netService;
     }
+
 
     /**
      * 定义拦截器
@@ -124,5 +121,20 @@ public class NetWork {
             }
             subscription = null;
         }
+    }
+
+    public static  OkHttpClient.Builder getBuilder(long timeout) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        builder.addInterceptor(interceptor);
+        //设置缓存
+        builder.cache(new Cache(new File(MyApplication.getInstance().getCacheDir(), "responses"), 10 * 1024 * 1024))
+        ;
+        //设置超时
+        builder.connectTimeout(timeout, TimeUnit.SECONDS);
+        builder.readTimeout(timeout, TimeUnit.SECONDS);
+        builder.writeTimeout(timeout, TimeUnit.SECONDS);
+
+        return builder;
     }
 }

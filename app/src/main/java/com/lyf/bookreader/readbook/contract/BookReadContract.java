@@ -30,6 +30,15 @@ public class BookReadContract {
          *@功能说明： 缓存
          */
         void download();
+        /**
+         *@author : lyf
+         *@email:totcw@qq.com
+         *@创建日期： 2017/4/26
+         *@功能说明：获取目录
+         *@param
+         *@return
+         */
+        void getDirectory();
     }
 
     public interface Model extends IModel{

@@ -1,7 +1,6 @@
 package com.lyf.bookreader.readbook;
 
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,7 +14,6 @@ import com.lyf.bookreader.utils.Constants;
 import com.lyf.bookreader.view.ReadView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -82,6 +80,7 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
             case R.id.iv_bookread_back:
                 break;
             case R.id.tv_bookread_source:
+
                 break;
             case R.id.tv_bookread_mode://模式选择
                 boolean isNight = !CacheUtils.getBoolean(getmActivity(), Constants.ISNIGHT, false);
@@ -92,7 +91,8 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
             case R.id.tv_bookread_download:
                 getPresenter().download();
                 break;
-            case R.id.tv_bookread_directory:
+            case R.id.tv_bookread_directory://获取目录
+                getPresenter().getDirectory();
                 break;
         }
     }
