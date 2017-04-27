@@ -23,6 +23,7 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void createAllTables(Database db, boolean ifNotExists) {
         BookDao.createTable(db, ifNotExists);
         BookCaseDao.createTable(db, ifNotExists);
+        ChapterDao.createTable(db, ifNotExists);
         RecentlyReadDao.createTable(db, ifNotExists);
     }
 
@@ -30,6 +31,7 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void dropAllTables(Database db, boolean ifExists) {
         BookDao.dropTable(db, ifExists);
         BookCaseDao.dropTable(db, ifExists);
+        ChapterDao.dropTable(db, ifExists);
         RecentlyReadDao.dropTable(db, ifExists);
     }
 
@@ -51,6 +53,7 @@ public class DaoMaster extends AbstractDaoMaster {
         super(db, SCHEMA_VERSION);
         registerDaoClass(BookDao.class);
         registerDaoClass(BookCaseDao.class);
+        registerDaoClass(ChapterDao.class);
         registerDaoClass(RecentlyReadDao.class);
     }
 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
+    <TextView
+        android:padding="10dp"
+        android:textSize="22sp"
+        android:textColor="#00b6ec"
+        android:id="@+id/id_tv_activity_search_localHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="本地记录" />
+
+    <com.lyf.bookreader.view.SearchKeyLayout
+        android:id="@+id/id_skl_activity_search_localHistoryContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.lyf.bookreader.view.SearchKeyLayout>
+
+    <TextView
+        android:padding="10dp"
+        android:textSize="22sp"
+        android:textColor="#00b6ec"
+        android:id="@+id/id_tv_activity_search_hotSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="热门词汇" />
+
+    <com.lyf.bookreader.view.SearchKeyLayout
+        android:id="@+id/id_skl_activity_search_hotSearchContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.lyf.bookreader.view.SearchKeyLayout>
+</LinearLayout>

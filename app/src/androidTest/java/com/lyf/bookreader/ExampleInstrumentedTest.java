@@ -4,9 +4,6 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.lyf.bookreader.application.MyApplication;
-import com.lyf.bookreader.db.ChapterDao;
-import com.lyf.bookreader.javabean.Chapter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

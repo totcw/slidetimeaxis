@@ -3,6 +3,7 @@ package com.lyf.bookreader.search.presenter;
 import com.lyf.bookreader.base.BasePresenter;
 import com.lyf.bookreader.search.contract.SearchContract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +18,20 @@ public class SearchPresenterImpl extends BasePresenter<SearchContract.View,Searc
 
     @Override
     public List<String> getHistorySearchList() {
-        return null;
+        List<String> list = new ArrayList();
+        list.add("武侠");
+        list.add("修仙");
+        list.add("诺克塞斯之手");
+        list.add("德玛西亚之力");
+        list.add("影流之主");
+        list.add("暗夜猎手");
+        list.add("探险家");
+        list.add("武器大师");
+        list.add("暗影之权");
+        list.add("人民的名义");
+        list.add("西湖公园");
+        mView.showHistorySearchList(list);
+        return list;
     }
 
     @Override

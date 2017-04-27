@@ -4,21 +4,16 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.shapes.RectShape;
-import android.graphics.drawable.shapes.Shape;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
-
-import java.util.Random;
 
 /**
  * Created by gan lin on 2017/4/22.
  * 热门词汇和本地搜索记录的item
  */
 
-public class SearchKeyView extends TextView {
+public class SearchKeyView extends AppCompatTextView {
     public SearchKeyView(Context context) {
         super(context);
     }
@@ -55,4 +50,9 @@ public class SearchKeyView extends TextView {
             setBackgroundDrawable(stateListDrawable);
         }
     }
+
+    public void init(String history) {
+        setText(history);
+    }
+
 }
