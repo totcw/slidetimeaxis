@@ -1,16 +1,26 @@
 package com.lyf.bookreader.javabean;
 
-
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 
 /**
- * 书架实体类  最近阅读
- * Created by lyf o n 2017/4/19.
+ * @author : lyf
+ * @version : 1.0.0
+ * @版权：版权所有 (厦门北特达软件有限公司) 2017
+ * @email:totcw@qq.com
+ * @see:
+ * @创建日期： 2017/4/27
+ * @功能说明： 最近阅读的一本书
+ * @begin
+ * @修改记录:
+ * @修改后版本:
+ * @修改人:
+ * @修改内容:
+ * @end
  */
 @Entity
-public class BookCase {
+public class RecentlyRead {
     @Id(autoincrement = true)
     private Long id;
     private String bookname;//书名
@@ -23,38 +33,29 @@ public class BookCase {
     private int mEndPos; //当前阅读的章节结束位置
     private int total;//总的章节数
     private String type;//书的类型
-
-   @Generated(hash = 680762424)
-public BookCase(Long id, String bookname, String author, String time, String finish, String img, int curPage, int mBeginPos, int mEndPos, int total, String type) {
-    this.id = id;
-    this.bookname = bookname;
-    this.author = author;
-    this.time = time;
-    this.finish = finish;
-    this.img = img;
-    this.curPage = curPage;
-    this.mBeginPos = mBeginPos;
-    this.mEndPos = mEndPos;
-    this.total = total;
-    this.type = type;
-}
-
-
-
-    @Generated(hash = 563409161)
-    public BookCase() {
+    @Generated(hash = 130781463)
+    public RecentlyRead(Long id, String bookname, String author, String time, String finish, String img, int curPage, int mBeginPos, int mEndPos, int total, String type) {
+        this.id = id;
+        this.bookname = bookname;
+        this.author = author;
+        this.time = time;
+        this.finish = finish;
+        this.img = img;
+        this.curPage = curPage;
+        this.mBeginPos = mBeginPos;
+        this.mEndPos = mEndPos;
+        this.total = total;
+        this.type = type;
     }
-
+    @Generated(hash = 642674033)
+    public RecentlyRead() {
+    }
     public Long getId() {
         return id;
     }
 
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getBookname() {
@@ -87,6 +88,14 @@ public BookCase(Long id, String bookname, String author, String time, String fin
 
     public void setFinish(String finish) {
         this.finish = finish;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public int getCurPage() {
@@ -128,30 +137,32 @@ public BookCase(Long id, String bookname, String author, String time, String fin
     public void setType(String type) {
         this.type = type;
     }
-    public void setId(Long id) {
-        this.id = id;
+
+    @Override
+    public String toString() {
+        return "RecentlyRead{" +
+                "id=" + id +
+                ", bookname='" + bookname + '\'' +
+                ", author='" + author + '\'' +
+                ", time='" + time + '\'' +
+                ", finish='" + finish + '\'' +
+                ", img='" + img + '\'' +
+                ", curPage=" + curPage +
+                ", mBeginPos=" + mBeginPos +
+                ", mEndPos=" + mEndPos +
+                ", total=" + total +
+                ", type='" + type + '\'' +
+                '}';
     }
-
-
-
     public int getMEndPos() {
         return this.mEndPos;
     }
-
-
-
     public void setMEndPos(int mEndPos) {
         this.mEndPos = mEndPos;
     }
-
-
-
     public int getMBeginPos() {
         return this.mBeginPos;
     }
-
-
-
     public void setMBeginPos(int mBeginPos) {
         this.mBeginPos = mBeginPos;
     }

@@ -40,6 +40,10 @@
             android:name=".readbook.DirectoryActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".search.SearchActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
     </application>
 

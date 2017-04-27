@@ -19,22 +19,28 @@ import com.zhy.base.adapter.recyclerview.CommonAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+import rx.functions.Action1;
+
 /**
+ * 搜索结果
  * Created by lyf o n 2017/4/24.
  */
 
-public class SearchResultPresenterImpl extends BasePresenter<SearchResultContract.View,SearchResultContract.Model> implements  SearchResultContract.Presenter {
+public class SearchResultPresenterImpl extends BasePresenter<SearchResultContract.View, SearchResultContract.Model> implements SearchResultContract.Presenter {
 
 
     private List<BookCase> mBookCaseList;
     private CommonAdapter<BookCase> mAdapter;
     private String type; //书的类型
+
     @Override
     public void start() {
         type = getView().getmActivity().getIntent().getStringExtra("type");
         mBookCaseList = new ArrayList<>();
         getData();
     }
+
     @Override
     public RecyclerView.Adapter getAdapter() {
         mAdapter = new CommonAdapter<BookCase>(getView().getmActivity(), R.layout.item_rv_searchresult, mBookCaseList) {
@@ -75,22 +81,14 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
      */
     private void getData() {
         getView().getLoadPager().setLoadVisable();
-
         type = "全本" + type + "小说";
         getView().getRxManager().add(NetWork.getNetService().getBookList(type)
                 .compose(NetWork.handleResult(new BaseCallModel<List<BookCase>>()))
                 .subscribe(new MyObserver<List<BookCase>>() {
                     @Override
                     protected void onSuccess(List<BookCase> data, String resultMsg) {
-                        if (data != null && data.size() > 0) {
-                            for (BookCase bookcase : data) {
-                                //默认都设置为已完结
-                                bookcase.setFinish("已完结");
-                                mBookCaseList.add(bookcase);
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            //隐藏加载动画
-                            getView().getLoadPager().hide();
+                        if (data != null&&data.size()>0) {
+                            parserResult(data);
                         } else {
                             //隐藏加载动画为空
                             getView().getLoadPager().setEmptyVisable();
@@ -107,6 +105,34 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
 
                     }
                 }));
+    }
+
+
+    private void parserResult(List<BookCase> data) {
+        getView().getRxManager().add(
+                Observable.from(data)
+                        .subscribe(new Action1<BookCase>() {
+                            @Override
+                            public void call(BookCase bookCase) {
+                                if (bookCase != null) {
+                                    if ("yiwanjie".equals(bookCase.getFinish())) {
+                                        bookCase.setFinish("已完结");
+                                    } else {
+                                        bookCase.setFinish("连载中");
+                                    }
+                                    if (mBookCaseList != null) {
+                                        mBookCaseList.add(bookCase);
+                                    }
+                                    if (mAdapter != null) {
+                                        mAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                                //隐藏加载动画
+                                getView().getLoadPager().hide();
+                            }
+                        })
+        );
+
     }
 
     @Override

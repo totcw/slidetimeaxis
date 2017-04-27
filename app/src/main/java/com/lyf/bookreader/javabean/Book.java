@@ -3,6 +3,7 @@ package com.lyf.bookreader.javabean;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Property;
 
 /**
  * @author : lyf
@@ -23,7 +24,9 @@ import org.greenrobot.greendao.annotation.Generated;
 public class Book {
     @Id(autoincrement = true)
     private Long id;
+    @Property
     private String bookname; //书名
+    @Property
     private int  page ; //代表每一章的章节数字
     private String  chaptername ;//章节名
     private String content ;//每一章的内容
@@ -98,4 +101,6 @@ public class Book {
     public void setId(Long id) {
         this.id = id;
     }
+
+
 }

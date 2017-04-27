@@ -11,6 +11,8 @@ import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseFragment;
 import com.lyf.bookreader.bookstore.contract.BookStoreContract;
 import com.lyf.bookreader.bookstore.presenter.BookStorePresenterImpl;
+import com.lyf.bookreader.search.SearchActivity;
+import com.lyf.bookreader.utils.UiUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -69,6 +71,6 @@ public class BookStoreFragment extends BaseFragment<BookStoreContract.Presenter>
 
     @OnClick(R.id.linear_find_searche)
     public void onClick() {
-        Toast.makeText(getmActivity(), "此功能暂未开通", Toast.LENGTH_SHORT).show();
+        UiUtils.startIntent(getmActivity(), SearchActivity.class);
     }
 }

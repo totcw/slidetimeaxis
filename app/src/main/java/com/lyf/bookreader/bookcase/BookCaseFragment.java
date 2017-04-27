@@ -15,6 +15,7 @@ import com.lyf.bookreader.base.BaseFragment;
 import com.lyf.bookreader.javabean.BookCase;
 import com.lyf.bookreader.bookcase.contract.BookCaseContract;
 import com.lyf.bookreader.bookcase.presenter.BookCasePresenterImpl;
+import com.lyf.bookreader.javabean.RecentlyRead;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,17 +42,17 @@ import butterknife.OnClick;
 public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> implements BookCaseContract.View {
 
     @BindView(R.id.iv_shouye_bookimage)
-    ImageView ivShouyeBookimage;
+    ImageView mIvShouyeBookimage;
     @BindView(R.id.iv_shouye_bookname)
-    TextView ivShouyeBookname;
+    TextView mTvShouyeBookname;
     @BindView(R.id.iv_shouye_author)
-    TextView ivShouyeAuthor;
+    TextView mTvShouyeAuthor;
     @BindView(R.id.iv_shouye_time)
-    TextView ivShouyeTime;
+    TextView mTvShouyeTime;
     @BindView(R.id.iv_shouye_status)
-    TextView ivShouyeStatus;
+    TextView mTvShouyeStatus;
     @BindView(R.id.iv_shouye_read)
-    TextView ivShouyeRead;
+    TextView mTvShouyeRead;
     @BindView(R.id.rv_shouye)
     RecyclerView mBookCaseRecycleview;
 
@@ -70,10 +71,7 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
     @Override
     public void initData() {
         super.initData();
-
-
         initRecycleview();
-
         getPresenter().getData();
     }
 
@@ -89,7 +87,11 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
         }
     }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPresenter().onStart();
+    }
 
     private void initRecycleview() {
         mBookCaseRecycleview.setLayoutManager(new GridLayoutManager(getmActivity(), 3));
@@ -108,15 +110,28 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_shouye_bookimage: //最近看的书籍
-                System.out.println("ff");
+
                 break;
             case R.id.iv_shouye_read: //继续阅读
-
-                Toast.makeText(getmActivity(),"此功能暂未开通",Toast.LENGTH_SHORT).show();
+                getPresenter().continueRead();
                 break;
         }
     }
 
 
-
+    @Override
+    public void setInformation(RecentlyRead recentlyRead) {
+        if (mTvShouyeAuthor != null) {
+            mTvShouyeAuthor.setText(recentlyRead.getAuthor());
+        }
+        if (mTvShouyeBookname != null) {
+            mTvShouyeBookname.setText(recentlyRead.getBookname());
+        }
+        if (mTvShouyeStatus != null) {
+            mTvShouyeStatus.setText(recentlyRead.getFinish());
+        }
+        if (mTvShouyeTime != null) {
+            mTvShouyeTime.setText("最近更新:"+recentlyRead.getTime());
+        }
+    }
 }

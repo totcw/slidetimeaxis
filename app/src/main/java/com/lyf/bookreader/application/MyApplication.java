@@ -41,7 +41,7 @@ public class MyApplication extends Application {
         AppUtils.init(this);
 
         //捕获异常
-         CrashHandler.getInstance().init(getApplicationContext());
+       //  CrashHandler.getInstance().init(getApplicationContext());
         //初始化GreenDao
         initGreenDao();
         //初始化xutils3

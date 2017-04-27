@@ -71,6 +71,7 @@ public class DirectoryActivity extends BaseActivity<DirectoryContract.Presenter>
             case R.id.tv_directory_bookname:
                 break;
             case R.id.tv_directory_close:
+                back();
                 break;
         }
     }

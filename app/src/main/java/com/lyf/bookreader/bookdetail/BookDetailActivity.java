@@ -47,7 +47,7 @@ public class BookDetailActivity extends BaseActivity<BookDetailContract.Presente
     @Override
     protected BookDetailContract.Presenter onLoadPresenter() {
        return new BookDetailPresenterImpl();
-//System.out.println("ff");
+
     }
 
     @Override

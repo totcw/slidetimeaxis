@@ -8,11 +8,18 @@ import com.lyf.bookreader.javabean.BookCase;
 
 import java.util.List;
 
-/**
-* Created by      lyf on 2017/04/22
-*/
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
-public class BookDetailPresenterImpl extends BasePresenter<BookDetailContract.View,BookDetailContract.Model> implements BookDetailContract.Presenter{
+/**
+ * Created by      lyf on 2017/04/22
+ */
+
+public class BookDetailPresenterImpl extends BasePresenter<BookDetailContract.View, BookDetailContract.Model> implements BookDetailContract.Presenter {
     private String bookname;//书 名
     private String author;//作者
     private String time;//时 间
@@ -22,26 +29,57 @@ public class BookDetailPresenterImpl extends BasePresenter<BookDetailContract.Vi
     private int total; //书本总的章节数
 
     private BookCaseDao mBookCaseDao;//
+
     @Override
     public void start() {
         getIntentData();
-        getView().setBookInformation(author,bookname,time,finish);
+        getView().setBookInformation(author, bookname, time, finish);
         mBookCaseDao = MyApplication.getInstance().getDaoSession().getBookCaseDao();
-        //查询数据库判断改书是否加入到了书架中
-        List<BookCase> bookCases = mBookCaseDao.queryBuilder().where(BookCaseDao.Properties.Bookname.eq(bookname)).list();
-        if (bookCases != null && bookCases.size() > 0) {
-            BookCase bookCase = bookCases.get(0);
-            if (bookCase != null && bookCase.getBookname() != null) {
+        quereIsBook();
 
-                getView().setAddBookcaseStatus(false);
-            } else {
-                getView().setAddBookcaseStatus(true);
-            }
-        } else {
-            getView().setAddBookcaseStatus(true);
-        }
-}
+    }
 
+    /**
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/4/27
+     * @功能说明：查询是否加入过书架
+     */
+    public void quereIsBook() {
+
+        getView().getRxManager().add(
+                Observable.create(new Observable.OnSubscribe<List<BookCase>>() {
+                    @Override
+                    public void call(Subscriber<? super List<BookCase>> subscriber) {
+                        subscriber.onNext(mBookCaseDao.queryBuilder().where(BookCaseDao.Properties.Bookname.eq(bookname)).list());
+                    }
+                })
+                .map(new Func1<List<BookCase>, BookCase>() {
+                    @Override
+                    public BookCase call(List<BookCase> bookCases) {
+                        if (bookCases != null && bookCases.size() > 0) {
+                            return bookCases.get(0);
+                        }
+                         return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<BookCase>() {
+                    @Override
+                    public void call(BookCase bookCase) {
+                        if (bookCase != null && bookCase.getBookname() != null) {
+
+                            getView().setAddBookcaseStatus(false);
+                        } else {
+                            getView().setAddBookcaseStatus(true);
+                        }
+                    }
+                })
+        );
+    }
 
 
     /**
@@ -53,8 +91,9 @@ public class BookDetailPresenterImpl extends BasePresenter<BookDetailContract.Vi
         time = getView().getmActivity().getIntent().getStringExtra("time");
         finish = getView().getmActivity().getIntent().getStringExtra("finish");
         img = getView().getmActivity().getIntent().getStringExtra("img");
-        total = getView().getmActivity().getIntent().getIntExtra("total", 0);
+        total = getView().getmActivity().getIntent().getIntExtra("total", 1);
         type = getView().getmActivity().getIntent().getStringExtra("type");
+
     }
 
     @Override
@@ -64,19 +103,36 @@ public class BookDetailPresenterImpl extends BasePresenter<BookDetailContract.Vi
 
     @Override
     public void addToBookcase() {
-        BookCase bookCase = new BookCase();
+        final BookCase bookCase = new BookCase();
         bookCase.setBookname(bookname);
         bookCase.setAuthor(author);
         bookCase.setFinish(finish);
         bookCase.setTime(time);
         bookCase.setImg(img);
         bookCase.setCurPage(1);
-        bookCase.setPosition(0);
+        bookCase.setEndPos(0);
+        bookCase.setMEndPos(0);
         bookCase.setTotal(total);
         bookCase.setType(type);
-        if (mBookCaseDao.insert(bookCase) > 0) {
-            getView().setAddBookcaseStatus(false);
-        }
-        System.out.println("ff");
+        getView().getRxManager().add(
+                Observable.create(new Observable.OnSubscribe<Long>() {
+                    @Override
+                    public void call(Subscriber<? super Long> subscriber) {
+                        subscriber.onNext(mBookCaseDao.insert(bookCase));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Long>() {
+                    @Override
+                    public void call(Long aLong) {
+                        if (aLong > 0) {
+                            getView().setAddBookcaseStatus(false);
+                        }
+                    }
+                })
+        );
+
+
     }
 }

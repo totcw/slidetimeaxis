@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:gravity="center_vertical"
-
+              android:id="@+id/linear_item_directory"
               android:layout_height="48dp">
 
                 <TextView

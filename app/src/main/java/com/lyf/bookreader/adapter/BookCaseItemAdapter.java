@@ -10,8 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lyf.bookreader.R;
+import com.lyf.bookreader.application.MyApplication;
+import com.lyf.bookreader.db.RecentlyReadDao;
 import com.lyf.bookreader.home.HomeActivity;
 import com.lyf.bookreader.javabean.BookCase;
+import com.lyf.bookreader.javabean.RecentlyRead;
 import com.lyf.bookreader.readbook.BookReadActivity;
 import com.lyf.bookreader.utils.UiUtils;
 
@@ -29,12 +32,13 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
 
     private Activity mContext;
     private List<BookCase> data;
+    private RecentlyReadDao mRecentlyReadDao;
 
     public BookCaseItemAdapter(Activity mContext, List<BookCase> data ) {
 
         this.data = data;
         this.mContext = mContext;
-
+        mRecentlyReadDao = MyApplication.getInstance().getDaoSession().getRecentlyReadDao();
     }
 
 
@@ -64,23 +68,49 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
         } else if (holder instanceof MainViewHolder) {
             if (data != null && position < data.size() && data.get(position) != null) {
                 final BookCase bookCase = data.get(position);
-                ((MainViewHolder) holder).tv_name.setText(bookCase.getBookname());
-                //进入书本阅读
-                ((MainViewHolder) holder).mLinearBookcase.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(mContext, BookReadActivity.class);
-                        intent.putExtra("bookname", bookCase.getBookname());
-                        intent.putExtra("chapter", bookCase.getCurPage());
-                        intent.putExtra("position", bookCase.getPosition());
-                        intent.putExtra("total", bookCase.getTotal());
-                        UiUtils.startIntent(mContext,intent);
+                if (bookCase != null) {
 
-                    }
-                });
+                    ((MainViewHolder) holder).tv_name.setText(bookCase.getBookname());
+                    //进入书本阅读
+                    ((MainViewHolder) holder).mLinearBookcase.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, BookReadActivity.class);
+                            intent.putExtra("bookname", bookCase.getBookname());
+                            intent.putExtra("total", bookCase.getTotal());
+                            UiUtils.startIntent(mContext, intent);
+
+
+                            List<RecentlyRead> recentlyReads = mRecentlyReadDao.loadAll();
+                            if (recentlyReads != null && recentlyReads.size() > 0) {
+                                RecentlyRead recentlyRead = recentlyReads.get(0);
+                                setData(recentlyRead, bookCase);
+                                mRecentlyReadDao.update(recentlyRead);
+                            } else {
+                                RecentlyRead recentlyRead = new RecentlyRead();
+                                setData(recentlyRead,bookCase);
+                                mRecentlyReadDao.insert(recentlyRead);
+                            }
+
+                        }
+                    });
+                }
             }
 
         }
+    }
+
+    private void setData(RecentlyRead recentlyRead, BookCase bookCase) {
+        recentlyRead.setBookname(bookCase.getBookname());
+        recentlyRead.setBeginPos(bookCase.getBeginPos());
+        recentlyRead.setEndPos(bookCase.getEndPos());
+        recentlyRead.setAuthor(bookCase.getAuthor());
+        recentlyRead.setCurPage(bookCase.getCurPage());
+        recentlyRead.setFinish(bookCase.getFinish());
+        recentlyRead.setImg(bookCase.getImg());
+        recentlyRead.setType(bookCase.getType());
+        recentlyRead.setTime(bookCase.getTime());
+        recentlyRead.setTotal(bookCase.getTotal());
     }
 
     @Override

@@ -212,7 +212,7 @@ public class ReadView extends View {
 
     private void drawPrePageBitmap(Canvas canvas) {
 
-        if (mBeginPos > 0) {
+        if (mBeginPos >0) {
             mBeginPos = mEndPos = mBeginPos - (mPageLineCount * mLineCount);
             if (mBeginPos < 0) {
                 mBeginPos = mEndPos = 0;
@@ -295,6 +295,7 @@ public class ReadView extends View {
         this.title = title;
         this.total = total;
         this.currentChapter = chapter;
+
         //画文字
         if (drawContent(mCurrentPageCanvas, str)) {
             postInvalidate();
@@ -411,5 +412,21 @@ public class ReadView extends View {
      */
     public void setLodaing(boolean lodaing) {
         isLodaing = lodaing;
+    }
+
+    public int getEndPos() {
+        return mEndPos;
+    }
+
+    public void setEndPos(int endPos) {
+        mEndPos = endPos;
+    }
+
+    public int getBeginPos() {
+        return mBeginPos;
+    }
+
+    public void setBeginPos(int beginPos) {
+        mBeginPos = beginPos;
     }
 }

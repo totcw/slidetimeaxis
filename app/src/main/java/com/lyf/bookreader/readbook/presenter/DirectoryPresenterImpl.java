@@ -1,6 +1,8 @@
 package com.lyf.bookreader.readbook.presenter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.api.MyObserver;
@@ -36,9 +38,18 @@ public class DirectoryPresenterImpl extends BasePresenter<DirectoryContract.View
     public RecyclerView.Adapter getAdapter() {
         mAdapter = new CommonAdapter<Book>(getView().getmActivity(), R.layout.item_rv_directory,mDirectoryList) {
             @Override
-            public void convert(ViewHolder holder, Book book) {
+            public void convert(ViewHolder holder, final Book book) {
                 if (book != null&&holder!=null) {
                     holder.setText(R.id.tv_item_directory, book.getChaptername());
+                    holder.setOnClickListener(R.id.linear_item_directory, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent();
+                            intent.putExtra("page", book.getPage());
+                            getView().getmActivity().setResult(0,intent);
+                            getView().getmActivity().finish();
+                        }
+                    });
                 }
             }
         };

@@ -1,6 +1,7 @@
 package com.lyf.bookreader.readbook;
 
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -77,10 +78,11 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
     @OnClick({R.id.iv_bookread_back, R.id.tv_bookread_source, R.id.tv_bookread_mode, R.id.tv_bookread_setting, R.id.tv_bookread_download, R.id.tv_bookread_directory})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_bookread_back:
+            case R.id.iv_bookread_back: //退出界面,保存进度
+                getPresenter().saveProgress();
+                finish();
                 break;
             case R.id.tv_bookread_source:
-
                 break;
             case R.id.tv_bookread_mode://模式选择
                 boolean isNight = !CacheUtils.getBoolean(getmActivity(), Constants.ISNIGHT, false);
@@ -88,7 +90,7 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
                 break;
             case R.id.tv_bookread_setting:
                 break;
-            case R.id.tv_bookread_download:
+            case R.id.tv_bookread_download://缓存
                 getPresenter().download();
                 break;
             case R.id.tv_bookread_directory://获取目录
@@ -119,5 +121,18 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
             }
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getPresenter().onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        getPresenter().saveProgress();
+        super.onBackPressed();
     }
 }

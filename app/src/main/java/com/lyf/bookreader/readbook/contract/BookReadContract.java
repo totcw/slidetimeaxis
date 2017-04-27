@@ -1,5 +1,6 @@
 package com.lyf.bookreader.readbook.contract;
 
+import android.content.Intent;
 import android.widget.TextView;
 
 import com.lyf.bookreader.base.IModel;
@@ -39,6 +40,17 @@ public class BookReadContract {
          *@return
          */
         void getDirectory();
+
+        void onActivityResult(int requestCode, int resultCode, Intent data);
+        /**
+         *@author : lyf
+         *@email:totcw@qq.com
+         *@创建日期： 2017/4/27
+         *@功能说明：保存阅读进度
+         *@param
+         *@return
+         */
+        void saveProgress();
     }
 
     public interface Model extends IModel{
