@@ -41,29 +41,23 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:design:25.1.1'
     testCompile 'junit:junit:4.12'
-    compile project(':slidetimeaxis')
     /*rxjava*/
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-
     /*butterknife*/
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
-
     compile 'com.betterda:mylibrary:2.5.3'
-
     /*vlayout*/
-    compile ('com.alibaba.android:vlayout:1.0.4@aar') {
+    compile('com.alibaba.android:vlayout:1.0.4@aar') {
         transitive = true
     }
-
     /*GreenDao 3.0*/
-    compile'org.greenrobot:greendao:3.0.1'
-    compile'org.greenrobot:greendao-generator:3.0.0'
-
+    compile 'org.greenrobot:greendao:3.0.1'
+    compile 'org.greenrobot:greendao-generator:3.0.0'
     compile 'com.zhy:base-adapter:2.0.0'
     /*xutils*/
     compile 'org.xutils:xutils:3.3.32'
