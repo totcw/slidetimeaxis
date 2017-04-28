@@ -30,6 +30,12 @@ public class DirectoryPresenterImpl extends BasePresenter<DirectoryContract.View
         mDirectoryList = new ArrayList<>();
         bookname=getView().getmActivity().getIntent().getStringExtra("bookname");
         getData();
+        getView().getLoadPager().setonErrorClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
+            }
+        });
     }
 
 
@@ -58,21 +64,25 @@ public class DirectoryPresenterImpl extends BasePresenter<DirectoryContract.View
 
 
     private void getData() {
+        getView().getLoadPager().setLoadVisable();
         getView().getRxManager().add(NetWork.getNetService()
         .getBookDirectory(bookname)
         .compose(NetWork.handleResult(new BaseCallModel<List<Book>>()))
         .subscribe(new MyObserver<List<Book>>() {
             @Override
             protected void onSuccess(List<Book> data, String resultMsg) {
-                if (data != null) {
+                if (data != null && data.size() > 0) {
                     mDirectoryList.addAll(data);
                     mAdapter.notifyDataSetChanged();
+                    getView().getLoadPager().hide();
+                } else {
+                    getView().getLoadPager().setEmptyVisable();
                 }
             }
 
             @Override
             public void onFail(String resultMsg) {
-
+                getView().getLoadPager().setErrorVisable();
             }
 
             @Override
@@ -81,6 +91,10 @@ public class DirectoryPresenterImpl extends BasePresenter<DirectoryContract.View
             }
         }));
     }
+
+
+
+
     @Override
     public void destroy() {
 

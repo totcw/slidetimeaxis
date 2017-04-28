@@ -15,14 +15,24 @@
                 android:background="@color/bg_blue"
                 />
 
-
-            <android.support.v7.widget.RecyclerView
+            <FrameLayout
                 android:layout_weight="1"
-                android:id="@+id/rv_directory"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <android.support.v7.widget.RecyclerView
 
-            </android.support.v7.widget.RecyclerView>
+                    android:id="@+id/rv_directory"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <com.betterda.mylibrary.LoadingPager
+                    android:id="@+id/loadpager_directory"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></com.betterda.mylibrary.LoadingPager>
+            </FrameLayout>
+
 
     <TextView
         android:id="@+id/tv_directory_close"

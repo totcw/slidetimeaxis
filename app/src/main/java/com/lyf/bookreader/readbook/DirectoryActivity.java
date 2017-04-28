@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.betterda.mylibrary.LoadingPager;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.readbook.contract.DirectoryContract;
@@ -39,6 +40,8 @@ public class DirectoryActivity extends BaseActivity<DirectoryContract.Presenter>
     RecyclerView mRvDirectory;
     @BindView(R.id.tv_directory_close)
     TextView mTvDirectoryClose;
+    @BindView(R.id.loadpager_directory)
+    LoadingPager mLoadpagerDirectory;
 
     @Override
     protected DirectoryContract.Presenter onLoadPresenter() {
@@ -74,5 +77,10 @@ public class DirectoryActivity extends BaseActivity<DirectoryContract.Presenter>
                 back();
                 break;
         }
+    }
+
+    @Override
+    public LoadingPager getLoadPager() {
+        return mLoadpagerDirectory;
     }
 }

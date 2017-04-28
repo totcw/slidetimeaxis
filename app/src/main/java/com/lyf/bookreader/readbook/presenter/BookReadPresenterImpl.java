@@ -20,15 +20,11 @@ import com.lyf.bookreader.javabean.BookCase;
 import com.lyf.bookreader.javabean.Chapter;
 import com.lyf.bookreader.readbook.DirectoryActivity;
 import com.lyf.bookreader.readbook.contract.BookReadContract;
+import com.lyf.bookreader.service.DownloadBookService;
 import com.lyf.bookreader.utils.CacheUtils;
 import com.lyf.bookreader.utils.Constants;
-import com.lyf.bookreader.utils.GsonParse;
 import com.lyf.bookreader.utils.UiUtils;
 import com.lyf.bookreader.view.ReadView;
-
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
 
 import java.util.List;
 
@@ -46,6 +42,7 @@ import rx.schedulers.Schedulers;
 
 public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, BookReadContract.Model> implements BookReadContract.Presenter {
     private final static int REQUEST_DIRECTORY = 0;
+    public final static String SERVICE_DOWNLOAD_REPLY = "SERVICE_DOWNLOAD_REPLY";
     private String bookName; //书名
     private int chapter = 1;//当前阅读章节
     private int mBeginPos = 0;//当前章节阅读开始位置
@@ -70,9 +67,22 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
         getSaveProgress();
 
         setReadViewListener();
+        /**
+         * 注册接收缓存的回复信息
+         */
+        getView().getRxManager().on(SERVICE_DOWNLOAD_REPLY, new Action1<String>() {
+            @Override
+            public void call(String string) {
+
+                if (getView() != null && getView().getmActivity() != null) {
+                    UiUtils.showToast(getView().getmActivity(), string);
+                }
+
+            }
+        });
+
 
     }
-
 
 
     private void setReadViewListener() {
@@ -284,76 +294,14 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
 
     @Override
     public void download() {
-        UiUtils.showDialog(getView().getmActivity(), dialog);
-        RequestParams params = new RequestParams(Constants.Url.URL + "BookDownload");
-        params.addBodyParameter("bookname", bookName);
-        params.addBodyParameter("page", chapter + "");
-        params.addBodyParameter("total", total + "");
-        //设置断点续传
-        params.setAutoResume(true);
-        params.setMaxRetryCount(0);
-        params.setConnectTimeout(1000 * 3600 * 10);//设置为10个小时
-        Callback.Cancelable cancelable = x.http().post(params, new Callback.CacheCallback<String>() {
-            @Override
-            public boolean onCache(String result) {
-                UiUtils.showToast(getView().getmActivity(), "oncache");
-                UiUtils.dissmissDialog(getView().getmActivity(), dialog);
-                return false;
-            }
-
-            @Override
-            public void onSuccess(String result) {
-                UiUtils.showToast(getView().getmActivity(), "success");
-                List<Book> bookList = GsonParse.getListBook(result);
-                if (bookList != null) {
-                    parserDownload(bookList);
-                }
-                UiUtils.dissmissDialog(getView().getmActivity(), dialog);
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                UiUtils.dissmissDialog(getView().getmActivity(), dialog);
-                UiUtils.showToast(getView().getmActivity(), ex.toString());
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-                UiUtils.showToast(getView().getmActivity(), "cancel");
-                UiUtils.dissmissDialog(getView().getmActivity(), dialog);
-            }
-
-            @Override
-            public void onFinished() {
-                UiUtils.showToast(getView().getmActivity(), "onfinish");
-                UiUtils.dissmissDialog(getView().getmActivity(), dialog);
-            }
-        });
+        Intent intent = new Intent(getView().getmActivity(), DownloadBookService.class);
+        intent.putExtra("bookname", bookName);
+        intent.putExtra("chapter", chapter);
+        intent.putExtra("total", total);
+        getView().getmActivity().startService(intent);
 
     }
 
-    /**
-     *@author : lyf
-     *@email:totcw@qq.com
-     *@创建日期： 2017/4/27
-     *@功能说明：解析下载结果
-     *@param
-     *@return
-     */
-    private void parserDownload(List<Book> bookList) {
-        for (Book book : bookList) {
-            if (book != null) {
-                List<Book> mBookList = mBookDao.queryBuilder().where(BookDao.Properties.Bookname.eq(book.getBookname()), BookDao.Properties.Page.eq(book.getPage())).list();
-                if (mBookList != null && mBookList.size() > 0) {
-                    Book bookdao = mBookList.get(0);
-                    book.setId(bookdao.getId());
-                    mBookDao.update(book);
-                } else {
-                    mBookDao.insertOrReplace(book);
-                }
-            }
-        }
-    }
 
     @Override
     public void getDirectory() {
@@ -371,13 +319,14 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
             }
         }
     }
+
     /**
-     *@author : lyf
-     *@email:totcw@qq.com
-     *@创建日期： 2017/4/27
-     *@功能说明：保存阅读进度
-     *@param
-     *@return
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/4/27
+     * @功能说明：保存阅读进度
      */
     @Override
     public void saveProgress() {
@@ -398,30 +347,30 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
                         return null;
                     }
                 }).subscribeOn(Schedulers.io())
-                  .observeOn(Schedulers.io())
-                  .subscribe(new Action1<BookCase>() {
-                      @Override
-                      public void call(BookCase bookCase) {
+                        .observeOn(Schedulers.io())
+                        .subscribe(new Action1<BookCase>() {
+                            @Override
+                            public void call(BookCase bookCase) {
 
-                          bookCase.setCurPage(chapter);
-                          bookCase.setBeginPos(mBeginPos);
-                          bookCase.setEndPos(mBeginPos);
+                                bookCase.setCurPage(chapter);
+                                bookCase.setBeginPos(mBeginPos);
+                                bookCase.setEndPos(mBeginPos);
 
-                          if (bookCase != null) {
-                              mBookCaseDao.update(bookCase);
-                          }
-                      }
-                  })
+                                if (bookCase != null) {
+                                    mBookCaseDao.update(bookCase);
+                                }
+                            }
+                        })
         );
     }
 
     /**
-     *@author : lyf
-     *@email:totcw@qq.com
-     *@创建日期： 2017/4/27
-     *@功能说明：获取阅读进度
-     *@param
-     *@return
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/4/27
+     * @功能说明：获取阅读进度
      */
     public void getSaveProgress() {
         getView().getRxManager().add(
@@ -431,31 +380,31 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
                         subscriber.onNext(mBookCaseDao.queryBuilder().where(BookCaseDao.Properties.Bookname.eq(bookName)).list());
                     }
                 })
-                .map(new Func1<List<BookCase>, BookCase>() {
-                    @Override
-                    public BookCase call(List<BookCase> bookCases) {
-                        if (bookCases != null && bookCases.size() > 0) {
-                            return bookCases.get(0);
-                        }
-                        return null;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<BookCase>() {
-                    @Override
-                    public void call(BookCase bookCase) {
-                        if (bookCase != null) {
-                            mBeginPos = bookCase.getMBeginPos();
-                            mEndPos = bookCase.getEndPos();
-                            chapter = bookCase.getCurPage();
+                        .map(new Func1<List<BookCase>, BookCase>() {
+                            @Override
+                            public BookCase call(List<BookCase> bookCases) {
+                                if (bookCases != null && bookCases.size() > 0) {
+                                    return bookCases.get(0);
+                                }
+                                return null;
+                            }
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<BookCase>() {
+                            @Override
+                            public void call(BookCase bookCase) {
+                                if (bookCase != null) {
+                                    mBeginPos = bookCase.getMBeginPos();
+                                    mEndPos = bookCase.getEndPos();
+                                    chapter = bookCase.getCurPage();
 
-                            getView().getReadView().setEndPos(mEndPos);
-                            getView().getReadView().setBeginPos(mBeginPos);
-                        }
-                        loadCurrentChapter(0);
-                    }
-                })
+                                    getView().getReadView().setEndPos(mEndPos);
+                                    getView().getReadView().setBeginPos(mBeginPos);
+                                }
+                                loadCurrentChapter(0);
+                            }
+                        })
         );
     }
 
