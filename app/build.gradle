@@ -31,6 +31,14 @@ android {
         //设置自动生成单元测试用例
 //    generateTests
     }
+
+
+
+    externalNativeBuild {
+        cmake {
+            path 'CMakeLists.txt'
+        }
+    }
 }
 
 dependencies {

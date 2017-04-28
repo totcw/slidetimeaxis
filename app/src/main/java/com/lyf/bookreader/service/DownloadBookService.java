@@ -11,8 +11,8 @@ import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.db.BookDao;
 import com.lyf.bookreader.javabean.Book;
 import com.lyf.bookreader.readbook.presenter.BookReadPresenterImpl;
-import com.lyf.bookreader.utils.Constants;
 import com.lyf.bookreader.utils.GsonParse;
+import com.lyf.bookreader.utils.NativeHelper;
 import com.lyf.bookreader.utils.RxManager;
 
 import org.xutils.common.Callback;
@@ -111,7 +111,7 @@ public class DownloadBookService extends Service {
      * @功能说明：下载书籍
      */
     private void downloadBook(final String bookname, int page, int total) {
-        RequestParams params = new RequestParams(Constants.Url.URL + "BookDownload");
+        RequestParams params = new RequestParams(NativeHelper.getUrl() + "BookDownload");
         params.addBodyParameter("bookname", bookname);
         params.addBodyParameter("page", page + "");
         params.addBodyParameter("total", total + "");

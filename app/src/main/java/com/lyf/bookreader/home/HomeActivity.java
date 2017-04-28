@@ -10,6 +10,7 @@ import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.home.contract.HomeContract;
 import com.lyf.bookreader.home.presenter.HomePresenterImpl;
+import com.lyf.bookreader.utils.NativeHelper;
 
 import butterknife.BindView;
 import butterknife.OnClick;

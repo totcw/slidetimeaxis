@@ -3,7 +3,7 @@ package com.lyf.bookreader.api;
 
 import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.javabean.BaseCallModel;
-import com.lyf.bookreader.utils.Constants;
+import com.lyf.bookreader.utils.NativeHelper;
 import com.lyf.bookreader.utils.NetworkUtils;
 
 import java.io.File;
@@ -46,7 +46,7 @@ public class NetWork {
 
         if (netService == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Constants.Url.URL)
+                    .baseUrl(NativeHelper.getUrl())
                     .client(getBuilder(60).build())
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(rxJavaCallAdapterFactory)
