@@ -6,11 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.application.MyApplication;
+import com.lyf.bookreader.db.BookCaseDao;
 import com.lyf.bookreader.db.RecentlyReadDao;
 import com.lyf.bookreader.home.HomeActivity;
 import com.lyf.bookreader.javabean.BookCase;
@@ -32,13 +35,17 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
 
     private Activity mContext;
     private List<BookCase> data;
+
     private RecentlyReadDao mRecentlyReadDao;
+    private BookCaseDao mBookCaseDao;
+    private boolean isVisableDelte;//是否显示删除
 
     public BookCaseItemAdapter(Activity mContext, List<BookCase> data ) {
 
         this.data = data;
         this.mContext = mContext;
         mRecentlyReadDao = MyApplication.getInstance().getDaoSession().getRecentlyReadDao();
+        mBookCaseDao = MyApplication.getInstance().getDaoSession().getBookCaseDao();
     }
 
 
@@ -69,7 +76,6 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
             if (data != null && position < data.size() && data.get(position) != null) {
                 final BookCase bookCase = data.get(position);
                 if (bookCase != null) {
-
                     ((MainViewHolder) holder).tv_name.setText(bookCase.getBookname());
                     //进入书本阅读
                     ((MainViewHolder) holder).mLinearBookcase.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +100,28 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
 
                         }
                     });
+                    ((MainViewHolder) holder).mLinearBookcase.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            isVisableDelte = true;
+                            notifyDataSetChanged();
+                            return true;
+                        }
+                    });
+
+                    ((MainViewHolder) holder).mIvDelete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mBookCaseDao.delete(bookCase);
+                            data.remove(bookCase);
+                            isVisableDelte = false;
+                            notifyDataSetChanged();
+                        }
+                    });
                 }
+
+                ((MainViewHolder) holder).mIvDelete.setVisibility(isVisableDelte?View.VISIBLE:View.INVISIBLE);
+
             }
 
         }
@@ -140,10 +167,12 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
     static class MainViewHolder extends RecyclerView.ViewHolder {
         LinearLayout mLinearBookcase;
         TextView tv_name;
+        ImageView mIvDelete;
         public MainViewHolder(View itemView) {
             super(itemView);
             mLinearBookcase = (LinearLayout) itemView.findViewById(R.id.linear_rv_bookcase);
             tv_name = (TextView) itemView.findViewById(R.id.tv_rv_bookcase_bookimage);
+            mIvDelete = (ImageView) itemView.findViewById(R.id.iv_item_bookcase_delete);
         }
     }
 
