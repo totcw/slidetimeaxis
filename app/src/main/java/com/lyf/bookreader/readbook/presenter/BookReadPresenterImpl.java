@@ -293,12 +293,26 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
 
 
     @Override
-    public void download() {
+    public void download(int type) {
         Intent intent = new Intent(getView().getmActivity(), DownloadBookService.class);
         intent.putExtra("bookname", bookName);
-        intent.putExtra("chapter", chapter);
-        intent.putExtra("total", total);
+        switch (type) {
+            case 0://全本
+                intent.putExtra("chapter", 1);
+                intent.putExtra("total", total);
+                break;
+            case 1://后面50章
+                intent.putExtra("chapter", chapter);
+                intent.putExtra("total", chapter+49);
+                break;
+            case 2://剩余章节
+                intent.putExtra("chapter", chapter);
+                intent.putExtra("total", total);
+                break;
+        }
         getView().getmActivity().startService(intent);
+
+
 
     }
 

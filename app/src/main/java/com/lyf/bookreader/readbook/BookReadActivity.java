@@ -12,6 +12,7 @@ import com.lyf.bookreader.readbook.contract.BookReadContract;
 import com.lyf.bookreader.readbook.presenter.BookReadPresenterImpl;
 import com.lyf.bookreader.utils.CacheUtils;
 import com.lyf.bookreader.utils.Constants;
+import com.lyf.bookreader.utils.UiUtils;
 import com.lyf.bookreader.view.ReadView;
 
 import butterknife.BindView;
@@ -33,7 +34,7 @@ import butterknife.OnClick;
  * @end
  */
 
-public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> implements BookReadContract.View {
+public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> implements BookReadContract.View, View.OnClickListener {
 
     @BindView(R.id.readview)
     ReadView mReadView;//阅读控件
@@ -71,7 +72,7 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
 
     @Override
     public void showReadBar() {
-        showReadBar(mLinearBookreadTop,mLinearBookreadBottom);
+        showReadBar(mLinearBookreadTop, mLinearBookreadBottom);
     }
 
 
@@ -91,7 +92,7 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
             case R.id.tv_bookread_setting:
                 break;
             case R.id.tv_bookread_download://缓存
-                getPresenter().download();
+                setDownloadView();
                 break;
             case R.id.tv_bookread_directory://获取目录
                 getPresenter().getDirectory();
@@ -99,14 +100,57 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_pp_download_cancel://取消
+                closePopupWindow();
+                break;
+            case R.id.tv_pp_download_cachefive://缓存后面50章节
+                getPresenter().download(1);
+                closePopupWindow();
+                break;
+            case R.id.tv_pp_download_cacheleave://缓存剩余章节
+                getPresenter().download(2);
+                closePopupWindow();
+                break;
+            case R.id.tv_pp_download_cacheall://缓存全本
+                getPresenter().download(0);
+                closePopupWindow();
+                break;
+        }
+    }
+
 
     /**
-     *@author : lyf
-     *@email:totcw@qq.com
-     *@创建日期： 2017/4/24
-     *@功能说明：显示阅读状态栏
-     *@param
-     *@return
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/5/2
+     * @功能说明：设置缓存的popouwindow
+     */
+    private void setDownloadView() {
+        View view = View.inflate(getmActivity(), R.layout.pp_download, null);
+        TextView mTvCancel = (TextView) view.findViewById(R.id.tv_pp_download_cancel);
+        TextView mTvCacheFive = (TextView) view.findViewById(R.id.tv_pp_download_cachefive);
+        TextView mTvCacheLeave = (TextView) view.findViewById(R.id.tv_pp_download_cacheleave);
+        TextView mTvCacheAll = (TextView) view.findViewById(R.id.tv_pp_download_cacheall);
+        mTvCancel.setOnClickListener(this);
+        mTvCacheFive.setOnClickListener(this);
+        mTvCacheLeave.setOnClickListener(this);
+        mTvCacheAll.setOnClickListener(this);
+        setUpPopupWindow(view);
+    }
+
+
+    /**
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/4/24
+     * @功能说明：显示阅读状态栏
      */
     public void showReadBar(View... views) {
         if (views != null && views.length > 0) {
@@ -131,8 +175,16 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
 
 
     @Override
+    public void dismiss() {
+        super.dismiss();
+        UiUtils.backgroundAlpha(1.0f, getmActivity());
+    }
+
+    @Override
     public void onBackPressed() {
         getPresenter().saveProgress();
         super.onBackPressed();
     }
+
+
 }

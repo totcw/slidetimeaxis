@@ -23,4 +23,9 @@
     <string name="book_read_settings">设置</string>
     <string name="book_read_download">缓存</string>
     <string name="book_read_toc">目录</string>
+    <string name="tv_pp_download_cacheselction">缓存章节</string>
+    <string name="tv_pp_download_cacheall">缓存全本</string>
+    <string name="tv_pp_download_cacheleave">缓存剩余章节</string>
+    <string name="tv_pp_download_cachefive">缓存后面50章</string>
+
 </resources>

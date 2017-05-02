@@ -61,4 +61,32 @@ public interface NetService {
     Observable<BaseCallModel<List<Book>>> getBookDirectory(@Field("bookname") String bookname);
 
 
+    /**
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/5/2
+     * @功能说明： 获取热门词汇
+     */
+
+    @GET("HotWord")
+    Observable<BaseCallModel<List<String>>> getHotWord();
+
+
+
+    /**
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/2/2
+     * @功能说明： 搜索
+     */
+    @FormUrlEncoded
+    @POST("Search")
+    Observable<BaseCallModel<List<BookCase>>> getSearch(@Field("key") String key);
+
+
+
 }

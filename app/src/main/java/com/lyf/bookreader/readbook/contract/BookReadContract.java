@@ -30,7 +30,7 @@ public class BookReadContract {
          *@创建日期： 2017/4/25
          *@功能说明： 缓存
          */
-        void download();
+        void download(int type);
         /**
          *@author : lyf
          *@email:totcw@qq.com
