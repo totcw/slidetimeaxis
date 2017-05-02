@@ -2,15 +2,19 @@ package com.lyf.bookreader.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.lyf.bookreader.R;
 import com.lyf.bookreader.utils.ScreenUtils;
 
 /**
@@ -91,6 +95,9 @@ public class ReadView extends View {
      */
     private boolean center;
 
+    private Rect rectF;//背景
+    private Bitmap mBookPageBg;//背景图片
+
 
     private LoadPageListener mLoadPageListener;
 
@@ -110,6 +117,10 @@ public class ReadView extends View {
         mScreenWidth = ScreenUtils.getScreenWidth();
         mScreenHeight = ScreenUtils.getScreenHeight() - ScreenUtils.getStatusBarHeight(context);
 
+        //加载背景图片
+        rectF = new Rect(0, 0, mScreenWidth, mScreenHeight);
+        mBookPageBg = BitmapFactory.decodeResource(getResources(), R.mipmap.theme_leather_bg);
+
         mCurPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
         mNextPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
         mPrePageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.ARGB_8888);
@@ -117,20 +128,23 @@ public class ReadView extends View {
         mNextPageCanvas = new Canvas(mNextPageBitmap);
         mPrePageCanvas = new Canvas(mPrePageBitmap);
 
-        mFontSize = ScreenUtils.dpToPxInt(16);
-        mTitleSize = ScreenUtils.dpToPxInt(30);
-        mLineSpace = mFontSize / 5 * 2;
-        mPageLineCount = (mScreenHeight - paddingbottom - mTitleSize) / (mFontSize + mLineSpace);
+        mFontSize = ScreenUtils.dpToPxInt(18);
+        mTitleSize = ScreenUtils.dpToPxInt(20);
+        mLineSpace = mFontSize / 5 * 4;
+        mPageLineCount = (mScreenHeight - paddingbottom - mTitleSize*3) / (mFontSize + mLineSpace);
         mLineCount = (mScreenWidth - paddingLeft - paddingright) / (mFontSize);
 
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mFontSize);
         mPaint.setColor(Color.BLACK);
+        mPaint.setAntiAlias(true);
 
         mTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTitlePaint.setTextSize(mTitleSize);
         mTitlePaint.setColor(Color.BLACK);
+        mTitlePaint.setAntiAlias(true);
+        mTitlePaint.setTypeface(Typeface.DEFAULT_BOLD);//设置黑体
 
 
     }
@@ -307,11 +321,12 @@ public class ReadView extends View {
     private boolean drawContent(Canvas canvas, String content) {
         if (content != null) {
             //画背景
+           // canvas.drawBitmap(mBookPageBg, null, rectF, null);
             canvas.drawColor(Color.WHITE);
             //画标题
-            canvas.drawText(title, mTitleSize * 2, mTitleSize, mTitlePaint);
+            canvas.drawText(title, mTitleSize , mTitleSize*2, mTitlePaint);
             //画正文
-            int y = mLineSpace + mFontSize + mTitleSize;
+            int y = mLineSpace + mFontSize + mTitleSize*3;
             for (int i = 0; i < mPageLineCount; i++) {
                 int x = paddingLeft;
                 for (int j = 0; j < mLineCount; j++) {

@@ -3,10 +3,32 @@
     android:layout_width="match_parent"
     android:background="@color/bg_gray"
     android:layout_height="match_parent"
+
     android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/bg_blue"
+        android:gravity="center"
+        android:paddingLeft="10dp"
         android:text="我的"
+
+        android:textColor="@color/white"
         />
+
+
+
+    <TextView
+        android:id="@+id/tv_my_about"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/shape_bottom_top_line"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="关于"
+
+        />
+
+
 </LinearLayout>

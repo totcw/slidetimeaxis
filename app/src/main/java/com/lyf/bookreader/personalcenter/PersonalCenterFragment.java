@@ -1,13 +1,18 @@
 package com.lyf.bookreader.personalcenter;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-
+import android.view.ViewGroup;
 
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseFragment;
 import com.lyf.bookreader.personalcenter.contract.PersonalCenterContract;
 import com.lyf.bookreader.personalcenter.presenter.MyPresenterImpl;
+import com.lyf.bookreader.utils.UiUtils;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Adm inistrator on 2016/12/8.
@@ -28,7 +33,6 @@ public class PersonalCenterFragment extends BaseFragment<PersonalCenterContract.
     }
 
 
-
     @Override
     public void initData() {
         super.initData();
@@ -36,4 +40,10 @@ public class PersonalCenterFragment extends BaseFragment<PersonalCenterContract.
     }
 
 
+
+
+    @OnClick(R.id.tv_my_about)
+    public void onClick() {
+        UiUtils.showToast(getmActivity(),"敬请期待!");
+    }
 }
