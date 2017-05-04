@@ -1,6 +1,9 @@
 package com.lyf.bookreader.search;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.ViewGroup;
 
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
@@ -40,6 +43,18 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
         localHistoryContainer.removeAllViews();
         for (String history : historySearchList) {
             SearchKeyView view = new SearchKeyView(this);
+            view.setBackroundShapeColor("#00b6ec");
+            view.setTextColor(Color.parseColor("#fafafa"));
+            ViewGroup.MarginLayoutParams params =
+                    new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.leftMargin = 10;
+            params.bottomMargin = 10;
+            params.topMargin = 10;
+            params.rightMargin = 10;
+            view.setPadding(10, 5, 10, 5);
+            view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            view.setLayoutParams(params);
             view.init(history);
             localHistoryContainer.addView(view);
         }

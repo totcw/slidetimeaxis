@@ -21,13 +21,13 @@ public class SearchPresenterImpl extends BasePresenter<SearchContract.View,Searc
         List<String> list = new ArrayList();
         list.add("武侠");
         list.add("修仙");
-        list.add("诺克塞斯之手");
-        list.add("德玛西亚之力");
+        list.add("诺克塞斯之手-德莱厄斯");
+        list.add("德玛西亚之力-盖伦");
         list.add("影流之主");
-        list.add("暗夜猎手");
+        list.add("暗夜猎手-薇恩");
         list.add("探险家");
-        list.add("武器大师");
-        list.add("暗影之权");
+        list.add("武器大师-贾科斯");
+        list.add("暗影之权-阿卡丽");
         list.add("人民的名义");
         list.add("西湖公园");
         mView.showHistorySearchList(list);
