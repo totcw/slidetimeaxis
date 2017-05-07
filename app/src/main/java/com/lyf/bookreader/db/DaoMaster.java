@@ -25,6 +25,7 @@ public class DaoMaster extends AbstractDaoMaster {
         BookCaseDao.createTable(db, ifNotExists);
         ChapterDao.createTable(db, ifNotExists);
         RecentlyReadDao.createTable(db, ifNotExists);
+        SearchEntityDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
@@ -33,6 +34,7 @@ public class DaoMaster extends AbstractDaoMaster {
         BookCaseDao.dropTable(db, ifExists);
         ChapterDao.dropTable(db, ifExists);
         RecentlyReadDao.dropTable(db, ifExists);
+        SearchEntityDao.dropTable(db, ifExists);
     }
 
     /**
@@ -55,6 +57,7 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(BookCaseDao.class);
         registerDaoClass(ChapterDao.class);
         registerDaoClass(RecentlyReadDao.class);
+        registerDaoClass(SearchEntityDao.class);
     }
 
     public DaoSession newSession() {

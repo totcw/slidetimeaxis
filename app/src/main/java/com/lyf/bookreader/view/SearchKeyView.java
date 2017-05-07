@@ -8,6 +8,8 @@ import android.os.Build;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
+import java.util.Random;
+
 /**
  * Created by gan lin on 2017/4/22.
  * 热门词汇和本地搜索记录的item
@@ -26,17 +28,17 @@ public class SearchKeyView extends AppCompatTextView {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setBackroundShapeColor(String color) {
-//       Random random = new Random();
+    public void setBackgroundShapeColor() {
+       Random random = new Random();
         GradientDrawable drawable = new GradientDrawable();// 形状-圆角矩形
         drawable.setShape(GradientDrawable.RECTANGLE);// 圆角
         drawable.setCornerRadius(8);
-//        int alpha = 255;
-//        int red = 55 + random.nextInt(100);
-//        int green = 55 + random.nextInt(100);
-//        int blue = 55 + random.nextInt(100);// 随机颜色
-//        drawable.setColor(Color.argb(alpha, red, green, blue));
-        drawable.setColor(Color.parseColor(color));
+        int alpha = 255;
+        int red = random.nextInt(50);
+        int green =  random.nextInt(50);
+        int blue =  random.nextInt(0);// 随机颜色
+        drawable.setColor(Color.argb(alpha, red, green, 0));
+//        drawable.setColor(Color.parseColor(color));
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         gradientDrawable.setCornerRadius(8);
@@ -52,6 +54,7 @@ public class SearchKeyView extends AppCompatTextView {
     }
 
     public void init(String history) {
+        setBackgroundShapeColor();
         setText(history);
     }
 

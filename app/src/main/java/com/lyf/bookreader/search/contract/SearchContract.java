@@ -18,9 +18,9 @@ public class SearchContract {
     }
 
     public interface Presenter extends IPresenter<View> {
-        List<String> getHotSearchList();
+       void getHotSearchList();
 
-        List<String> getHistorySearchList();
+        void getHistorySearchList();
     }
 
     public interface Model extends IModel {

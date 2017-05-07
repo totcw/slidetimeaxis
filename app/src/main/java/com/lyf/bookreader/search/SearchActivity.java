@@ -40,10 +40,13 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
 
     @Override
     public void showHistorySearchList(List<String> historySearchList) {
+        if (historySearchList == null) {
+            // TODO: 2017/5/7 emptyview
+            return;
+        }
         localHistoryContainer.removeAllViews();
         for (String history : historySearchList) {
             SearchKeyView view = new SearchKeyView(this);
-            view.setBackroundShapeColor("#00b6ec");
             view.setTextColor(Color.parseColor("#fafafa"));
             ViewGroup.MarginLayoutParams params =
                     new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,

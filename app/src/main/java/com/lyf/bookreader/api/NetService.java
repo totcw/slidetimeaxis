@@ -3,18 +3,16 @@ package com.lyf.bookreader.api;
 
 import com.lyf.bookreader.javabean.BaseCallModel;
 import com.lyf.bookreader.javabean.Book;
-import com.lyf.bookreader.javabean.Chapter;
 import com.lyf.bookreader.javabean.BookCase;
+import com.lyf.bookreader.javabean.Chapter;
+import com.lyf.bookreader.javabean.SearchEntity;
 
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Streaming;
 import rx.Observable;
 
 /**
@@ -71,7 +69,7 @@ public interface NetService {
      */
 
     @GET("HotWord")
-    Observable<BaseCallModel<List<String>>> getHotWord();
+    Observable<BaseCallModel<List<SearchEntity>>> getHotWord();
 
 
 
