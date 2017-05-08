@@ -1,9 +1,7 @@
 package com.lyf.bookreader.personalcenter;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseFragment;
@@ -11,7 +9,6 @@ import com.lyf.bookreader.personalcenter.contract.PersonalCenterContract;
 import com.lyf.bookreader.personalcenter.presenter.MyPresenterImpl;
 import com.lyf.bookreader.utils.UiUtils;
 
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**

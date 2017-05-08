@@ -23,12 +23,20 @@ import com.lyf.bookreader.readbook.contract.BookReadContract;
 import com.lyf.bookreader.service.DownloadBookService;
 import com.lyf.bookreader.utils.CacheUtils;
 import com.lyf.bookreader.utils.Constants;
+import com.lyf.bookreader.utils.FileUtils;
 import com.lyf.bookreader.utils.UiUtils;
 import com.lyf.bookreader.view.ReadView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -194,7 +202,7 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
      */
     private void getData(final int type) {
         UiUtils.showDialog(getView().getmActivity(), dialog);
-        getView().getRxManager().add(NetWork.getNetService()
+       /* getView().getRxManager().add(NetWork.getNetService()
                 .getChpater(bookName, chapter + "")
                 .compose(NetWork.handleResult(new BaseCallModel<Chapter>()))
                 .subscribe(new MyObserver<Chapter>() {
@@ -217,7 +225,83 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
                     public void onExit() {
                         UiUtils.dissmissDialog(getView().getmActivity(), dialog);
                     }
-                }));
+                }));*/
+
+        getView().getRxManager().add(
+                NetWork.getNetService()
+                        .getChpater(bookName, chapter + "")
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .map(new Func1<ResponseBody, InputStream>() {
+                            @Override
+                            public InputStream call(ResponseBody responseBody) {
+                                return responseBody.byteStream();
+                            }
+                        })
+                        .map(new Func1<InputStream, String>() {
+                            @Override
+                            public String call(InputStream inputStream) {
+                                ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+                                byte[] buffer = new byte[1024 * 128];
+                                int len = -1;
+                                try {
+                                    while ((len = inputStream.read(buffer)) != -1) {
+                                        out.write(buffer, 0, len);
+                                    }
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    try {
+                                        if (out != null) {
+
+                                            out.flush();
+                                        }
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    try {
+                                        out.close();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    try {
+                                        inputStream.close();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                return out.toString();
+                            }
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<String>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                System.out.println(e.toString());
+                                getView().getReadView().setCurrentChapter(chapter - 1);
+                                getView().getReadView().setLodaing(false);
+                                UiUtils.dissmissDialog(getView().getmActivity(), dialog);
+                            }
+
+                            @Override
+                            public void onNext(String content) {
+                                int indexOf = content.indexOf("@@");
+                                String title = content.substring(0,indexOf);
+                                Chapter chapter = new Chapter();
+                                chapter.setTitle(title);
+                                chapter.setContent(content.substring(indexOf+2));
+                                parseChapterContent(chapter, type);
+                            }
+                        })
+        );
     }
 
 
@@ -303,7 +387,7 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
                 break;
             case 1://后面50章
                 intent.putExtra("chapter", chapter);
-                intent.putExtra("total", chapter+49);
+                intent.putExtra("total", chapter + 49);
                 break;
             case 2://剩余章节
                 intent.putExtra("chapter", chapter);
@@ -311,7 +395,6 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
                 break;
         }
         getView().getmActivity().startService(intent);
-
 
 
     }

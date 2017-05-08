@@ -1,28 +1,32 @@
 package com.lyf.bookreader.service;
 
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
-import android.widget.Toast;
 
+import com.lyf.bookreader.R;
+import com.lyf.bookreader.api.DownloadAPI;
+import com.lyf.bookreader.api.download.DownloadProgressListener;
 import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.db.BookDao;
 import com.lyf.bookreader.javabean.Book;
+import com.lyf.bookreader.javabean.Download;
 import com.lyf.bookreader.readbook.presenter.BookReadPresenterImpl;
-import com.lyf.bookreader.utils.GsonParse;
-import com.lyf.bookreader.utils.NativeHelper;
 import com.lyf.bookreader.utils.RxManager;
+import com.lyf.bookreader.utils.StringUtils;
 
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -48,7 +52,10 @@ public class DownloadBookService extends Service {
     private List<String> downloadQueues = new ArrayList<>();//缓存队列
     private RxManager mRxManager;
     private BookDao mBookDao;
-
+    private int downloadCount = 0;
+    private File outputFile;
+    private NotificationCompat.Builder notificationBuilder;
+    private NotificationManager notificationManager;
 
     @Nullable
     @Override
@@ -111,7 +118,56 @@ public class DownloadBookService extends Service {
      * @功能说明：下载书籍
      */
     private void downloadBook(final String bookname, int page, int total) {
-        RequestParams params = new RequestParams(NativeHelper.getUrl() + "BookDownload");
+      /*  notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_reader_ab_download)
+                .setContentTitle("Download")
+                .setContentText("Downloading File")
+                .setAutoCancel(true);
+
+        notificationManager.notify(0, notificationBuilder.build());*/
+        DownloadProgressListener listener = new DownloadProgressListener() {
+            @Override
+            public void update(long bytesRead, long contentLength, boolean done) {
+                //不频繁发送通知，防止通知栏下拉卡顿
+             /*   int progress = (int) ((bytesRead * 100) / contentLength);
+                if ((downloadCount == 0) || progress > downloadCount) {
+                    Download download = new Download();
+                    download.setTotalFileSize(contentLength);
+                    download.setCurrentFileSize(bytesRead);
+                    download.setProgress(progress);
+
+                    sendNotification(download);
+                }*/
+            }
+        };
+        outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"/"+bookname, page+".txt");
+        if (outputFile.exists()) {
+            outputFile.delete();
+        }
+
+
+        new DownloadAPI(listener).downloadAPK(bookname, page + "", outputFile, new Subscriber() {
+            @Override
+            public void onCompleted() {
+                downloadCompleted("下载完成",bookname);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                downloadCompleted("下载失败",bookname);
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+
+            }
+        });
+
+      /*  RequestParams params = new RequestParams(NativeHelper.getUrl() + "BookDownload");
         params.addBodyParameter("bookname", bookname);
         params.addBodyParameter("page", page + "");
         params.addBodyParameter("total", total + "");
@@ -151,9 +207,31 @@ public class DownloadBookService extends Service {
             @Override
             public void onFinished() {
             }
-        });
+        });*/
     }
 
+
+    private void sendNotification(Download download) {
+
+
+        notificationBuilder.setProgress(100, download.getProgress(), false);
+        notificationBuilder.setContentText(
+                StringUtils.getDataSize(download.getCurrentFileSize()) + "/" +
+                        StringUtils.getDataSize(download.getTotalFileSize()));
+        notificationManager.notify(0, notificationBuilder.build());
+    }
+
+
+    private void downloadCompleted(String content,String bookname) {
+       /* notificationManager.cancel(0);
+        notificationBuilder.setProgress(0, 0, false);
+        notificationBuilder.setContentText(content);
+        notificationManager.notify(0, notificationBuilder.build());*/
+        //将任务从缓存队列中清除
+        if (downloadQueues != null && bookname != null) {
+            downloadQueues.remove(bookname);
+        }
+    }
 
     /**
      * @param
@@ -191,18 +269,7 @@ public class DownloadBookService extends Service {
                             }
                         })
         );
-  /*      for (Book book : bookList) {
-            if (book != null) {
-                List<Book> mBookList = mBookDao.queryBuilder().where(BookDao.Properties.Bookname.eq(book.getBookname()), BookDao.Properties.Page.eq(book.getPage())).list();
-                if (mBookList != null && mBookList.size() > 0) {
-                    Book bookdao = mBookList.get(0);
-                    book.setId(bookdao.getId());
-                    mBookDao.update(book);
-                } else {
-                    mBookDao.insertOrReplace(book);
-                }
-            }
-        }*/
+
     }
 
     @Override
