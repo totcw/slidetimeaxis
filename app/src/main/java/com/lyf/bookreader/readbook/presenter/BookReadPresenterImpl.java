@@ -2,20 +2,17 @@ package com.lyf.bookreader.readbook.presenter;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.betterda.mylibrary.ShapeLoadingDialog;
 import com.lyf.bookreader.R;
-import com.lyf.bookreader.api.MyObserver;
 import com.lyf.bookreader.api.NetWork;
 import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.base.BasePresenter;
 import com.lyf.bookreader.db.BookCaseDao;
-import com.lyf.bookreader.db.BookDao;
-import com.lyf.bookreader.javabean.BaseCallModel;
-import com.lyf.bookreader.javabean.Book;
 import com.lyf.bookreader.javabean.BookCase;
 import com.lyf.bookreader.javabean.Chapter;
 import com.lyf.bookreader.readbook.DirectoryActivity;
@@ -28,8 +25,8 @@ import com.lyf.bookreader.utils.UiUtils;
 import com.lyf.bookreader.view.ReadView;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -57,14 +54,12 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
     private int mEndPos = 0;//当前章节阅读结束位置
     private int total = 1;
     private ShapeLoadingDialog dialog; //加载对话框
-    private BookDao mBookDao;
     private BookCaseDao mBookCaseDao;
 
     @Override
     public void start() {
         dialog = UiUtils.createDialog(getView().getmActivity(), "正在加载...");
 
-        mBookDao = MyApplication.getInstance().getDaoSession().getBookDao();
         mBookCaseDao = MyApplication.getInstance().getDaoSession().getBookCaseDao();
 
         getIntents();
@@ -92,12 +87,14 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
 
     }
 
-
+    /**
+     * 设置翻页监听
+     */
     private void setReadViewListener() {
         getView().getReadView().setmLoadPageListener(new ReadView.LoadPageListener() {
             @Override
             public void prePage(final int chapter) {
-                //TODO 根据书名和chapter 去数据库或者网络加载数据
+                //TODO 根据书名和chapter 去本地或者网络加载数据
                 BookReadPresenterImpl.this.chapter = chapter;
                 loadCurrentChapter(1);
             }
@@ -158,31 +155,29 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
      */
     public void loadCurrentChapter(final int type) {
 
-        getView().getRxManager().add(Observable.create(new Observable.OnSubscribe<List<Book>>() {
+        getView().getRxManager().add(Observable.create(new Observable.OnSubscribe<byte[]>() {
             @Override
-            public void call(Subscriber<? super List<Book>> subscriber) {
-                List<Book> bookList = mBookDao.queryBuilder().where(BookDao.Properties.Bookname.eq(bookName), BookDao.Properties.Page.eq(chapter)).list();
-                subscriber.onNext(bookList);
-            }
-        }).map(new Func1<List<Book>, Book>() {
-            @Override
-            public Book call(List<Book> books) {
-                if (books != null && books.size() > 0) {
-                    return books.get(0);
+            public void call(Subscriber<? super byte[]> subscriber) {
+                //根据书名和章节获取本地文件
+                File outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + bookName, chapter + ".txt");
+                byte[] bytes = null;
+                if (outputFile.exists()) {
+                    try {
+                        bytes = FileUtils.readStreamToBytes(new FileInputStream(outputFile));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-                return null;
-
+                subscriber.onNext(bytes);
             }
-        }).subscribeOn(Schedulers.io())
+        })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Book>() {
+                .subscribe(new Action1<byte[]>() {
                     @Override
-                    public void call(Book book) {
+                    public void call(byte[] book) {
                         if (book != null) {
-                            Chapter chapter = new Chapter();
-                            chapter.setContent(book.getContent());
-                            chapter.setTitle(book.getChaptername());
-                            parseChapterContent(chapter, type);
+                            parserChapterForString(book.toString(),type);
                         } else {
                             getData(type);
                         }
@@ -202,30 +197,6 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
      */
     private void getData(final int type) {
         UiUtils.showDialog(getView().getmActivity(), dialog);
-       /* getView().getRxManager().add(NetWork.getNetService()
-                .getChpater(bookName, chapter + "")
-                .compose(NetWork.handleResult(new BaseCallModel<Chapter>()))
-                .subscribe(new MyObserver<Chapter>() {
-                    @Override
-                    protected void onSuccess(Chapter data, String resultMsg) {
-                        parseChapterContent(data, type);
-
-                    }
-
-
-                    @Override
-                    public void onFail(String resultMsg) {
-                        UiUtils.showToast(getView().getmActivity(), resultMsg);
-                        getView().getReadView().setCurrentChapter(chapter - 1);
-                        getView().getReadView().setLodaing(false);
-                        UiUtils.dissmissDialog(getView().getmActivity(), dialog);
-                    }
-
-                    @Override
-                    public void onExit() {
-                        UiUtils.dissmissDialog(getView().getmActivity(), dialog);
-                    }
-                }));*/
 
         getView().getRxManager().add(
                 NetWork.getNetService()
@@ -241,8 +212,8 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
                         .map(new Func1<InputStream, String>() {
                             @Override
                             public String call(InputStream inputStream) {
+                                //用字节输出流来当缓存,保存输入流数据
                                 ByteArrayOutputStream out = new ByteArrayOutputStream();
-
                                 byte[] buffer = new byte[1024 * 128];
                                 int len = -1;
                                 try {
@@ -262,12 +233,18 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
                                         e.printStackTrace();
                                     }
                                     try {
-                                        out.close();
+                                        if (out != null) {
+
+                                            out.close();
+                                        }
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
                                     try {
-                                        inputStream.close();
+                                        if (inputStream != null) {
+
+                                            inputStream.close();
+                                        }
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -285,7 +262,6 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
 
                             @Override
                             public void onError(Throwable e) {
-                                System.out.println(e.toString());
                                 getView().getReadView().setCurrentChapter(chapter - 1);
                                 getView().getReadView().setLodaing(false);
                                 UiUtils.dissmissDialog(getView().getmActivity(), dialog);
@@ -293,16 +269,12 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
 
                             @Override
                             public void onNext(String content) {
-                                int indexOf = content.indexOf("@@");
-                                String title = content.substring(0,indexOf);
-                                Chapter chapter = new Chapter();
-                                chapter.setTitle(title);
-                                chapter.setContent(content.substring(indexOf+2));
-                                parseChapterContent(chapter, type);
+                                parserChapterForString(content, type);
                             }
                         })
         );
     }
+
 
 
     /**
@@ -355,7 +327,23 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
         }
         UiUtils.dissmissDialog(getView().getmActivity(), dialog);
     }
-
+    /**
+     *@author : lyf
+     *@email:totcw@qq.com
+     *@创建日期： 2017/5/9
+     *@功能说明：从文本中解析章节信息
+     *@param
+     *@return
+     */
+    private void parserChapterForString(String content, int type) {
+        int indexOf = content.indexOf("@@");
+        //获取章节名
+        String title = content.substring(0, indexOf);
+        Chapter chapter = new Chapter();
+        chapter.setTitle(title);
+        chapter.setContent(content.substring(indexOf + 2));
+        parseChapterContent(chapter, type);
+    }
 
     /**
      * @param

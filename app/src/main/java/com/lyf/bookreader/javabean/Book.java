@@ -14,7 +14,7 @@ import org.greenrobot.greendao.annotation.Property;
  * @创建日期： 2017/4/24
  * @功能说明：  存放书籍的类
  * @begin
- * @修改记录:
+ * @修改记录: (暂时 不需要了)
  * @修改后版本:
  * @修改人:
  * @修改内容:

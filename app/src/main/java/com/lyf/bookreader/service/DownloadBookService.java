@@ -18,15 +18,21 @@ import com.lyf.bookreader.db.BookDao;
 import com.lyf.bookreader.javabean.Book;
 import com.lyf.bookreader.javabean.Download;
 import com.lyf.bookreader.readbook.presenter.BookReadPresenterImpl;
+import com.lyf.bookreader.utils.FileUtils;
 import com.lyf.bookreader.utils.RxManager;
 import com.lyf.bookreader.utils.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -51,9 +57,9 @@ public class DownloadBookService extends Service {
 
     private List<String> downloadQueues = new ArrayList<>();//缓存队列
     private RxManager mRxManager;
-    private BookDao mBookDao;
-    private int downloadCount = 0;
+
     private File outputFile;
+
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
 
@@ -66,7 +72,6 @@ public class DownloadBookService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mBookDao = MyApplication.getInstance().getDaoSession().getBookDao();
         mRxManager = new RxManager();
 
     }
@@ -74,6 +79,7 @@ public class DownloadBookService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        //加入缓存队列
         addDownloadQueue(intent);
         return super.onStartCommand(intent, flags, startId);
     }
@@ -96,9 +102,11 @@ public class DownloadBookService extends Service {
                 if (downloadQueues.contains(bookname)) {
                     mRxManager.post(BookReadPresenterImpl.SERVICE_DOWNLOAD_REPLY, "已经在缓存队列");
                 } else {
-
                     downloadQueues.add(bookname);
                     mRxManager.post(BookReadPresenterImpl.SERVICE_DOWNLOAD_REPLY, "加入缓存队列成功");
+                    //设置下载的通知栏
+                    setNotification();
+                    //开启下载
                     downloadBook(bookname, chapter, total);
 
                 }
@@ -106,6 +114,26 @@ public class DownloadBookService extends Service {
                 mRxManager.post(BookReadPresenterImpl.SERVICE_DOWNLOAD_REPLY, "已经在缓存队列");
             }
         }
+    }
+
+    /**
+     *@author : lyf
+     *@email:totcw@qq.com
+     *@创建日期： 2017/5/9
+     *@功能说明：设置下载的通知栏
+     *@param
+     *@return
+     */
+    private void setNotification() {
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_reader_ab_download)
+                .setContentTitle("Download")
+                .setContentText("Downloading File")
+                .setAutoCancel(true);
+
+        notificationManager.notify(0, notificationBuilder.build());
     }
 
 
@@ -117,159 +145,90 @@ public class DownloadBookService extends Service {
      * @创建日期： 2017/4/28
      * @功能说明：下载书籍
      */
-    private void downloadBook(final String bookname, int page, int total) {
-      /*  notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_reader_ab_download)
-                .setContentTitle("Download")
-                .setContentText("Downloading File")
-                .setAutoCancel(true);
-
-        notificationManager.notify(0, notificationBuilder.build());*/
-        DownloadProgressListener listener = new DownloadProgressListener() {
-            @Override
-            public void update(long bytesRead, long contentLength, boolean done) {
-                //不频繁发送通知，防止通知栏下拉卡顿
-             /*   int progress = (int) ((bytesRead * 100) / contentLength);
-                if ((downloadCount == 0) || progress > downloadCount) {
-                    Download download = new Download();
-                    download.setTotalFileSize(contentLength);
-                    download.setCurrentFileSize(bytesRead);
-                    download.setProgress(progress);
-
-                    sendNotification(download);
-                }*/
-            }
-        };
+    private void downloadBook(final String bookname, final int page, final int total) {
+        //获取保存书本的路径
         outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"/"+bookname, page+".txt");
         if (outputFile.exists()) {
             outputFile.delete();
         }
 
+        DownloadAPI.getmDownloadService().download(bookname,page+"")
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .map(new Func1<ResponseBody, InputStream>() {
+                    @Override
+                    public InputStream call(ResponseBody responseBody) {
+                        return responseBody.byteStream();
+                    }
+                })
+                .observeOn(Schedulers.computation())
+                .doOnNext(new Action1<InputStream>() {
+                    @Override
+                    public void call(InputStream inputStream) {
+                        try {
+                            FileUtils.writeFile(inputStream, outputFile);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException(e.getMessage(), e);
+                        }
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<InputStream>() {
+                    @Override
+                    public void onCompleted() {
+                        downloadCompleted(page,total);
 
-        new DownloadAPI(listener).downloadAPK(bookname, page + "", outputFile, new Subscriber() {
-            @Override
-            public void onCompleted() {
-                downloadCompleted("下载完成",bookname);
-            }
+                        int nextPage = page+1;
+                        if (nextPage <= total) {
+                            downloadBook(bookname, nextPage, total);
+                        } else {
+                            //将任务从缓存队列中清除
+                            if (downloadQueues != null && bookname != null) {
+                                downloadQueues.remove(bookname);
+                            }
+                            notificationManager.cancel(0);
+                            notificationBuilder.setProgress(0, 0, false);
+                            notificationBuilder.setContentText("下载完成");
+                            notificationManager.notify(0, notificationBuilder.build());
+                        }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-                downloadCompleted("下载失败",bookname);
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        // downloadCompleted("下载失败",bookname);
+                    }
 
-            }
+                    @Override
+                    public void onNext(InputStream inputStream) {
 
-            @Override
-            public void onNext(Object o) {
+                    }
+                });
 
-            }
-        });
 
-      /*  RequestParams params = new RequestParams(NativeHelper.getUrl() + "BookDownload");
-        params.addBodyParameter("bookname", bookname);
-        params.addBodyParameter("page", page + "");
-        params.addBodyParameter("total", total + "");
-        //设置断点续传
-        params.setAutoResume(true);
-        params.setMaxRetryCount(0);
-        params.setConnectTimeout(1000 * 3600 * 10);//设置为10个小时
-        Callback.Cancelable cancelable = x.http().post(params, new Callback.CacheCallback<String>() {
-            @Override
-            public boolean onCache(String result) {
-                return false;
-            }
 
-            @Override
-            public void onSuccess(String result) {
-                //将任务从缓存队列中清除
-                if (downloadQueues != null && bookname != null) {
-                    downloadQueues.remove(bookname);
-                }
-
-                List<Book> bookList = GsonParse.getListBook(result);
-                if (bookList != null) {
-                    parserDownload(bookList);
-                }
-
-                Toast.makeText(DownloadBookService.this,"缓存完成",0).show();
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });*/
     }
 
 
     private void sendNotification(Download download) {
 
-
-        notificationBuilder.setProgress(100, download.getProgress(), false);
+       // notificationBuilder.setProgress(100, (int) download.getCurrentFileSize(), false);
         notificationBuilder.setContentText(
-                StringUtils.getDataSize(download.getCurrentFileSize()) + "/" +
-                        StringUtils.getDataSize(download.getTotalFileSize()));
+                download.getCurrentFileSize() + "/" +
+                        download.getTotalFileSize());
         notificationManager.notify(0, notificationBuilder.build());
     }
 
 
-    private void downloadCompleted(String content,String bookname) {
-       /* notificationManager.cancel(0);
-        notificationBuilder.setProgress(0, 0, false);
-        notificationBuilder.setContentText(content);
-        notificationManager.notify(0, notificationBuilder.build());*/
-        //将任务从缓存队列中清除
-        if (downloadQueues != null && bookname != null) {
-            downloadQueues.remove(bookname);
-        }
-    }
+    private void downloadCompleted(int page ,int total) {
 
-    /**
-     * @param
-     * @return
-     * @author : lyf
-     * @email:totcw@qq.com
-     * @创建日期： 2017/4/27
-     * @功能说明：解析下载结果
-     */
-    private void parserDownload(List<Book> bookList) {
-        mRxManager.add(
-                Observable.from(bookList)
-                        .map(new Func1<Book, Book>() {
-                            @Override
-                            public Book call(Book book) {
-                                if (book != null && mBookDao != null) {
-                                    List<Book> mBookList = mBookDao.queryBuilder().where(BookDao.Properties.Bookname.eq(book.getBookname()), BookDao.Properties.Page.eq(book.getPage())).list();
-                                    if (mBookList != null && mBookList.size() > 0) {
-                                        Book bookdao = mBookList.get(0);
-                                        book.setId(bookdao.getId());
-                                    }
-                                    return book;
-                                }
-                                return null;
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.io())
-                        .subscribe(new Action1<Book>() {
-                            @Override
-                            public void call(Book book) {
-                                if (mBookDao != null) {
-                                    mBookDao.insertOrReplace(book);
-                                }
-                            }
-                        })
-        );
 
+        Download download = new Download();
+        download.setTotalFileSize(total);
+        download.setCurrentFileSize(page);
+
+        sendNotification(download);
     }
 
     @Override
