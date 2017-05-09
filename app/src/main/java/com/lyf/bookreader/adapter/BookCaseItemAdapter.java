@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.db.BookCaseDao;
@@ -77,6 +78,7 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
                 final BookCase bookCase = data.get(position);
                 if (bookCase != null) {
                     ((MainViewHolder) holder).tv_name.setText(bookCase.getBookname());
+                    Glide.with(mContext).load(bookCase.getImg()).placeholder(R.mipmap.zwt).fitCenter().into(((MainViewHolder) holder).mIvBookImage);
                     //进入书本阅读
                     ((MainViewHolder) holder).mLinearBookcase.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -167,12 +169,15 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
     static class MainViewHolder extends RecyclerView.ViewHolder {
         LinearLayout mLinearBookcase;
         TextView tv_name;
-        ImageView mIvDelete;
+        ImageView mIvDelete,mIvBookImage;
+
         public MainViewHolder(View itemView) {
             super(itemView);
             mLinearBookcase = (LinearLayout) itemView.findViewById(R.id.linear_rv_bookcase);
             tv_name = (TextView) itemView.findViewById(R.id.tv_rv_bookcase_bookimage);
             mIvDelete = (ImageView) itemView.findViewById(R.id.iv_item_bookcase_delete);
+            mIvBookImage = (ImageView) itemView.findViewById(R.id.iv_rv_bookcase_bookimage);
+
         }
     }
 

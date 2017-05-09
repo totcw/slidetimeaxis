@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.base.BaseFragment;
@@ -30,7 +31,7 @@ import butterknife.OnClick;
  * @email:totcw@qq.com
  * @see:
  * @创建日期： 2017/4/20
- * @功能说明：  数据 界面
+ * @功能说明： 数据 界面
  * @begin
  * @修改记录:
  * @修改后版本:
@@ -47,15 +48,13 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
     TextView mTvShouyeBookname;
     @BindView(R.id.iv_shouye_author)
     TextView mTvShouyeAuthor;
-    @BindView(R.id.iv_shouye_time)
-    TextView mTvShouyeTime;
+
     @BindView(R.id.iv_shouye_status)
     TextView mTvShouyeStatus;
     @BindView(R.id.iv_shouye_read)
     TextView mTvShouyeRead;
     @BindView(R.id.rv_shouye)
     RecyclerView mBookCaseRecycleview;
-
 
 
     @Override
@@ -77,6 +76,7 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
 
     /**
      * 当前fragment是否显示的回调方法
+     *
      * @param hidden true 表示隐藏
      */
     @Override
@@ -130,8 +130,8 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
         if (mTvShouyeStatus != null) {
             mTvShouyeStatus.setText(recentlyRead.getFinish());
         }
-        if (mTvShouyeTime != null) {
-            mTvShouyeTime.setText("最近更新:"+recentlyRead.getTime());
+        if (mIvShouyeBookimage != null) {
+            Glide.with(this).load(recentlyRead.getImg()).placeholder(R.mipmap.zwt).fitCenter().into(mIvShouyeBookimage);
         }
     }
 }

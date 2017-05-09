@@ -8,8 +8,6 @@ import com.lyf.bookreader.db.DaoMaster;
 import com.lyf.bookreader.db.DaoSession;
 import com.lyf.bookreader.utils.AppUtils;
 
-import org.xutils.x;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +42,7 @@ public class MyApplication extends Application {
        //  CrashHandler.getInstance().init(getApplicationContext());
         //初始化GreenDao
         initGreenDao();
-        //初始化xutils3
-        x.Ext.init(this);
+
     }
 
     private void initGreenDao() {

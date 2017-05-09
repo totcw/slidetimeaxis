@@ -28,4 +28,7 @@
     <string name="tv_pp_download_cacheleave">缓存剩余章节</string>
     <string name="tv_pp_download_cachefive">缓存后面50章</string>
 
+    <!--书本详情界面-->
+    <string name="tv_addbookcase_introduce">简介:</string>
+
 </resources>

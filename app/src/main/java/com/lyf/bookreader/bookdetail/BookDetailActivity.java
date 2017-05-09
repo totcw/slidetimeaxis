@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.bookdetail.contract.BookDetailContract;
@@ -35,12 +36,13 @@ public class BookDetailActivity extends BaseActivity<BookDetailContract.Presente
     TextView mIvAddbookcaseBookname;
     @BindView(R.id.iv_addbookcase_author)
     TextView mIvAddbookcaseAuthor;
-    @BindView(R.id.iv_addbookcase_time)
-    TextView mIvAddbookcaseTime;
+
     @BindView(R.id.iv_addbookcase_status)
     TextView mIvAddbookcaseStatus;
     @BindView(R.id.iv_addbookcase_add)
     TextView mIvAddbookcaseAdd;
+    @BindView(R.id.tv_addbookcase_introduce)
+    TextView mTvAddbookcaseIntroduce;
 
 
 
@@ -60,13 +62,14 @@ public class BookDetailActivity extends BaseActivity<BookDetailContract.Presente
     /**
      * 设置 书本信息
      */
-    public void setBookInformation(String author,String bookname,String time,String finish) {
+    public void setBookInformation(String author,String bookname,String time,String finish,String img) {
 
         mIvAddbookcaseAuthor.setText(author);
         mIvAddbookcaseBookname.setText(bookname);
-        mIvAddbookcaseTime.setText("最近更新时间:" + time);
         mIvAddbookcaseStatus.setText(finish);
         mIvAddbookcaseAdd.setVisibility(View.GONE);
+        mTvAddbookcaseIntroduce.setText(time);
+        Glide.with(getmActivity()).load(img).placeholder(R.mipmap.zwt).fitCenter().into(mIvAddbookcaseBookimage);
     }
 
     @Override

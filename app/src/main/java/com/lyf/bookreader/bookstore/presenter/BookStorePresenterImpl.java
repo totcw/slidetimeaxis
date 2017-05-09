@@ -26,15 +26,14 @@ public class BookStorePresenterImpl extends BasePresenter<BookStoreContract.View
     @Override
     public void start() {
         mBookStoreList = new ArrayList<>();
-        mBookStoreList.add("玄幻");
-        mBookStoreList.add("武侠");
-        mBookStoreList.add("都市");
-        mBookStoreList.add("言情");
-        mBookStoreList.add("穿越");
-        mBookStoreList.add("网游");
-        mBookStoreList.add("恐怖");
-        mBookStoreList.add("科幻");
-        mBookStoreList.add("其他");
+        mBookStoreList.add("玄幻奇幻");
+        mBookStoreList.add("武侠修真");
+        mBookStoreList.add("现代都市");
+        mBookStoreList.add("历史军事");
+        mBookStoreList.add("游戏竞技");
+        mBookStoreList.add("科幻灵异");
+        mBookStoreList.add("女生言情");
+        mBookStoreList.add("其他类型");
 
     }
 

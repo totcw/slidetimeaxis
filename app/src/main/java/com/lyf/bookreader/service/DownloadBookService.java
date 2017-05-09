@@ -12,15 +12,9 @@ import android.text.TextUtils;
 
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.api.DownloadAPI;
-import com.lyf.bookreader.api.download.DownloadProgressListener;
-import com.lyf.bookreader.application.MyApplication;
-import com.lyf.bookreader.db.BookDao;
-import com.lyf.bookreader.javabean.Book;
-import com.lyf.bookreader.javabean.Download;
 import com.lyf.bookreader.readbook.presenter.BookReadPresenterImpl;
 import com.lyf.bookreader.utils.FileUtils;
 import com.lyf.bookreader.utils.RxManager;
-import com.lyf.bookreader.utils.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
-import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -73,6 +65,7 @@ public class DownloadBookService extends Service {
     public void onCreate() {
         super.onCreate();
         mRxManager = new RxManager();
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
 
@@ -117,19 +110,18 @@ public class DownloadBookService extends Service {
     }
 
     /**
-     *@author : lyf
-     *@email:totcw@qq.com
-     *@创建日期： 2017/5/9
-     *@功能说明：设置下载的通知栏
-     *@param
-     *@return
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/5/9
+     * @功能说明：设置下载的通知栏
      */
     private void setNotification() {
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_reader_ab_download)
-                .setContentTitle("Download")
+                .setContentTitle("正在下载")
                 .setContentText("Downloading File")
                 .setAutoCancel(true);
 
@@ -147,12 +139,12 @@ public class DownloadBookService extends Service {
      */
     private void downloadBook(final String bookname, final int page, final int total) {
         //获取保存书本的路径
-        outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"/"+bookname, page+".txt");
+        outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + bookname, page + ".txt");
         if (outputFile.exists()) {
             outputFile.delete();
         }
 
-        DownloadAPI.getmDownloadService().download(bookname,page+"")
+        DownloadAPI.getmDownloadService().download(bookname, page + "")
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .map(new Func1<ResponseBody, InputStream>() {
@@ -177,9 +169,9 @@ public class DownloadBookService extends Service {
                 .subscribe(new Observer<InputStream>() {
                     @Override
                     public void onCompleted() {
-                        downloadCompleted(page,total);
+                        downloadCompleted(page, total);
 
-                        int nextPage = page+1;
+                        int nextPage = page + 1;
                         if (nextPage <= total) {
                             downloadBook(bookname, nextPage, total);
                         } else {
@@ -187,17 +179,14 @@ public class DownloadBookService extends Service {
                             if (downloadQueues != null && bookname != null) {
                                 downloadQueues.remove(bookname);
                             }
-                            notificationManager.cancel(0);
-                            notificationBuilder.setProgress(0, 0, false);
-                            notificationBuilder.setContentText("下载完成");
-                            notificationManager.notify(0, notificationBuilder.build());
+                            sendNotification(nextPage + "/" + total, "下载完成");
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        // downloadCompleted("下载失败",bookname);
+                        sendNotification("", "下载失败");
                     }
 
                     @Override
@@ -207,28 +196,27 @@ public class DownloadBookService extends Service {
                 });
 
 
-
     }
 
-
-    private void sendNotification(Download download) {
-
-       // notificationBuilder.setProgress(100, (int) download.getCurrentFileSize(), false);
-        notificationBuilder.setContentText(
-                download.getCurrentFileSize() + "/" +
-                        download.getTotalFileSize());
+    /**
+     *@author : lyf
+     *@email:totcw@qq.com
+     *@创建日期： 2017/5/9
+     *@功能说明： 更新通知栏
+     *@param
+     *@return
+     */
+    private void sendNotification(String content, String title) {
+        notificationBuilder.setContentTitle(title);
+        if (!TextUtils.isEmpty(content)) {
+            notificationBuilder.setContentText(content);
+        }
         notificationManager.notify(0, notificationBuilder.build());
     }
 
 
-    private void downloadCompleted(int page ,int total) {
-
-
-        Download download = new Download();
-        download.setTotalFileSize(total);
-        download.setCurrentFileSize(page);
-
-        sendNotification(download);
+    private void downloadCompleted(int page, int total) {
+        sendNotification(page + "/" + total, "正在下载");
     }
 
     @Override

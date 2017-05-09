@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:minHeight="160dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_blue">
@@ -13,10 +14,10 @@
 
         <ImageView
             android:id="@+id/iv_shouye_bookimage"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:background="@mipmap/zwt" />
+             />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,21 +35,16 @@
             <TextView
                 android:id="@+id/iv_shouye_author"
                 style="@style/textview_wrap"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:maxLines="1"
                 android:text="@string/fragment_shouye_author" />
 
-            <TextView
-                android:id="@+id/iv_shouye_time"
-                style="@style/textview_wrap"
-                android:layout_marginTop="10dp"
-                android:maxLines="1"
-                android:text="@string/fragment_shouye_time" />
+
 
             <TextView
                 android:id="@+id/iv_shouye_status"
                 style="@style/textview_wrap"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:maxLines="1"
                 android:text="@string/fragment_shouye_status" />
 
@@ -57,7 +53,7 @@
                 android:id="@+id/iv_shouye_read"
                 android:layout_width="120dp"
                 android:layout_height="32dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/shape_corner_blue"
                 android:gravity="center"
                 android:text="@string/fragment_shouye_read"

@@ -2,6 +2,7 @@ package com.lyf.bookreader.search;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 
@@ -26,6 +27,8 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
     SearchKeyLayout localHistoryContainer;
     @BindView(R.id.id_skl_activity_search_hotSearchContainer)
     SearchKeyLayout hotSearchContainer;
+    @BindView(R.id.searchview)
+    SearchView mSearchView;
 
     @Override
     protected SearchContract.Presenter onLoadPresenter() {
@@ -71,8 +74,23 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void init() {
+        super.init();
         mPresenter.getHistorySearchList();
+        mSearchView.setIconified(false);
+        mSearchView.setBackgroundColor(getResources().getColor(R.color.bg_blue));
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
+
 }

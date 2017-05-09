@@ -33,7 +33,7 @@ public class BookDetailPresenterImpl extends BasePresenter<BookDetailContract.Vi
     @Override
     public void start() {
         getIntentData();
-        getView().setBookInformation(author, bookname, time, finish);
+        getView().setBookInformation(author, bookname, time, finish,img);
         mBookCaseDao = MyApplication.getInstance().getDaoSession().getBookCaseDao();
         quereIsBook();
 

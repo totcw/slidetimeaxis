@@ -14,7 +14,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
  */
 public class DownloadAPI {
     private static final String TAG = "DownloadAPI";
-    private static final int DEFAULT_TIMEOUT = 15;
+    private static final int DEFAULT_TIMEOUT = 60;
 
     private static DownloadService mDownloadService;
 

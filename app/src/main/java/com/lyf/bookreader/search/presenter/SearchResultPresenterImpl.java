@@ -3,7 +3,9 @@ package com.lyf.bookreader.search.presenter;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.api.MyObserver;
 import com.lyf.bookreader.api.NetWork;
@@ -47,6 +49,8 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
             @Override
             public void convert(ViewHolder holder, final BookCase bookCase) {
                 if (bookCase != null) {
+                    ImageView view = holder.getView(R.id.iv_shouye_bookimage);
+                    Glide.with(getView().getmActivity()).load(bookCase.getImg()).placeholder(R.mipmap.zwt).fitCenter().into(view);
                     holder.setText(R.id.iv_shouye_bookname, bookCase.getBookname());
                     holder.setText(R.id.iv_shouye_author, bookCase.getAuthor());
                     holder.setText(R.id.iv_shouye_time, bookCase.getTime());
@@ -81,7 +85,8 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
      */
     private void getData() {
         getView().getLoadPager().setLoadVisable();
-        type = "全本" + type + "小说";
+        type = "类    别："+type;
+
         getView().getRxManager().add(NetWork.getNetService().getBookList(type)
                 .compose(NetWork.handleResult(new BaseCallModel<List<BookCase>>()))
                 .subscribe(new MyObserver<List<BookCase>>() {

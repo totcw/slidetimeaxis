@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+<!--顶部-->
     <LinearLayout
-
+        android:background="@color/bg_blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
 
         <ImageView
             android:id="@+id/iv_addbookcase_bookimage"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:background="@mipmap/zwt" />
+            />
 
         <LinearLayout
 
@@ -29,7 +30,7 @@
                 android:layout_marginTop="10dp"
                 android:maxLines="1"
                 android:text="@string/fragment_shouye_bookname"
-                android:textColor="@color/shouye_renmen_tv" />
+                />
 
             <TextView
                 android:id="@+id/iv_addbookcase_author"
@@ -37,15 +38,7 @@
                 android:layout_marginTop="10dp"
                 android:maxLines="1"
                 android:text="@string/fragment_shouye_author"
-                android:textColor="@color/shouye_renmen_tv" />
-
-            <TextView
-                android:id="@+id/iv_addbookcase_time"
-                style="@style/textview_wrap"
-                android:layout_marginTop="10dp"
-                android:maxLines="1"
-                android:text="@string/fragment_shouye_time"
-                android:textColor="@color/shouye_renmen_tv" />
+                />
 
             <TextView
                 android:id="@+id/iv_addbookcase_status"
@@ -53,7 +46,7 @@
                 android:layout_marginTop="10dp"
                 android:maxLines="1"
                 android:text="@string/fragment_shouye_status"
-                android:textColor="@color/shouye_renmen_tv" />
+                />
 
             <TextView
                 android:id="@+id/iv_addbookcase_add"
@@ -63,8 +56,39 @@
                 android:background="@drawable/shape_corner_blue"
                 android:gravity="center"
                 android:text="@string/fragment_shouye_addcase"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"/>
 
         </LinearLayout>
     </LinearLayout>
+    <!--简介-->
+    <LinearLayout
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_addbookcase_introduce"
+            android:textColor="@color/shouye_renmen_tv"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_addbookcase_introduce"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="简介:"
+            android:textColor="@color/shouye_lv_tv"
+            android:textSize="16sp"
+            />
+
+
+
+    </LinearLayout>
+
 </LinearLayout>

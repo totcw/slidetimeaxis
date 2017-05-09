@@ -6,8 +6,19 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 
 /**
- * 书架实体类  最近阅读
- * Created by lyf o n 2017/4/19.
+ *@版权：版权所有 (厦门北特达软件有限公司) 2017
+ *@author : lyf
+ *@version : 1.0.0
+ *@email:totcw@qq.com
+ *@see:
+ *@创建日期： 2017/5/9
+ *@功能说明：
+ *@begin
+ *@修改记录:
+ *@修改后版本:
+ *@修改人:
+ *@修改内容: time修改成用来表示书的简介而不是更新时间了
+ *@end
  */
 @Entity
 public class BookCase {
@@ -15,7 +26,7 @@ public class BookCase {
     private Long id;
     private String bookname;//书名
     private String author; //作者
-    private String time; //最后更新时间
+    private String time; //简介
     private String finish;//是否完结
     private String img; //书的图片
     private int curPage; //当前阅读的章节数

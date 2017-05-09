@@ -27,7 +27,7 @@ public class BookDetailContract {
         /**
          * 设置最近读的书籍信息
          */
-        void setBookInformation(String author, String bookname, String time, String finish);
+        void setBookInformation(String author, String bookname, String time, String finish,String img);
 
         //设置加入书架按钮的状态
         void setAddBookcaseStatus(boolean isVisable);
