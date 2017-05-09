@@ -73,7 +73,6 @@ public class DownloadBookService extends Service {
     public void onCreate() {
         super.onCreate();
         mRxManager = new RxManager();
-
     }
 
 
@@ -102,6 +101,7 @@ public class DownloadBookService extends Service {
                 if (downloadQueues.contains(bookname)) {
                     mRxManager.post(BookReadPresenterImpl.SERVICE_DOWNLOAD_REPLY, "已经在缓存队列");
                 } else {
+                    //将任务加入缓存队列
                     downloadQueues.add(bookname);
                     mRxManager.post(BookReadPresenterImpl.SERVICE_DOWNLOAD_REPLY, "加入缓存队列成功");
                     //设置下载的通知栏

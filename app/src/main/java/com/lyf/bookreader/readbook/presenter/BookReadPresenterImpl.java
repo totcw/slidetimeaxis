@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.betterda.mylibrary.ShapeLoadingDialog;
 import com.lyf.bookreader.R;
+import com.lyf.bookreader.api.DownloadAPI;
 import com.lyf.bookreader.api.NetWork;
 import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.base.BasePresenter;
@@ -199,8 +200,8 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
         UiUtils.showDialog(getView().getmActivity(), dialog);
 
         getView().getRxManager().add(
-                NetWork.getNetService()
-                        .getChpater(bookName, chapter + "")
+                DownloadAPI.getmDownloadService()
+                        .download(bookName, chapter + "")
                         .subscribeOn(Schedulers.io())
                         .unsubscribeOn(Schedulers.io())
                         .map(new Func1<ResponseBody, InputStream>() {

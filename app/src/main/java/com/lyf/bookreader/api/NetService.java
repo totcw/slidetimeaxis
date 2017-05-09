@@ -22,18 +22,7 @@ import rx.Observable;
  * Created by Administrator on 2016/7/29.
  */
 public interface NetService {
-    /**
-     * @param
-     * @return
-     * @author : lyf
-     * @email:totcw@qq.com
-     * @创建日期： 2017/4/20
-     * @功能说明： 根据书名和章节数 加载书的内容
-     */
-/*    @FormUrlEncoded
-    @POST("Test")
-    Observable<BaseCallModel<Chapter>> getChpater(@Field("bookname") String bookname,
-                                                  @Field("page") String page);*/
+
 
     /**
      * @param
@@ -87,17 +76,7 @@ public interface NetService {
     @POST("Search")
     Observable<BaseCallModel<List<BookCase>>> getSearch(@Field("key") String key);
 
-    /**
-     * 根据书名和章节数 加载书的内容
-     * @param filename
-     * @param page
-     * @return
-     */
-    @Streaming
-    @FormUrlEncoded
-    @POST("BookDownload2")
-    Observable<ResponseBody> getChpater(@Field("filename") String filename,
-                                      @Field("page") String page);
+
 
 
 }
