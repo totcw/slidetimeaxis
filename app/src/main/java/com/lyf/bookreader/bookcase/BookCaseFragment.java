@@ -131,7 +131,7 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
             mTvShouyeStatus.setText(recentlyRead.getFinish());
         }
         if (mIvShouyeBookimage != null) {
-            Glide.with(this).load(recentlyRead.getImg()).placeholder(R.mipmap.zwt).fitCenter().into(mIvShouyeBookimage);
+            Glide.with(this).load(recentlyRead.getImg()).placeholder(R.mipmap.zwt).centerCrop().into(mIvShouyeBookimage);
         }
     }
 }

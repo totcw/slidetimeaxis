@@ -179,7 +179,7 @@ public class DownloadBookService extends Service {
                             if (downloadQueues != null && bookname != null) {
                                 downloadQueues.remove(bookname);
                             }
-                            sendNotification(nextPage + "/" + total, "下载完成");
+                            sendNotification(page + "/" + total, "下载完成");
                         }
                     }
 

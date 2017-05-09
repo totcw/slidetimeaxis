@@ -69,7 +69,7 @@ public class BookDetailActivity extends BaseActivity<BookDetailContract.Presente
         mIvAddbookcaseStatus.setText(finish);
         mIvAddbookcaseAdd.setVisibility(View.GONE);
         mTvAddbookcaseIntroduce.setText(time);
-        Glide.with(getmActivity()).load(img).placeholder(R.mipmap.zwt).fitCenter().into(mIvAddbookcaseBookimage);
+        Glide.with(getmActivity()).load(img).placeholder(R.mipmap.zwt).centerCrop().into(mIvAddbookcaseBookimage);
     }
 
     @Override

@@ -50,7 +50,7 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
             public void convert(ViewHolder holder, final BookCase bookCase) {
                 if (bookCase != null) {
                     ImageView view = holder.getView(R.id.iv_shouye_bookimage);
-                    Glide.with(getView().getmActivity()).load(bookCase.getImg()).placeholder(R.mipmap.zwt).fitCenter().into(view);
+                    Glide.with(getView().getmActivity()).load(bookCase.getImg()).placeholder(R.mipmap.zwt).centerCrop().into(view);
                     holder.setText(R.id.iv_shouye_bookname, bookCase.getBookname());
                     holder.setText(R.id.iv_shouye_author, bookCase.getAuthor());
                     holder.setText(R.id.iv_shouye_time, bookCase.getTime());

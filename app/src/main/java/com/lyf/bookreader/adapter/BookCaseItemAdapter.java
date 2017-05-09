@@ -78,7 +78,7 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
                 final BookCase bookCase = data.get(position);
                 if (bookCase != null) {
                     ((MainViewHolder) holder).tv_name.setText(bookCase.getBookname());
-                    Glide.with(mContext).load(bookCase.getImg()).placeholder(R.mipmap.zwt).fitCenter().into(((MainViewHolder) holder).mIvBookImage);
+                    Glide.with(mContext).load(bookCase.getImg()).placeholder(R.mipmap.zwt).centerCrop().into(((MainViewHolder) holder).mIvBookImage);
                     //进入书本阅读
                     ((MainViewHolder) holder).mLinearBookcase.setOnClickListener(new View.OnClickListener() {
                         @Override

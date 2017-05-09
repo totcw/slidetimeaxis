@@ -174,11 +174,21 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<byte[]>() {
+                .subscribe(new Observer<byte[]>() {
                     @Override
-                    public void call(byte[] book) {
-                        if (book != null) {
-                            parserChapterForString(book.toString(),type);
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(byte[] bytes) {
+                        if (bytes != null) {
+                            parserChapterForString(new String(bytes),type);
                         } else {
                             getData(type);
                         }
@@ -337,6 +347,7 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
      *@return
      */
     private void parserChapterForString(String content, int type) {
+
         int indexOf = content.indexOf("@@");
         //获取章节名
         String title = content.substring(0, indexOf);
