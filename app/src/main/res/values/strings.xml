@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SlideTime</string>
+    <string name="app_name">免费全本小说</string>
 
     <!--书架页面相关-->
     <string name="fragment_shouye_bookname">书名</string>

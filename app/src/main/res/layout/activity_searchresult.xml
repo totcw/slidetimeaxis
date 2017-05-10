@@ -1,18 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_serachresult"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
-
-    <com.betterda.mylibrary.LoadingPager
-        android:id="@+id/loadpager_searchresult"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <RelativeLayout
+        android:background="@color/bg_blue"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.betterda.mylibrary.LoadingPager>
+        android:layout_height="48dp">
+        <ImageButton
+            android:id="@+id/iv_bookread_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:src="@mipmap/ab_back" />
 
-</FrameLayout>
+        <TextView
+            android:layout_centerInParent="true"
+            android:id="@+id/tv_searchresult_title"
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:overScrollMode="never"
+            android:id="@+id/rv_serachresult"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <com.betterda.mylibrary.LoadingPager
+            android:id="@+id/loadpager_searchresult"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></com.betterda.mylibrary.LoadingPager>
+
+    </FrameLayout>
+</LinearLayout>

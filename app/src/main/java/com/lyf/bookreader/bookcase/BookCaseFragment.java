@@ -110,7 +110,7 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_shouye_bookimage: //最近看的书籍
-
+                getPresenter().continueRead();
                 break;
             case R.id.iv_shouye_read: //继续阅读
                 getPresenter().continueRead();
@@ -131,7 +131,7 @@ public class BookCaseFragment extends BaseFragment<BookCaseContract.Presenter> i
             mTvShouyeStatus.setText(recentlyRead.getFinish());
         }
         if (mIvShouyeBookimage != null) {
-            Glide.with(this).load(recentlyRead.getImg()).placeholder(R.mipmap.zwt).centerCrop().into(mIvShouyeBookimage);
+            Glide.with(this).load(recentlyRead.getImg()).placeholder(R.mipmap.zwt).fitCenter().into(mIvShouyeBookimage);
         }
     }
 }

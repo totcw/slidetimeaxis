@@ -1,15 +1,24 @@
 package com.lyf.bookreader.search;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.lyf.bookreader.R;
+import com.lyf.bookreader.api.MyObserver;
+import com.lyf.bookreader.api.NetWork;
 import com.lyf.bookreader.base.BaseActivity;
+import com.lyf.bookreader.bookdetail.BookDetailActivity;
+import com.lyf.bookreader.javabean.BaseCallModel;
+import com.lyf.bookreader.javabean.BookCase;
 import com.lyf.bookreader.search.contract.SearchContract;
 import com.lyf.bookreader.search.presenter.SearchPresenterImpl;
+import com.lyf.bookreader.utils.UiUtils;
 import com.lyf.bookreader.view.SearchKeyLayout;
 import com.lyf.bookreader.view.SearchKeyView;
 
@@ -83,14 +92,57 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                getData(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
                 return false;
             }
         });
+    }
+
+    private void getData(String query) {
+        if (TextUtils.isEmpty(query)) {
+            Toast.makeText(getmActivity(),"没有相应的书籍",0).show();
+            return;
+        }
+        getRxManager().add(
+                NetWork.getNetService().getSearch(query)
+                .compose(NetWork.handleResult(new BaseCallModel<List<BookCase>>()))
+                .subscribe(new MyObserver<List<BookCase>>() {
+                    @Override
+                    protected void onSuccess(List<BookCase> data, String resultMsg) {
+                        if (data != null && data.size() > 0) {
+                            BookCase bookCase = data.get(0);
+                            Intent intent = new Intent(getmActivity(), BookDetailActivity.class);
+                            intent.putExtra("bookname", bookCase.getBookname());
+                            intent.putExtra("author", bookCase.getAuthor());
+                            intent.putExtra("time", bookCase.getTime());
+                            intent.putExtra("finish", bookCase.getFinish());
+                            intent.putExtra("img", bookCase.getImg());
+                            intent.putExtra("total", bookCase.getTotal());
+                            intent.putExtra("type", bookCase.getType());
+                            UiUtils.startIntent(getmActivity(), intent);
+                        } else {
+                            Toast.makeText(getmActivity(),"没有相应的书籍",0).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFail(String resultMsg) {
+
+                    }
+
+                    @Override
+                    public void onExit() {
+
+                    }
+                })
+        );
     }
 
 }

@@ -69,6 +69,11 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
             ((AddHolder) holder).mLinearBookcaseAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (isVisableDelte) {
+                        isVisableDelte = false;
+                        notifyDataSetChanged();
+                        return;
+                    }
                     ((HomeActivity) mContext).toBookStore();
 
                 }
@@ -78,17 +83,20 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
                 final BookCase bookCase = data.get(position);
                 if (bookCase != null) {
                     ((MainViewHolder) holder).tv_name.setText(bookCase.getBookname());
-                    Glide.with(mContext).load(bookCase.getImg()).placeholder(R.mipmap.zwt).centerCrop().into(((MainViewHolder) holder).mIvBookImage);
+                    Glide.with(mContext).load(bookCase.getImg()).placeholder(R.mipmap.zwt).fitCenter().into(((MainViewHolder) holder).mIvBookImage);
                     //进入书本阅读
                     ((MainViewHolder) holder).mLinearBookcase.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            if (isVisableDelte) {
+                                isVisableDelte = false;
+                                notifyDataSetChanged();
+                                return;
+                            }
                             Intent intent = new Intent(mContext, BookReadActivity.class);
                             intent.putExtra("bookname", bookCase.getBookname());
                             intent.putExtra("total", bookCase.getTotal());
                             UiUtils.startIntent(mContext, intent);
-
-
                             List<RecentlyRead> recentlyReads = mRecentlyReadDao.loadAll();
                             if (recentlyReads != null && recentlyReads.size() > 0) {
                                 RecentlyRead recentlyRead = recentlyReads.get(0);
@@ -105,7 +113,8 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
                     ((MainViewHolder) holder).mLinearBookcase.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            isVisableDelte = true;
+
+                            isVisableDelte = !isVisableDelte;
                             notifyDataSetChanged();
                             return true;
                         }

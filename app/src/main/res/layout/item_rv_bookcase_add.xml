@@ -8,14 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:orientation="vertical">
 
         <ImageView
 
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_width="120dp"
+            android:layout_height="150dp"
             android:background="@mipmap/add"
             />
 
@@ -24,6 +23,7 @@
             android:id="@+id/tv_rv_bookcase_bookimage"
             style="@style/textview_wrap"
             android:maxLines="1"
+            android:layout_marginTop="5dp"
             android:text="@string/item_rv_bookcase_bookname"
             android:textColor="@color/shouye_renmen_tv"
             />

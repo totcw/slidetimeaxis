@@ -351,9 +351,11 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
         int indexOf = content.indexOf("@@");
         //获取章节名
         String title = content.substring(0, indexOf);
+        String book = content.substring(indexOf + 2);
         Chapter chapter = new Chapter();
         chapter.setTitle(title);
-        chapter.setContent(content.substring(indexOf + 2));
+        //同时去除空格
+        chapter.setContent(book.replaceAll("\\s*", ""));
         parseChapterContent(chapter, type);
     }
 

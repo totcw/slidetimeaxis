@@ -15,7 +15,7 @@
         <ImageView
             android:id="@+id/iv_shouye_bookimage"
             android:layout_width="120dp"
-            android:layout_height="match_parent"
+            android:layout_height="150dp"
             android:layout_margin="10dp"
              />
 
@@ -65,6 +65,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/rv_shouye"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
