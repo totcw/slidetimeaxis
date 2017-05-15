@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textColor="#fafafa"
+        android:textSize="16sp"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:id="@+id/id_tv_view_searchKey_key"
+        android:text="小说阅读"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageButton
+        android:visibility="gone"
+        android:layout_gravity="right|top"
+        android:id="@+id/id_tv_view_searchKey_clear"
+        android:background="@null"
+        android:src="@mipmap/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</FrameLayout>

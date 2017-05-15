@@ -12,12 +12,19 @@ import android.widget.Toast;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.api.MyObserver;
 import com.lyf.bookreader.api.NetWork;
+import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.bookdetail.BookDetailActivity;
+import com.lyf.bookreader.db.BookReaderDBManager;
+import com.lyf.bookreader.db.SearchEntityDao;
 import com.lyf.bookreader.javabean.BaseCallModel;
 import com.lyf.bookreader.javabean.BookCase;
+import com.lyf.bookreader.javabean.SearchEntity;
 import com.lyf.bookreader.search.contract.SearchContract;
 import com.lyf.bookreader.search.presenter.SearchPresenterImpl;
+import com.lyf.bookreader.utils.GLToast;
+import com.lyf.bookreader.utils.GLog;
+import com.lyf.bookreader.utils.NativeHelper;
 import com.lyf.bookreader.utils.UiUtils;
 import com.lyf.bookreader.view.SearchKeyLayout;
 import com.lyf.bookreader.view.SearchKeyView;
@@ -39,6 +46,8 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
     @BindView(R.id.searchview)
     SearchView mSearchView;
 
+    private SearchEntityDao searchEntityDao;
+
     @Override
     protected SearchContract.Presenter onLoadPresenter() {
         return new SearchPresenterImpl();
@@ -46,7 +55,18 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
 
     @Override
     public void showHotSearchList(List<String> hotSearchList) {
-
+        hotSearchContainer.removeAllViews();
+        for (String hotKey : hotSearchList) {
+            SearchKeyView view = new SearchKeyView(this);
+            view.setCallBackOnClick(new SearchKeyView.CallBackOnClick() {
+                @Override
+                public void postTextOnClick(String text) {
+                    mSearchView.setQuery(text, true);
+                }
+            });
+            view.init(hotKey);
+            hotSearchContainer.addView(view);
+        }
 
     }
 
@@ -58,18 +78,14 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
         }
         localHistoryContainer.removeAllViews();
         for (String history : historySearchList) {
+            GLog.e("gl", history);
             SearchKeyView view = new SearchKeyView(this);
-            view.setTextColor(Color.parseColor("#fafafa"));
-            ViewGroup.MarginLayoutParams params =
-                    new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.leftMargin = 10;
-            params.bottomMargin = 10;
-            params.topMargin = 10;
-            params.rightMargin = 10;
-            view.setPadding(10, 5, 10, 5);
-            view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-            view.setLayoutParams(params);
+            view.setCallBackOnClick(new SearchKeyView.CallBackOnClick() {
+                @Override
+                public void postTextOnClick(String text) {
+                    mSearchView.setQuery(text, true);
+                }
+            });
             view.init(history);
             localHistoryContainer.addView(view);
         }
@@ -79,13 +95,15 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
     public void initView() {
         super.initView();
         setContentView(R.layout.activity_search);
-
+        GLToast.show(this, NativeHelper.getUrl());
     }
 
     @Override
     public void init() {
         super.init();
+        searchEntityDao = BookReaderDBManager.getInstance().getDaoSession().getSearchEntityDao();
         mPresenter.getHistorySearchList();
+        mPresenter.getHotSearchList();
         mSearchView.setIconified(false);
         mSearchView.setBackgroundColor(getResources().getColor(R.color.bg_blue));
 
@@ -93,6 +111,9 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
             @Override
             public boolean onQueryTextSubmit(String query) {
                 getData(query);
+                /*搜索记录插入数据库*/
+                long l = searchEntityDao.insert(new SearchEntity(query));
+                GLToast.show(SearchActivity.this, "插入结果 ：" + l);
                 return false;
             }
 
@@ -106,42 +127,42 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
 
     private void getData(String query) {
         if (TextUtils.isEmpty(query)) {
-            Toast.makeText(getmActivity(),"没有相应的书籍",0).show();
+            Toast.makeText(getmActivity(), "没有相应的书籍", Toast.LENGTH_SHORT).show();
             return;
         }
         getRxManager().add(
                 NetWork.getNetService().getSearch(query)
-                .compose(NetWork.handleResult(new BaseCallModel<List<BookCase>>()))
-                .subscribe(new MyObserver<List<BookCase>>() {
-                    @Override
-                    protected void onSuccess(List<BookCase> data, String resultMsg) {
-                        if (data != null && data.size() > 0) {
-                            BookCase bookCase = data.get(0);
-                            Intent intent = new Intent(getmActivity(), BookDetailActivity.class);
-                            intent.putExtra("bookname", bookCase.getBookname());
-                            intent.putExtra("author", bookCase.getAuthor());
-                            intent.putExtra("time", bookCase.getTime());
-                            intent.putExtra("finish", bookCase.getFinish());
-                            intent.putExtra("img", bookCase.getImg());
-                            intent.putExtra("total", bookCase.getTotal());
-                            intent.putExtra("type", bookCase.getType());
-                            UiUtils.startIntent(getmActivity(), intent);
-                        } else {
-                            Toast.makeText(getmActivity(),"没有相应的书籍",0).show();
-                        }
+                        .compose(NetWork.handleResult(new BaseCallModel<List<BookCase>>()))
+                        .subscribe(new MyObserver<List<BookCase>>() {
+                            @Override
+                            protected void onSuccess(List<BookCase> data, String resultMsg) {
+                                if (data != null && data.size() > 0) {
+                                    BookCase bookCase = data.get(0);
+                                    Intent intent = new Intent(getmActivity(), BookDetailActivity.class);
+                                    intent.putExtra("bookname", bookCase.getBookname());
+                                    intent.putExtra("author", bookCase.getAuthor());
+                                    intent.putExtra("time", bookCase.getTime());
+                                    intent.putExtra("finish", bookCase.getFinish());
+                                    intent.putExtra("img", bookCase.getImg());
+                                    intent.putExtra("total", bookCase.getTotal());
+                                    intent.putExtra("type", bookCase.getType());
+                                    UiUtils.startIntent(getmActivity(), intent);
+                                } else {
+                                    Toast.makeText(getmActivity(), "没有相应的书籍", Toast.LENGTH_SHORT).show();
+                                }
 
-                    }
+                            }
 
-                    @Override
-                    public void onFail(String resultMsg) {
+                            @Override
+                            public void onFail(String resultMsg) {
 
-                    }
+                            }
 
-                    @Override
-                    public void onExit() {
+                            @Override
+                            public void onExit() {
 
-                    }
-                })
+                            }
+                        })
         );
     }
 

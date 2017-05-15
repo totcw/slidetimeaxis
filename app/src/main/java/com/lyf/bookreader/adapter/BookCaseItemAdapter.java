@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.db.BookCaseDao;
+import com.lyf.bookreader.db.BookReaderDBManager;
 import com.lyf.bookreader.db.RecentlyReadDao;
 import com.lyf.bookreader.home.HomeActivity;
 import com.lyf.bookreader.javabean.BookCase;
@@ -45,8 +46,8 @@ public class BookCaseItemAdapter<T> extends RecyclerView.Adapter< RecyclerView.V
 
         this.data = data;
         this.mContext = mContext;
-        mRecentlyReadDao = MyApplication.getInstance().getDaoSession().getRecentlyReadDao();
-        mBookCaseDao = MyApplication.getInstance().getDaoSession().getBookCaseDao();
+        mRecentlyReadDao = BookReaderDBManager.getInstance().getDaoSession().getRecentlyReadDao();
+        mBookCaseDao = BookReaderDBManager.getInstance().getDaoSession().getBookCaseDao();
     }
 
 

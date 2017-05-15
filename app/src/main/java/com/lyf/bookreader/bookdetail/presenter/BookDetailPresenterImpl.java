@@ -4,6 +4,7 @@ import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.base.BasePresenter;
 import com.lyf.bookreader.bookdetail.contract.BookDetailContract;
 import com.lyf.bookreader.db.BookCaseDao;
+import com.lyf.bookreader.db.BookReaderDBManager;
 import com.lyf.bookreader.javabean.BookCase;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class BookDetailPresenterImpl extends BasePresenter<BookDetailContract.Vi
     public void start() {
         getIntentData();
         getView().setBookInformation(author, bookname, time, finish,img);
-        mBookCaseDao = MyApplication.getInstance().getDaoSession().getBookCaseDao();
+        mBookCaseDao = BookReaderDBManager.getInstance().getDaoSession().getBookCaseDao();
         quereIsBook();
 
     }

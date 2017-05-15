@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: "findbugs"
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -40,7 +41,26 @@ android {
         }
     }
 }
+task findbugs(type: FindBugs,dependsOn:'assembleDebug') {
 
+    ignoreFailures= true
+    effort= "default"
+    reportLevel= "high"
+    println( "$project.buildDir")
+    classes = files("$project.buildDir/intermediates/classes")
+    source= fileTree("src/main/java/")
+    classpath= files()
+    reports{
+        xml.enabled=false
+        html.enabled=true
+        xml {
+            destination "$project.buildDir/findbugs.xml"
+        }
+        html{
+            destination "$project.buildDir/findbugs.html"
+        }
+    }
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -70,5 +90,8 @@ dependencies {
 
     /*glide*/
     compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    /*随机颜色库*/
+    compile 'com.github.lzyzsd.randomcolor:library:1.0.0'
 }
 

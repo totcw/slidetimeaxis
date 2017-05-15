@@ -14,6 +14,7 @@ import com.lyf.bookreader.api.NetWork;
 import com.lyf.bookreader.application.MyApplication;
 import com.lyf.bookreader.base.BasePresenter;
 import com.lyf.bookreader.db.BookCaseDao;
+import com.lyf.bookreader.db.BookReaderDBManager;
 import com.lyf.bookreader.javabean.BookCase;
 import com.lyf.bookreader.javabean.Chapter;
 import com.lyf.bookreader.readbook.DirectoryActivity;
@@ -61,7 +62,7 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
     public void start() {
         dialog = UiUtils.createDialog(getView().getmActivity(), "正在加载...");
 
-        mBookCaseDao = MyApplication.getInstance().getDaoSession().getBookCaseDao();
+        mBookCaseDao = BookReaderDBManager.getInstance().getDaoSession().getBookCaseDao();
 
         getIntents();
 

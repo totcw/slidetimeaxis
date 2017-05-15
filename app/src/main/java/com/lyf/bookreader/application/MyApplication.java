@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.lyf.bookreader.db.BookReaderDBManager;
 import com.lyf.bookreader.db.DaoMaster;
 import com.lyf.bookreader.db.DaoSession;
 import com.lyf.bookreader.utils.AppUtils;
@@ -17,11 +18,11 @@ import java.util.List;
  * Created by Administrator on 2016/7/28.
  */
 public class MyApplication extends Application {
-    private DaoMaster.DevOpenHelper mHelper;
-    private SQLiteDatabase db;
-    private DaoMaster mDaoMaster;
-    private DaoSession mDaoSession;
-    private static final String DB_NAME = "book_reader.db";
+//    private DaoMaster.DevOpenHelper mHelper;
+//    private SQLiteDatabase db;
+//    private DaoMaster mDaoMaster;
+//    private DaoSession mDaoSession;
+//    private static final String DB_NAME = "book_reader.db";
     private List<Activity> list;
 
 
@@ -41,25 +42,26 @@ public class MyApplication extends Application {
         //捕获异常
        //  CrashHandler.getInstance().init(getApplicationContext());
         //初始化GreenDao
-        initGreenDao();
+//        initGreenDao();
+        BookReaderDBManager.getInstance().init(this);
 
     }
-
-    private void initGreenDao() {
-        mHelper = new DaoMaster.DevOpenHelper(this, DB_NAME, null);
-        db = mHelper.getWritableDatabase();
-        // 注意：该数据库连接属于 DaoMaster，所以多个 Ses sion 指的是相同的数据库连接。
-        mDaoMaster = new DaoMaster(db);
-        mDaoSession = mDaoMaster.newSession();
-    }
-
-    public DaoSession getDaoSession() {
-        return mDaoSession;
-    }
-
-    public SQLiteDatabase getDb() {
-        return db;
-    }
+//
+//    private void initGreenDao() {
+//        mHelper = new DaoMaster.DevOpenHelper(this, DB_NAME, null);
+//        db = mHelper.getWritableDatabase();
+//        // 注意：该数据库连接属于 DaoMaster，所以多个 Ses sion 指的是相同的数据库连接。
+//        mDaoMaster = new DaoMaster(db);
+//        mDaoSession = mDaoMaster.newSession();
+//    }
+//
+//    public DaoSession getDaoSession() {
+//        return mDaoSession;
+//    }
+//
+//    public SQLiteDatabase getDb() {
+//        return db;
+//    }
 
     /**
      * 将activity添加到容器中

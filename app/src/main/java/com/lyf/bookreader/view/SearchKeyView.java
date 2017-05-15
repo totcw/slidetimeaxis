@@ -7,6 +7,13 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.github.lzyzsd.randomcolor.RandomColor;
+import com.lyf.bookreader.utils.ScreenUtils;
+import com.lyf.bookreader.utils.UiUtils;
 
 import java.util.Random;
 
@@ -16,12 +23,13 @@ import java.util.Random;
  */
 
 public class SearchKeyView extends AppCompatTextView {
+
     public SearchKeyView(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public SearchKeyView(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public SearchKeyView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -29,16 +37,11 @@ public class SearchKeyView extends AppCompatTextView {
     }
 
     public void setBackgroundShapeColor() {
-       Random random = new Random();
         GradientDrawable drawable = new GradientDrawable();// 形状-圆角矩形
         drawable.setShape(GradientDrawable.RECTANGLE);// 圆角
         drawable.setCornerRadius(8);
-        int alpha = 255;
-        int red = random.nextInt(50);
-        int green =  random.nextInt(50);
-        int blue =  random.nextInt(0);// 随机颜色
-        drawable.setColor(Color.argb(alpha, red, green, 0));
-//        drawable.setColor(Color.parseColor(color));
+        RandomColor randomColor = new RandomColor();
+        drawable.setColor(randomColor.randomColor());
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         gradientDrawable.setCornerRadius(8);
@@ -54,8 +57,56 @@ public class SearchKeyView extends AppCompatTextView {
     }
 
     public void init(String history) {
+        setTextColor(Color.parseColor("#fafafa"));
+        ViewGroup.MarginLayoutParams params =
+                new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.leftMargin = 10;
+        params.bottomMargin = 10;
+        params.topMargin = 10;
+        params.rightMargin = 10;
+        setPadding(10, 5, 10, 5);
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        setLayoutParams(params);
         setBackgroundShapeColor();
         setText(history);
+
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callBack != null) {
+                    callBack.postTextOnClick(getText().toString());
+                }
+            }
+        });
+
+//        setOnLongClickListener(new OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                showDeleteIcon();
+//                return true;
+//            }
+//
+//
+//        });
     }
+
+    private void showDeleteIcon() {
+
+    }
+
+    /*点击后将文本回调出去用于显示在搜索框*/
+    public interface CallBackOnClick {
+        void postTextOnClick(String text);
+
+//        void deleteHistoryOnLongClick();
+    }
+
+    CallBackOnClick callBack;
+
+    public void setCallBackOnClick(CallBackOnClick callBack) {
+        this.callBack = callBack;
+    }
+
 
 }
