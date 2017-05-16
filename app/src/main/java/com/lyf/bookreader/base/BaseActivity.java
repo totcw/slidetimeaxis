@@ -2,6 +2,7 @@ package com.lyf.bookreader.base;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.PopupWindow;
 
 import com.betterda.mylibrary.LoadingPager;
 import com.lyf.bookreader.R;
+import com.lyf.bookreader.utils.DialogUtils;
 import com.lyf.bookreader.utils.RxManager;
 import com.lyf.bookreader.utils.UiUtils;
 
@@ -51,12 +53,7 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
         }
         initListener();
         init();
-
-
-
     }
-
-
 
 
     /**
@@ -108,9 +105,6 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
     }
 
 
-
-
-
     public Activity getmActivity() {
         return this;
     }
@@ -127,9 +121,6 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
     public RxManager getRxManager() {
         return mRxManager;
     }
-
-
-
 
 
     /**
@@ -219,5 +210,28 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
         super.onDestroy();
     }
 
+    private Dialog mProgressDialog;
 
+    protected Dialog getLoadingDialog(String tips) {
+        if (mProgressDialog == null) {
+            return DialogUtils.createProgressDialog(this, tips);
+        }
+        return mProgressDialog;
+    }
+
+    protected void showLoadingDialog(String tips) {
+        if (mProgressDialog == null) {
+            mProgressDialog = DialogUtils.createProgressDialog(this, tips);
+        }
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+    }
+
+    protected void dismissLoadingDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
 }

@@ -132,6 +132,7 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
             Toast.makeText(getmActivity(), "没有相应的书籍", Toast.LENGTH_SHORT).show();
             return;
         }
+        showLoadingDialog("加载中...");
         getRxManager().add(
                 NetWork.getNetService().getSearch(query)
                         .compose(NetWork.handleResult(new BaseCallModel<List<BookCase>>()))
@@ -152,17 +153,17 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
                                 } else {
                                     Toast.makeText(getmActivity(), "没有相应的书籍", Toast.LENGTH_SHORT).show();
                                 }
-
+                                dismissLoadingDialog();
                             }
 
                             @Override
                             public void onFail(String resultMsg) {
-
+                                dismissLoadingDialog();
                             }
 
                             @Override
                             public void onExit() {
-
+                                dismissLoadingDialog();
                             }
                         })
         );

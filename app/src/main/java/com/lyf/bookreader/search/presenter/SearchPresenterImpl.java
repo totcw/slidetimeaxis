@@ -17,6 +17,7 @@ import com.lyf.bookreader.utils.GLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import rx.Observable;
@@ -101,7 +102,9 @@ public class SearchPresenterImpl extends BasePresenter<SearchContract.View, Sear
                     public List<String> call(List<SearchEntity> searchEntities) {
                         if (searchEntities != null && searchEntities.size() > 0) {
                             for (SearchEntity entity : searchEntities) {
-                                historySearchStringList.add(entity.getKey());
+                                if (!historySearchStringList.contains(entity.getKey())) {
+                                    historySearchStringList.add(entity.getKey());
+                                }
                             }
                             Collections.reverse(historySearchStringList);
                             if (historySearchStringList.size() > 10) {

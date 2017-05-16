@@ -2,6 +2,8 @@ package com.lyf.bookreader.javabean;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Unique;
 
 import java.io.Serializable;
 
@@ -17,9 +19,11 @@ public class SearchEntity implements Serializable {
     public SearchEntity(String key) {
         this.key = key;
     }
+
     @Generated(hash = 1021466028)
     public SearchEntity() {
     }
+
     public String getKey() {
         return key;
     }
