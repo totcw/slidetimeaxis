@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lyf.bookreader.R;
+
 
 /**
  *
@@ -29,10 +31,10 @@ public class IndicatorView extends LinearLayout {
     public IndicatorView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        View.inflate(context, com.betterda.mylibrary.R.layout.bottom_layout, this);
+        View.inflate(context, R.layout.bottom_layout, this);
       //  bottom_line = findViewById(R.id.bottom_line);
-        mIvBottm = (ImageView) findViewById(com.betterda.mylibrary.R.id.iv_bottom);
-        mTvBottom = (TextView) findViewById(com.betterda.mylibrary.R.id.tv_bottom);
+        mIvBottm = (ImageView) findViewById(R.id.iv_bottom);
+        mTvBottom = (TextView) findViewById(R.id.tv_bottom);
     }
 
     /**
