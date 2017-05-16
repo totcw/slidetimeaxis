@@ -123,8 +123,8 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
         CacheUtils.putBoolean(getView().getmActivity(), Constants.ISNIGHT, isNight);
         getView().getBookReadMode().setText(getView().getmActivity().getString(isNight ? R.string.book_read_mode_day_manual_setting
                 : R.string.book_read_mode_night_manual_setting));
-        Drawable drawable = ContextCompat.getDrawable(getView().getmActivity(), isNight ? R.mipmap.ic_menu_mode_day_normal
-                : R.mipmap.ic_menu_mode_night_normal);
+        Drawable drawable = ContextCompat.getDrawable(getView().getmActivity(), isNight ? R.drawable.ic_action_sun
+                : R.drawable.ic_action_sun);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
         getView().getBookReadMode().setCompoundDrawables(null, drawable, null, null);
 

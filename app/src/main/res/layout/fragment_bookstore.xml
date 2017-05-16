@@ -23,7 +23,7 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_marginRight="10dp"
-                android:background="@mipmap/search_icon" />
+                android:background="@drawable/ic_action_search" />
 
             <TextView
                 style="@style/textview_wrap"

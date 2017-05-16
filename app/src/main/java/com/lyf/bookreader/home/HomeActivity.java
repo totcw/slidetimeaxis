@@ -74,9 +74,9 @@ public class HomeActivity extends BaseActivity<HomeContract.Presenter> implement
      * 初始化底部导航
      */
     private void initIdv() {
-        mIdvShouye.setIvBackground(R.drawable.ic_action_book,R.drawable.action_book);
-        mIdvFind.setIvBackground(R.drawable.ic_action_tiles_small,R.drawable.action_tiles_small);
-        mIdvMy.setIvBackground(R.drawable.ic_action_user,R.drawable.action_user);
+        mIdvShouye.setIvBackground(R.drawable.ic_action_book,R.drawable.action_book_sel);
+        mIdvFind.setIvBackground(R.drawable.ic_action_tiles_small,R.drawable.action_tiles_small_sel);
+        mIdvMy.setIvBackground(R.drawable.ic_action_user,R.drawable.action_user_sel);
 
         mIdvShouye.setLineBackground(getResources().getColor(R.color.shouye_lv_tv),getResources().getColor(R.color.bg));
         mIdvFind.setLineBackground(getResources().getColor(R.color.shouye_lv_tv),getResources().getColor(R.color.bg));

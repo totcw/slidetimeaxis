@@ -13,7 +13,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@null"
-            android:src="@mipmap/ab_back" />
+            android:src="@drawable/ic_action_arrow_left" />
 
         <TextView
             android:layout_centerInParent="true"

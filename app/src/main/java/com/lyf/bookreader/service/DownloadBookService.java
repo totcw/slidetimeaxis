@@ -120,7 +120,7 @@ public class DownloadBookService extends Service {
     private void setNotification() {
 
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_reader_ab_download)
+                .setSmallIcon(R.drawable.ic_action_download)
                 .setContentTitle("正在下载")
                 .setContentText("Downloading File")
                 .setAutoCancel(true);

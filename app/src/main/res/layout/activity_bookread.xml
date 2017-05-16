@@ -30,7 +30,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@null"
-            android:src="@mipmap/ab_back" />
+            android:src="@drawable/ic_action_arrow_left" />
 
         <TextView
             android:id="@+id/tv_bookread_source"
@@ -63,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@mipmap/ic_menu_mode_night_normal"
+            android:drawableTop="@drawable/ic_action_sun"
             android:gravity="center"
             android:text="@string/book_read_mode_day"
             android:textColor="@color/book_read_bottom_text"
@@ -74,7 +74,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@mipmap/ic_menu_settings_normal"
+            android:drawableTop="@drawable/ic_action_font_smaller"
             android:gravity="center"
             android:text="@string/book_read_settings"
             android:textColor="@color/book_read_bottom_text"
@@ -85,7 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@mipmap/ic_reader_ab_download"
+            android:drawableTop="@drawable/ic_action_download"
             android:gravity="center"
             android:text="@string/book_read_download"
             android:textColor="@color/book_read_bottom_text"
@@ -97,7 +97,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@mipmap/ic_menu_toc_normal"
+            android:drawableTop="@drawable/ic_action_database"
             android:gravity="center"
             android:text="@string/book_read_toc"
             android:textColor="@color/book_read_bottom_text"
