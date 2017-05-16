@@ -24,24 +24,24 @@
             android:background="#ffffff"
             android:orientation="horizontal">
 
-            <com.betterda.mylibrary.view.IndicatorView
+            <com.lyf.bookreader.view.IndicatorView
                 android:id="@+id/idv_activity_main_shouye"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"></com.betterda.mylibrary.view.IndicatorView>
+                android:layout_weight="1"></com.lyf.bookreader.view.IndicatorView>
 
 
-            <com.betterda.mylibrary.view.IndicatorView
+            <com.lyf.bookreader.view.IndicatorView
                 android:id="@+id/idv_activity_main_find"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"></com.betterda.mylibrary.view.IndicatorView>
+                android:layout_weight="1"></com.lyf.bookreader.view.IndicatorView>
 
-            <com.betterda.mylibrary.view.IndicatorView
+            <com.lyf.bookreader.view.IndicatorView
                 android:id="@+id/idv_activity_main_my"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"></com.betterda.mylibrary.view.IndicatorView>
+                android:layout_weight="1"></com.lyf.bookreader.view.IndicatorView>
 
 
         </LinearLayout>

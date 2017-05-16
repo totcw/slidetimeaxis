@@ -103,4 +103,30 @@ public class Book {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        if (page != book.page) return false;
+        if (id != null ? !id.equals(book.id) : book.id != null) return false;
+        if (bookname != null ? !bookname.equals(book.bookname) : book.bookname != null)
+            return false;
+        if (chaptername != null ? !chaptername.equals(book.chaptername) : book.chaptername != null)
+            return false;
+        return content != null ? content.equals(book.content) : book.content == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (bookname != null ? bookname.hashCode() : 0);
+        result = 31 * result + page;
+        result = 31 * result + (chaptername != null ? chaptername.hashCode() : 0);
+        result = 31 * result + (content != null ? content.hashCode() : 0);
+        return result;
+    }
 }

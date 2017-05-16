@@ -71,8 +71,12 @@ public class DirectoryPresenterImpl extends BasePresenter<DirectoryContract.View
         .subscribe(new MyObserver<List<Book>>() {
             @Override
             protected void onSuccess(List<Book> data, String resultMsg) {
-                if (data != null && data.size() > 0) {
-                    mDirectoryList.addAll(data);
+                if (data != null ) {
+                    for (int i = 0; i < data.size(); i++) {
+                        if (!mDirectoryList.contains(data.get(i))) {
+                            mDirectoryList.add(data.get(i));
+                        }
+                    }
                     mAdapter.notifyDataSetChanged();
                     getView().getLoadPager().hide();
                 } else {
