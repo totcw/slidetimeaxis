@@ -31,12 +31,12 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
     protected RxManager mRxManager;
     private PopupWindow popupWindow;
     private AlertDialog.Builder builder;
-
+    protected Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mActivity = this;
         mRxManager = new RxManager();
 
         mPresenter = onLoadPresenter();

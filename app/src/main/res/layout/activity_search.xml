@@ -27,6 +27,7 @@
         android:text="本地记录" />
 
     <com.lyf.bookreader.view.SearchKeyLayout
+        android:animateLayoutChanges="true"
         android:id="@+id/id_skl_activity_search_localHistoryContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -43,6 +44,7 @@
         android:text="热门词汇" />
 
     <com.lyf.bookreader.view.SearchKeyLayout
+
         android:id="@+id/id_skl_activity_search_hotSearchContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

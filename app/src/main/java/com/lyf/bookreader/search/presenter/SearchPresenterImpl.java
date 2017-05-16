@@ -38,49 +38,49 @@ public class SearchPresenterImpl extends BasePresenter<SearchContract.View, Sear
 
     @Override
     public void getHotSearchList() {
-        AppUtils.runOnUIDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hotSearchStringList = new ArrayList<>();
-                hotSearchStringList.add("武侠");
-                hotSearchStringList.add("修仙");
-                hotSearchStringList.add("诺克塞斯之手-德莱厄斯");
-                hotSearchStringList.add("德玛西亚之力-盖伦");
-                hotSearchStringList.add("影流之主");
-                hotSearchStringList.add("暗夜猎手-薇恩");
-                hotSearchStringList.add("探险家");
-                hotSearchStringList.add("武器大师-贾科斯");
-                hotSearchStringList.add("暗影之权-阿卡丽");
-                hotSearchStringList.add("人民的名义");
-                hotSearchStringList.add("西湖公园");
-                getView().showHotSearchList(hotSearchStringList);
-            }
-        }, 2000);
+//        AppUtils.runOnUIDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                hotSearchStringList = new ArrayList<>();
+//                hotSearchStringList.add("武侠");
+//                hotSearchStringList.add("修仙");
+//                hotSearchStringList.add("诺克塞斯之手-德莱厄斯");
+//                hotSearchStringList.add("德玛西亚之力-盖伦");
+//                hotSearchStringList.add("影流之主");
+//                hotSearchStringList.add("暗夜猎手-薇恩");
+//                hotSearchStringList.add("探险家");
+//                hotSearchStringList.add("武器大师-贾科斯");
+//                hotSearchStringList.add("暗影之权-阿卡丽");
+//                hotSearchStringList.add("人民的名义");
+//                hotSearchStringList.add("西湖公园");
+//                getView().showHotSearchList(hotSearchStringList);
+//            }
+//        }, 2000);
 
-//        getView().getRxManager().add(
-//                NetWork.getNetService()
-//                        .getHotWord()
-//                        .compose(NetWork.handleResult(new BaseCallModel<List<SearchEntity>>()))
-//                        .subscribe(new MyObserver<List<SearchEntity>>() {
-//                            @Override
-//                            protected void onSuccess(List<SearchEntity> data, String resultMsg) {
-//                                hotSearchStringList = new ArrayList<>();
-//                                for (SearchEntity entity : data) {
-//                                    hotSearchStringList.add(entity.getKey());
-//                                }
-//                                getView().showHotSearchList(hotSearchStringList);
-//                            }
-//
-//                            @Override
-//                            public void onFail(String resultMsg) {
-//                                GLToast.show(AppUtils.getAppContext(), resultMsg);
-//                            }
-//
-//                            @Override
-//                            public void onExit() {
-//                                GLToast.show(AppUtils.getAppContext(), "onExit");
-//                            }
-//                        }));
+        getView().getRxManager().add(
+                NetWork.getNetService()
+                        .getHotWord()
+                        .compose(NetWork.handleResult(new BaseCallModel<List<SearchEntity>>()))
+                        .subscribe(new MyObserver<List<SearchEntity>>() {
+                            @Override
+                            protected void onSuccess(List<SearchEntity> data, String resultMsg) {
+                                hotSearchStringList = new ArrayList<>();
+                                for (SearchEntity entity : data) {
+                                    hotSearchStringList.add(entity.getKey());
+                                }
+                                getView().showHotSearchList(hotSearchStringList);
+                            }
+
+                            @Override
+                            public void onFail(String resultMsg) {
+                                GLToast.show(AppUtils.getAppContext(), resultMsg);
+                            }
+
+                            @Override
+                            public void onExit() {
+                                GLToast.show(AppUtils.getAppContext(), "onExit");
+                            }
+                        }));
 
 
     }
@@ -105,7 +105,7 @@ public class SearchPresenterImpl extends BasePresenter<SearchContract.View, Sear
                             }
                             Collections.reverse(historySearchStringList);
                             if (historySearchStringList.size() > 10) {
-                                return historySearchStringList.subList(0,10);
+                                return historySearchStringList.subList(0, 10);
                             }
                             return historySearchStringList;
                         }

@@ -10,7 +10,6 @@ import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.home.contract.HomeContract;
 import com.lyf.bookreader.home.presenter.HomePresenterImpl;
-import com.lyf.bookreader.utils.NativeHelper;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -74,9 +73,9 @@ public class HomeActivity extends BaseActivity<HomeContract.Presenter> implement
      * 初始化底部导航
      */
     private void initIdv() {
-        mIdvShouye.setIvBackground(R.mipmap.activity_main_shouye_normal,R.mipmap.activity_main_shouye_pressed);
-        mIdvFind.setIvBackground(R.mipmap.activity_main_find_normal,R.mipmap.activity_main_find_pressed);
-        mIdvMy.setIvBackground(R.mipmap.activity_main_my_nomal,R.mipmap.activity_main_my_pressed);
+        mIdvShouye.setIvBackground(R.drawable.ic_action_book,R.drawable.action_book);
+        mIdvFind.setIvBackground(R.drawable.ic_action_tiles_small,R.drawable.action_tiles_small);
+        mIdvMy.setIvBackground(R.drawable.ic_action_user,R.drawable.action_user);
 
         mIdvShouye.setLineBackground(getResources().getColor(R.color.shouye_lv_tv),getResources().getColor(R.color.bg));
         mIdvFind.setLineBackground(getResources().getColor(R.color.shouye_lv_tv),getResources().getColor(R.color.bg));
@@ -85,6 +84,7 @@ public class HomeActivity extends BaseActivity<HomeContract.Presenter> implement
         mIdvShouye.setTitle("书架");
         mIdvFind.setTitle("书城");
         mIdvMy.setTitle("我的");
+
 
         mIdvShouye.setTabSelected(true);
     }

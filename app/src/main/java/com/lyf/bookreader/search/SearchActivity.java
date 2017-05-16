@@ -3,6 +3,7 @@ package com.lyf.bookreader.search;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -62,6 +63,7 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
                 @Override
                 public void postTextOnClick(String text) {
                     mSearchView.setQuery(text, true);
+                    UiUtils.openInput(mActivity);
                 }
             });
             view.init(hotKey);
@@ -84,6 +86,7 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
                 @Override
                 public void postTextOnClick(String text) {
                     mSearchView.setQuery(text, true);
+                    UiUtils.openInput(mActivity);
                 }
             });
             view.init(history);
@@ -112,8 +115,7 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
             public boolean onQueryTextSubmit(String query) {
                 getData(query);
                 /*搜索记录插入数据库*/
-                long l = searchEntityDao.insert(new SearchEntity(query));
-                GLToast.show(SearchActivity.this, "插入结果 ：" + l);
+                searchEntityDao.insertOrReplace(new SearchEntity(query));
                 return false;
             }
 
