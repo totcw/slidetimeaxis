@@ -1,6 +1,7 @@
 package com.lyf.bookreader.search.presenter;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import rx.Observable;
 import rx.functions.Action1;
+import swipeRefreshAndLoad.SwipeRefreshAndLoad;
 
 /**
  * 搜索结果
@@ -35,14 +37,44 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
     private List<BookCase> mBookCaseList;
     private CommonAdapter<BookCase> mAdapter;
     private String type; //书的类型
+    private int page=1;
+    private int pageSize =10;
 
     @Override
     public void start() {
         type = getView().getmActivity().getIntent().getStringExtra("type");
         getView().getTitleView().setText(type);
         mBookCaseList = new ArrayList<>();
+        setRefreshAndLoad();
         getData();
+        getView().getLoadPager().setonErrorClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
+            }
+        });
     }
+
+    private void setRefreshAndLoad() {
+        getView().getRefreshAndLoad().setOnRefreshListener(new SwipeRefreshAndLoad.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getView().getRefreshAndLoad().setRefresh(false);
+            }
+        });
+        getView().getRefreshAndLoad().setColorSchemeColors(Color.YELLOW,Color.RED,Color.GREEN,Color.BLUE);
+        //在这里新增上啦加载的回调
+        getView().getRefreshAndLoad().setOnBottomRefreshListenrer(new SwipeRefreshAndLoad.OnBottomRefreshListener() {
+            @Override
+            public void onBottomRefresh() {
+
+                loadMore();
+
+            }
+        });
+    }
+
+
 
     @Override
     public RecyclerView.Adapter getAdapter() {
@@ -87,8 +119,7 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
     private void getData() {
         getView().getLoadPager().setLoadVisable();
         type = "类    别："+type;
-
-        getView().getRxManager().add(NetWork.getNetService().getBookList(type)
+        getView().getRxManager().add(NetWork.getNetService().getBookList(type,page+"",pageSize+"")
                 .compose(NetWork.handleResult(new BaseCallModel<List<BookCase>>()))
                 .subscribe(new MyObserver<List<BookCase>>() {
                     @Override
@@ -104,6 +135,51 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
                     @Override
                     public void onFail(String resultMsg) {
                         getView().getLoadPager().setErrorVisable();
+                    }
+
+                    @Override
+                    public void onExit() {
+
+                    }
+                }));
+    }
+
+    /**
+     *@author : lyf
+     *@email:totcw@qq.com
+     *@创建日期： 2017/5/19
+     *@功能说明：加载更多
+     *@param
+     *@return
+     */
+    private void loadMore() {
+        type = "类    别："+type;
+        page++;
+        getView().getRxManager().add(NetWork.getNetService().getBookList(type,page+"",pageSize+"")
+                .compose(NetWork.handleResult(new BaseCallModel<List<BookCase>>()))
+                .subscribe(new MyObserver<List<BookCase>>() {
+                    @Override
+                    protected void onSuccess(List<BookCase> data, String resultMsg) {
+                        if (data != null&&data.size()>0) {
+                            parserResult(data);
+                            getView().getRefreshAndLoad().setBottomRefreshing(false);
+                        } else {
+                            //为空
+                            getView().getRefreshAndLoad().setNoMore();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFail(String resultMsg) {
+                        getView().getRefreshAndLoad().setError(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getView().getRefreshAndLoad().setBottomRefreshing(true);
+                                page--;
+                                loadMore();
+                            }
+                        });
                     }
 
                     @Override

@@ -34,7 +34,7 @@ public interface NetService {
      */
     @FormUrlEncoded
     @POST("BookCase")
-    Observable<BaseCallModel<List<BookCase>>> getBookList(@Field("type") String type);
+    Observable<BaseCallModel<List<BookCase>>> getBookList(@Field("type") String type,@Field("page") String page,@Field("pageSize") String pageSize);
 
 
     /**

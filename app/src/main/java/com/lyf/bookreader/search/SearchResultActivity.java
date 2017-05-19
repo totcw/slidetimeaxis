@@ -1,6 +1,8 @@
 package com.lyf.bookreader.search;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import com.zhy.base.adapter.recyclerview.DividerItemDecoration;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import swipeRefreshAndLoad.SwipeRefreshAndLoad;
 
 /**
  * @author : lyf
@@ -41,6 +44,8 @@ public class SearchResultActivity extends BaseActivity<SearchResultContract.Pres
     LoadingPager mLoadPagerSearchResult;
     @BindView(R.id.tv_searchresult_title)
     TextView mTvSearchresultTitle;
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshAndLoad mSwipeRefreshLayout;
 
     @Override
     protected SearchResultContract.Presenter onLoadPresenter() {
@@ -59,7 +64,6 @@ public class SearchResultActivity extends BaseActivity<SearchResultContract.Pres
     public void init() {
         super.init();
         initRecycleView();
-
 
     }
 
@@ -95,5 +99,10 @@ public class SearchResultActivity extends BaseActivity<SearchResultContract.Pres
     @Override
     public TextView getTitleView() {
         return mTvSearchresultTitle;
+    }
+
+    @Override
+    public SwipeRefreshAndLoad getRefreshAndLoad() {
+        return mSwipeRefreshLayout;
     }
 }

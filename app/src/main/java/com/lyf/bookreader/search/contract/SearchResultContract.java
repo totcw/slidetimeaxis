@@ -7,6 +7,8 @@ import com.lyf.bookreader.base.IModel;
 import com.lyf.bookreader.base.IPresenter;
 import com.lyf.bookreader.base.IView;
 
+import swipeRefreshAndLoad.SwipeRefreshAndLoad;
+
 /**
  * @author : lyf
  * @version : 1.0.0
@@ -29,6 +31,8 @@ public class SearchResultContract {
 
     public interface View extends IView {
         TextView getTitleView();
+
+        SwipeRefreshAndLoad getRefreshAndLoad();
     }
 
     public interface Presenter extends IPresenter<View> {
