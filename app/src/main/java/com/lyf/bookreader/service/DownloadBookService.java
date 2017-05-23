@@ -53,6 +53,7 @@ public class DownloadBookService extends Service {
     private File outputFile;
 
     private NotificationCompat.Builder notificationBuilder;
+
     private NotificationManager notificationManager;
 
     @Nullable
@@ -98,7 +99,7 @@ public class DownloadBookService extends Service {
                     downloadQueues.add(bookname);
                     mRxManager.post(BookReadPresenterImpl.SERVICE_DOWNLOAD_REPLY, "加入缓存队列成功");
                     //设置下载的通知栏
-                    setNotification();
+                    setNotification(bookname);
                     //开启下载
                     downloadBook(bookname, chapter, total);
 
@@ -117,11 +118,11 @@ public class DownloadBookService extends Service {
      * @创建日期： 2017/5/9
      * @功能说明：设置下载的通知栏
      */
-    private void setNotification() {
+    private void setNotification(String bookname) {
 
         notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_action_download)
-                .setContentTitle("正在下载")
+                .setContentTitle("正在下载 "+bookname)
                 .setContentText("Downloading File")
                 .setAutoCancel(true);
 
@@ -169,7 +170,7 @@ public class DownloadBookService extends Service {
                 .subscribe(new Observer<InputStream>() {
                     @Override
                     public void onCompleted() {
-                        downloadCompleted(page, total);
+                        downloadCompleted(page, total,bookname);
 
                         int nextPage = page + 1;
                         if (nextPage <= total) {
@@ -179,14 +180,14 @@ public class DownloadBookService extends Service {
                             if (downloadQueues != null && bookname != null) {
                                 downloadQueues.remove(bookname);
                             }
-                            sendNotification(page + "/" + total, "下载完成");
+                            sendNotification(page + "/" + total, bookname+"下载完成");
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        sendNotification("", "下载失败");
+                        sendNotification("", bookname+"下载失败");
                     }
 
                     @Override
@@ -215,8 +216,8 @@ public class DownloadBookService extends Service {
     }
 
 
-    private void downloadCompleted(int page, int total) {
-        sendNotification(page + "/" + total, "正在下载");
+    private void downloadCompleted(int page, int total,String bookname) {
+        sendNotification(page + "/" + total, "正在下载 "+bookname);
     }
 
     @Override
