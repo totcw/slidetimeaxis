@@ -149,7 +149,6 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
      *@return
      */
     private void loadMore() {
-        type = "类    别："+type;
         page++;
         getView().getRxManager().add(NetWork.getNetService().getBookList(type,page+"",pageSize+"")
                 .compose(NetWork.handleResult(new BaseCallModel<List<BookCase>>()))
