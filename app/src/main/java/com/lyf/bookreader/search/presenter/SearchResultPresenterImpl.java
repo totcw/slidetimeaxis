@@ -56,13 +56,9 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
     }
 
     private void setRefreshAndLoad() {
-        getView().getRefreshAndLoad().setOnRefreshListener(new SwipeRefreshAndLoad.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getView().getRefreshAndLoad().setRefresh(false);
-            }
-        });
-        getView().getRefreshAndLoad().setColorSchemeColors(Color.YELLOW,Color.RED,Color.GREEN,Color.BLUE);
+        //禁止下拉刷新
+        getView().getRefreshAndLoad().setRefresh(false);
+        getView().getRefreshAndLoad().setBottomColorSchemeColors(Color.YELLOW,Color.RED,Color.GREEN,Color.BLUE);
         //在这里新增上啦加载的回调
         getView().getRefreshAndLoad().setOnBottomRefreshListenrer(new SwipeRefreshAndLoad.OnBottomRefreshListener() {
             @Override

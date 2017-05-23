@@ -95,6 +95,6 @@ dependencies {
     /*随机颜色库*/
     compile 'com.github.lzyzsd.randomcolor:library:1.0.0'
     /*上啦加载*/
-    compile 'swipeRefreshAndLoad:swipeRefreshAndLoad:0.0.2'
+    compile 'swipeRefreshAndLoad:swipeRefreshAndLoad:0.0.3'
 }
 

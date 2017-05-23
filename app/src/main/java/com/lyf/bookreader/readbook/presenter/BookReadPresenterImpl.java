@@ -430,6 +430,10 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
      */
     @Override
     public void saveProgress() {
+        if (getView() == null || getView().getReadView() == null) {
+            return;
+        }
+
         mBeginPos = getView().getReadView().getBeginPos();
 
         getView().getRxManager().add(
@@ -511,6 +515,6 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
 
     @Override
     public void destroy() {
-
+        saveProgress();
     }
 }

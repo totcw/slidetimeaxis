@@ -2,6 +2,7 @@ package com.lyf.bookreader.readbook;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -176,6 +177,12 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
         getPresenter().onActivityResult(requestCode, resultCode, data);
     }
 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        getPresenter().saveProgress();
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public void dismiss() {

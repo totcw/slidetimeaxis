@@ -16,8 +16,12 @@ import android.widget.PopupWindow;
 import com.betterda.mylibrary.LoadingPager;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.utils.DialogUtils;
+import com.lyf.bookreader.utils.PermissionUtil;
 import com.lyf.bookreader.utils.RxManager;
 import com.lyf.bookreader.utils.UiUtils;
+import com.lyf.bookreader.welcome.WelcomeActivity;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -28,7 +32,7 @@ import butterknife.ButterKnife;
  */
 
 public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivity implements IView {
-
+    private String[] REQUEST_PERMISSIONS = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
     protected P mPresenter;
     protected RxManager mRxManager;
     private PopupWindow popupWindow;
@@ -56,6 +60,24 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //统一检查权限
+        PermissionUtil.checkPermission(getmActivity(), REQUEST_PERMISSIONS, new PermissionUtil.permissionInterface() {
+            @Override
+            public void success() {
+
+            }
+
+            @Override
+            public void fail(List<String> permissions) {
+                //没有权限就回到欢迎页面
+                UiUtils.startIntent(getmActivity(), WelcomeActivity.class);
+
+            }
+        });
+    }
     /**
      * 处理业务逻辑
      */
