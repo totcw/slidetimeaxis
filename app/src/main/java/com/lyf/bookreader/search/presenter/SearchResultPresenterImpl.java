@@ -130,6 +130,7 @@ public class SearchResultPresenterImpl extends BasePresenter<SearchResultContrac
 
                     @Override
                     public void onFail(String resultMsg) {
+
                         getView().getLoadPager().setErrorVisable();
                     }
 
