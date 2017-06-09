@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -105,6 +106,8 @@ public class ReadView extends View {
     private String title; //章节名
     private int total;//书本总的章节数
     private boolean isLodaing;//是否正在加载数据,用来判断没加载完,不重复发起请求
+    private boolean isNight;//是否是夜间模式
+    private StringBuilder mContentBuidler;//缓存当前的内容
 
     public ReadView(Context context) {
 
@@ -131,22 +134,21 @@ public class ReadView extends View {
         mFontSize = ScreenUtils.dpToPxInt(18);
         mTitleSize = ScreenUtils.dpToPxInt(20);
         mLineSpace = mFontSize / 5 * 4;
-        mPageLineCount = (mScreenHeight - paddingbottom - mTitleSize*3) / (mFontSize + mLineSpace);
+        mPageLineCount = (mScreenHeight - paddingbottom - mTitleSize * 3) / (mFontSize + mLineSpace);
         mLineCount = (mScreenWidth - paddingLeft - paddingright) / (mFontSize);
-
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mFontSize);
-        mPaint.setColor(Color.BLACK);
         mPaint.setAntiAlias(true);
 
         mTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTitlePaint.setTextSize(mTitleSize);
-        mTitlePaint.setColor(Color.BLACK);
         mTitlePaint.setAntiAlias(true);
         mTitlePaint.setTypeface(Typeface.DEFAULT_BOLD);//设置黑体
 
+        changeMode(isNight);
 
+        mContentBuidler = new StringBuilder();
     }
 
     /**
@@ -192,7 +194,7 @@ public class ReadView extends View {
 
 
         } else {
-            Toast.makeText(mContext,"str=null",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "str=null", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -226,7 +228,7 @@ public class ReadView extends View {
 
     private void drawPrePageBitmap(Canvas canvas) {
 
-        if (mBeginPos >0) {
+        if (mBeginPos > 0) {
             mBeginPos = mEndPos = mBeginPos - (mPageLineCount * mLineCount);
             if (mBeginPos < 0) {
                 mBeginPos = mEndPos = 0;
@@ -299,12 +301,13 @@ public class ReadView extends View {
 
     /**
      * 加载当前页的数据
-     * @param title 章节名
+     *
+     * @param title   章节名
      * @param content 正文
      * @param chapter 当前第几章
-     * @param total 总的章节数
+     * @param total   总的章节数
      */
-    public void drawCurPageBitmap(String title, String content, int chapter,int total) {
+    public void drawCurPageBitmap(String title, String content, int chapter, int total) {
         this.str = content;
         this.title = title;
         this.total = total;
@@ -321,12 +324,15 @@ public class ReadView extends View {
     private boolean drawContent(Canvas canvas, String content) {
         if (content != null) {
             //画背景
-           // canvas.drawBitmap(mBookPageBg, null, rectF, null);
-            canvas.drawColor(Color.WHITE);
+            if (!isNight) {
+                canvas.drawColor(Color.rgb(20, 20, 20));
+            } else {
+                canvas.drawColor(Color.WHITE);
+            }
             //画标题
-            canvas.drawText(title, mTitleSize , mTitleSize*2, mTitlePaint);
+            canvas.drawText(title, mTitleSize, mTitleSize * 2, mTitlePaint);
             //画正文
-            int y = mLineSpace + mFontSize + mTitleSize*3;
+            int y = mLineSpace + mFontSize + mTitleSize * 3;
             for (int i = 0; i < mPageLineCount; i++) {
                 int x = paddingLeft;
                 for (int j = 0; j < mLineCount; j++) {
@@ -334,6 +340,9 @@ public class ReadView extends View {
                         char c = content.charAt(mEndPos);
                         //绘制正文
                         canvas.drawText(String.valueOf(c), x, y, mPaint);
+                        if (mContentBuidler != null) {
+                            mContentBuidler.append(String.valueOf(c));
+                        }
                         //每次加上文字的宽度
                         x += mFontSize;
                         //记录绘制的文字个数
@@ -351,6 +360,50 @@ public class ReadView extends View {
 
     }
 
+    /**
+     * 重画当前页面
+     *
+     * @param canvas
+     * @param content
+     * @return
+     */
+    private boolean reDrawContent(Canvas canvas, String content) {
+        if (content != null&&canvas!=null&&title!=null) {
+            int position = 0;
+            //画背景
+            if (!isNight) {
+                canvas.drawColor(Color.rgb(20, 20, 20));
+            } else {
+                canvas.drawColor(Color.WHITE);
+            }
+            //画标题
+            canvas.drawText(title, mTitleSize, mTitleSize * 2, mTitlePaint);
+            //画正文
+            int y = mLineSpace + mFontSize + mTitleSize * 3;
+            for (int i = 0; i < mPageLineCount; i++) {
+                int x = paddingLeft;
+                for (int j = 0; j < mLineCount; j++) {
+                    if (position < content.length() && position >= 0) {
+                        char c = content.charAt(position);
+                        //绘制正文
+                        canvas.drawText(String.valueOf(c), x, y, mPaint);
+
+                        //每次加上文字的宽度
+                        x += mFontSize;
+                        //记录绘制的文字个数
+                        position++;
+                    }
+
+                }
+                //每次加上文字的高度
+                y += mFontSize;
+                y += mLineSpace;
+            }
+            return true;
+        }
+        return false;
+
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -415,14 +468,32 @@ public class ReadView extends View {
     }
 
     public void setCurrentChapter(int currentChapter) {
-        if (currentChapter >0 && currentChapter < total) {
+        if (currentChapter > 0 && currentChapter < total) {
             this.currentChapter = currentChapter;
         }
 
     }
 
+    //切换日/夜模式
+    public void changeMode(boolean isNight) {
+        this.isNight = isNight;
+        if (!isNight) {
+            mPaint.setColor(Color.rgb(215, 215, 215));
+            mTitlePaint.setColor(Color.rgb(215, 215, 215));
+        } else {
+            mPaint.setColor(Color.BLACK);
+            mTitlePaint.setColor(Color.BLACK);
+        }
+        if (mContentBuidler != null) {
+
+            reDrawContent(mCurrentPageCanvas, mContentBuidler.toString());
+        }
+    }
+
+
     /**
      * 设置是否加载完成
+     *
      * @param lodaing
      */
     public void setLodaing(boolean lodaing) {

@@ -128,6 +128,8 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
         getView().getBookReadMode().setCompoundDrawables(null, drawable, null, null);
 
+        getView().getReadView().changeMode(isNight);
+
     }
 
 

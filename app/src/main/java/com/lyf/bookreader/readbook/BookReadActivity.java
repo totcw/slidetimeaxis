@@ -61,6 +61,7 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
     }
 
 
+
     @Override
     public ReadView getReadView() {
         return mReadView;
@@ -88,9 +89,9 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
                 UiUtils.showToast(getmActivity(),"功能暂未开通!");
                 break;
             case R.id.tv_bookread_mode://模式选择
-                UiUtils.showToast(getmActivity(),"功能暂未开通!");
-               // boolean isNight = !CacheUtils.getBoolean(getmActivity(), Constants.ISNIGHT, false);
-               // getPresenter().changMode(isNight);
+
+                boolean isNight = !CacheUtils.getBoolean(getmActivity(), Constants.ISNIGHT, false);
+                getPresenter().changMode(isNight);
                 break;
             case R.id.tv_bookread_setting:
                 UiUtils.showToast(getmActivity(),"功能暂未开通!");
