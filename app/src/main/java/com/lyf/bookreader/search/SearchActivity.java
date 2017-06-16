@@ -98,7 +98,7 @@ public class SearchActivity extends BaseActivity<SearchContract.Presenter> imple
     public void initView() {
         super.initView();
         setContentView(R.layout.activity_search);
-        GLToast.show(this, NativeHelper.getUrl());
+
     }
 
     @Override

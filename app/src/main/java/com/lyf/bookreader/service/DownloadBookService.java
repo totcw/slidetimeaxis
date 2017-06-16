@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.api.DownloadAPI;
@@ -139,6 +140,12 @@ public class DownloadBookService extends Service {
      * @功能说明：下载书籍
      */
     private void downloadBook(final String bookname, final int page, final int total) {
+
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            Toast.makeText(this,"sd卡不可用",0).show();
+            return;
+        }
+
         //获取保存书本的路径
         outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + bookname, page + ".txt");
         if (outputFile.exists()) {

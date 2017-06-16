@@ -92,7 +92,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
                 if (map == null) {
                     map = new HashMap<>();
-                    map.put("android.permission.WRITE_EXTERNAL_STORAGE", "存储控件");
+                    map.put("android.permission.WRITE_EXTERNAL_STORAGE", "存储空间");
 
 
                 }
