@@ -62,7 +62,7 @@ public class NetWork {
     /**
      * 定义拦截器
      */
-    static Interceptor interceptor = new Interceptor() {
+    /*static Interceptor interceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
             //设置请求时
@@ -90,7 +90,7 @@ public class NetWork {
             return response;
 
         }
-    };
+    };*/
 
 
     /**
@@ -126,7 +126,7 @@ public class NetWork {
     public static  OkHttpClient.Builder getBuilder(long timeout) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-        builder.addInterceptor(interceptor);
+
         //设置缓存
         builder.cache(new Cache(new File(MyApplication.getInstance().getCacheDir(), "responses"), 10 * 1024 * 1024))
         ;

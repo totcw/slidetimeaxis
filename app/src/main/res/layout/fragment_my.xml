@@ -5,16 +5,7 @@
     android:layout_height="match_parent"
 
     android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/bg_blue"
-        android:gravity="center"
-        android:paddingLeft="10dp"
-        android:text="我的"
 
-        android:textColor="@color/white"
-        />
 
 
 
@@ -26,7 +17,7 @@
         android:background="@drawable/shape_bottom_top_line"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:text="关于"
+        android:text="@string/fragment_my_disclaimer"
 
         />
 

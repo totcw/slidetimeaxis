@@ -50,6 +50,11 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity
+            android:name=".personalcenter.DisclaimerActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
 
         <service android:name=".service.DownloadBookService">
 

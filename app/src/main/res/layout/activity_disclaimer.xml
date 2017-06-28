@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_directory_bookname"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/fragment_my_disclaimer"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@color/bg_blue"
+        />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    免费全本小说提醒您:在使用免费小说之前,请您务必仔细阅读并理解本声明，您可以选择不使用免费全本小说，但如果您使用免费全本小说，您的使用行为将被视为对本声明内容的全部认可。
+      免费全本小说是一款提供网络小说阅读的工具，为广大小说爱好者提供一种方便快捷舒适的试读体验。致力于最大程度的减少读者在自行搜索过程中的毫无意义的时间浪费，通过专业的搜索展示不同网站中的网络小说新章节。
+当您点击搜索一本书时，免费全本小说将会对该书名以关键词的形式提交到第三方网站或者搜索引擎（百度谷歌等）第三方网站反馈内容与免费全本小说无关以不承担任何法律责任。第三方搜索引擎结果根据您提交的关键词自动搜索并获得阅读，并不代表我们赞成赞成第三方网站的内容，您应该对使用搜索引擎的搜索结果自行承担风险。我们不做任何形式的保证。
+     我们建议阅读正版，任何单位或者个人认为通过免费全本小说搜索连接到的第三方网页内容可能涉嫌侵犯其网络传播权，应该及时向我们提供书面通知，我们收到法律文件后尽快断开相关连接内容"
+                    />
+</LinearLayout>

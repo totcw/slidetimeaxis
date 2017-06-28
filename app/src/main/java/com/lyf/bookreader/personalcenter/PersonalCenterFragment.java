@@ -41,6 +41,6 @@ public class PersonalCenterFragment extends BaseFragment<PersonalCenterContract.
 
     @OnClick(R.id.tv_my_about)
     public void onClick() {
-        UiUtils.showToast(getmActivity(),"敬请期待!");
+        UiUtils.startIntent(getmActivity(),DisclaimerActivity.class);
     }
 }

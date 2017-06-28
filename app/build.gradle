@@ -96,5 +96,7 @@ dependencies {
     compile 'com.github.lzyzsd.randomcolor:library:1.0.0'
     /*上啦加载*/
     compile 'swipeRefreshAndLoad:swipeRefreshAndLoad:0.0.3'
+    /*权限请求*/
+    compile 'com.lyf:yflibrary:1.0.5'
 }
 

@@ -14,9 +14,10 @@ import android.view.View;
 import android.widget.PopupWindow;
 
 import com.betterda.mylibrary.LoadingPager;
+import com.example.lyf.yflibrary.Permission;
+import com.example.lyf.yflibrary.PermissionResult;
 import com.lyf.bookreader.R;
 import com.lyf.bookreader.utils.DialogUtils;
-import com.lyf.bookreader.utils.PermissionUtil;
 import com.lyf.bookreader.utils.RxManager;
 import com.lyf.bookreader.utils.UiUtils;
 import com.lyf.bookreader.welcome.WelcomeActivity;
@@ -64,17 +65,15 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
     protected void onResume() {
         super.onResume();
         //统一检查权限
-        PermissionUtil.checkPermission(getmActivity(), REQUEST_PERMISSIONS, new PermissionUtil.permissionInterface() {
+        Permission.checkPermisson(this, REQUEST_PERMISSIONS, new PermissionResult() {
             @Override
             public void success() {
 
             }
 
             @Override
-            public void fail(List<String> permissions) {
-                //没有权限就回到欢迎页面
-                UiUtils.startIntent(getmActivity(), WelcomeActivity.class);
-
+            public void fail() {
+                finish();
             }
         });
     }
