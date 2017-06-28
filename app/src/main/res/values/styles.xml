@@ -21,7 +21,10 @@
         <item name="android:windowEnterAnimation">@anim/popupwindow_show</item>
         <item name="android:windowExitAnimation">@anim/popupwindow_hide</item>
     </style>
-
+    <style name="popwin_anim_style_scale">
+        <item name="android:windowEnterAnimation">@anim/popupwindow_scale_show</item>
+        <item name="android:windowExitAnimation">@anim/popupwindow_scale_hide</item>
+    </style>
 
     <style name="BookReaderDialog" parent="android:Theme.Dialog">
         <item name="android:windowFullscreen">true</item>

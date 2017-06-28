@@ -227,7 +227,7 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
             getPresenter().destroy();
         }
         mRxManager.clear();
-        closePopupWindow();
+
 
         super.onDestroy();
     }

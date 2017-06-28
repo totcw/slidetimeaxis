@@ -470,6 +470,24 @@ public class BookReadPresenterImpl extends BasePresenter<BookReadContract.View, 
         );
     }
 
+    @Override
+    public void delFont() {
+        int fontSize = getView().getReadView().getFontSize();
+        setFontSize(--fontSize);
+    }
+
+    @Override
+    public void addFont() {
+        int fontSize = getView().getReadView().getFontSize();
+        setFontSize(++fontSize);
+    }
+
+    private void setFontSize(int fontSize2) {
+        getView().getReadView().setFontSize(fontSize2);
+        getView().getReadView().reCalculate();
+        getView().getReadView().reDrawContent();
+    }
+
     /**
      * @param
      * @return

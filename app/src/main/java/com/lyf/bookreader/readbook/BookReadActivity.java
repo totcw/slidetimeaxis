@@ -2,9 +2,13 @@ package com.lyf.bookreader.readbook;
 
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.lyf.bookreader.R;
@@ -61,7 +65,6 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
     }
 
 
-
     @Override
     public ReadView getReadView() {
         return mReadView;
@@ -86,7 +89,7 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
                 finish();
                 break;
             case R.id.tv_bookread_source:
-                UiUtils.showToast(getmActivity(),"功能暂未开通!");
+                UiUtils.showToast(getmActivity(), "功能暂未开通!");
                 break;
             case R.id.tv_bookread_mode://模式选择
 
@@ -94,7 +97,7 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
                 getPresenter().changMode(isNight);
                 break;
             case R.id.tv_bookread_setting:
-                UiUtils.showToast(getmActivity(),"功能暂未开通!");
+                showFontView();
                 break;
             case R.id.tv_bookread_download://缓存
                 setDownloadView();
@@ -104,6 +107,7 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
                 break;
         }
     }
+
 
     @Override
     public void onClick(View v) {
@@ -123,9 +127,56 @@ public class BookReadActivity extends BaseActivity<BookReadContract.Presenter> i
                 getPresenter().download(0);
                 closePopupWindow();
                 break;
+            case R.id.btn_font_del://减小字体
+                getPresenter().delFont();
+                break;
+            case R.id.btn_font_add://增大字体
+                getPresenter().addFont();
+                break;
         }
     }
 
+    /**
+     * @param
+     * @return
+     * @author : lyf
+     * @email:totcw@qq.com
+     * @创建日期： 2017/6/28
+     * @功能说明： 设置字体大小的界面
+     */
+    private void showFontView() {
+        View view = View.inflate(getmActivity(), R.layout.popupwindow_font, null);
+        Button mBtnDel = (Button) view.findViewById(R.id.btn_font_del);
+        Button mBtnAdd = (Button) view.findViewById(R.id.btn_font_add);
+        mBtnAdd.setOnClickListener(this);
+        mBtnDel.setOnClickListener(this);
+        // 如果activity不在运行 就返回
+        if (this.isFinishing()) {
+            return;
+        }
+
+       PopupWindow  popupWindow = new PopupWindow(view, -2, -2);
+        // 设置点到外面可以取消,下面这2句要一起
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        //设置为true 会拦截事件,pop外部的控件无法获取到事件
+        popupWindow.setFocusable(true);
+
+        //设置可以触摸
+        popupWindow.setTouchable(true);
+        popupWindow.update();
+        if (popupWindow != null) {
+            if (!popupWindow.isShowing()) {
+                //设置动画
+                popupWindow.setAnimationStyle(R.style.popwin_anim_style_scale);
+                popupWindow.showAtLocation(mLinearBookreadBottom, Gravity.BOTTOM, 0, mLinearBookreadBottom.getMeasuredHeight());
+
+            }
+        }
+
+
+
+    }
 
     /**
      * @param

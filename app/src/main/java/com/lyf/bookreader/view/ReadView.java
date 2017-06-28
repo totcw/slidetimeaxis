@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -16,6 +15,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.lyf.bookreader.R;
+import com.lyf.bookreader.utils.CacheUtils;
+import com.lyf.bookreader.utils.Constants;
 import com.lyf.bookreader.utils.ScreenUtils;
 
 /**
@@ -131,24 +132,33 @@ public class ReadView extends View {
         mNextPageCanvas = new Canvas(mNextPageBitmap);
         mPrePageCanvas = new Canvas(mPrePageBitmap);
 
-        mFontSize = ScreenUtils.dpToPxInt(18);
-        mTitleSize = ScreenUtils.dpToPxInt(20);
-        mLineSpace = mFontSize / 5 * 4;
-        mPageLineCount = (mScreenHeight - paddingbottom - mTitleSize * 3) / (mFontSize + mLineSpace);
-        mLineCount = (mScreenWidth - paddingLeft - paddingright) / (mFontSize);
-
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setTextSize(mFontSize);
-        mPaint.setAntiAlias(true);
-
+        //创建标题画笔
         mTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mTitlePaint.setTextSize(mTitleSize);
         mTitlePaint.setAntiAlias(true);
         mTitlePaint.setTypeface(Typeface.DEFAULT_BOLD);//设置黑体
+        //创建字体画笔
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setAntiAlias(true);
+
+        mTitleSize = ScreenUtils.dpToPxInt(20);
+        mFontSize = CacheUtils.getInt(context, Constants.FONT_SIZE, ScreenUtils.dpToPxInt(18));
+        mTitlePaint.setTextSize(mTitleSize);
+        reCalculate();
 
         changeMode(isNight);
 
         mContentBuidler = new StringBuilder();
+    }
+
+    /**
+     * 重新设置字体的画笔大小,还有 行距,行数等的计算
+     */
+    public void reCalculate() {
+        mLineSpace = mFontSize / 5 * 4;
+        mPageLineCount = (mScreenHeight - paddingbottom - mTitleSize * 3) / (mFontSize + mLineSpace);
+        mLineCount = (mScreenWidth - paddingLeft - paddingright) / (mFontSize);
+        mPaint.setTextSize(mFontSize);
+
     }
 
     /**
@@ -369,6 +379,7 @@ public class ReadView extends View {
      */
     private boolean reDrawContent(Canvas canvas, String content) {
         if (content != null&&canvas!=null&&title!=null) {
+            System.out.println("重画2");
             int position = 0;
             //画背景
             if (!isNight) {
@@ -382,6 +393,7 @@ public class ReadView extends View {
             int y = mLineSpace + mFontSize + mTitleSize * 3;
             for (int i = 0; i < mPageLineCount; i++) {
                 int x = paddingLeft;
+
                 for (int j = 0; j < mLineCount; j++) {
                     if (position < content.length() && position >= 0) {
                         char c = content.charAt(position);
@@ -484,9 +496,13 @@ public class ReadView extends View {
             mPaint.setColor(Color.BLACK);
             mTitlePaint.setColor(Color.BLACK);
         }
-        if (mContentBuidler != null) {
+        reDrawContent();
+    }
 
+    public void reDrawContent() {
+        if (mContentBuidler != null) {
             reDrawContent(mCurrentPageCanvas, mContentBuidler.toString());
+            postInvalidate();
         }
     }
 
@@ -514,5 +530,14 @@ public class ReadView extends View {
 
     public void setBeginPos(int beginPos) {
         mBeginPos = beginPos;
+    }
+
+    public int getFontSize() {
+        return mFontSize;
+    }
+
+    public void setFontSize(int fontSize) {
+        mFontSize = fontSize;
+        CacheUtils.putInt(mContext,Constants.FONT_SIZE,mFontSize);
     }
 }

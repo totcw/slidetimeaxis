@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="300dp"
+                android:padding="20dp"
+              android:background="@color/white"
+              android:layout_height="100dp">
+
+
+            <Button
+                android:id="@+id/btn_font_del"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aa-"
+                android:textColor="@color/white"
+                android:background="@android:color/black"
+                />
+
+
+    <Button
+        android:id="@+id/btn_font_add"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aa+"
+        android:textColor="@color/white"
+        android:background="@android:color/black"
+        />
+</RelativeLayout>

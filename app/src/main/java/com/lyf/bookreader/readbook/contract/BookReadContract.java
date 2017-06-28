@@ -51,6 +51,17 @@ public class BookReadContract {
          *@return
          */
         void saveProgress();
+        /**
+         *@author : lyf
+         *@email:totcw@qq.com
+         *@创建日期： 2017/6/28
+         *@功能说明：减少字体
+         *@param
+         *@return
+         */
+        void delFont();
+
+        void addFont();
     }
 
     public interface Model extends IModel{
