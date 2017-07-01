@@ -72,6 +72,7 @@ public class DirectoryActivity extends BaseActivity<DirectoryContract.Presenter>
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_directory_bookname:
+                mRvDirectory.scrollToPosition(100);
                 break;
             case R.id.tv_directory_close:
                 back();

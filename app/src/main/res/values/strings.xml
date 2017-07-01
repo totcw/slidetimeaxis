@@ -27,10 +27,13 @@
     <string name="tv_pp_download_cacheall">缓存全本</string>
     <string name="tv_pp_download_cacheleave">缓存剩余章节</string>
     <string name="tv_pp_download_cachefive">缓存后面50章</string>
+    <string name="directory">目录</string>
+    <string name="close">关闭</string>
 
     <!--书本详情界面-->
     <string name="tv_addbookcase_introduce">简介:</string>
 
     <string name="fragment_my_disclaimer">免责声明</string>
+
 
 </resources>

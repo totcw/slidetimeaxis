@@ -8,7 +8,7 @@
                 android:id="@+id/tv_directory_bookname"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="书名"
+                android:text="@string/directory"
                 android:textSize="16sp"
                 android:textColor="@color/white"
                 android:gravity="center"
@@ -27,10 +27,17 @@
 
                 </android.support.v7.widget.RecyclerView>
 
+
+                <com.lyf.bookreader.view.SlideBar
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+
                 <com.betterda.mylibrary.LoadingPager
                     android:id="@+id/loadpager_directory"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"></com.betterda.mylibrary.LoadingPager>
+
             </FrameLayout>
 
 
@@ -38,7 +45,7 @@
         android:id="@+id/tv_directory_close"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:text="关闭"
+        android:text="@string/close"
         android:textSize="16sp"
         android:textColor="@color/white"
         android:gravity="center"
