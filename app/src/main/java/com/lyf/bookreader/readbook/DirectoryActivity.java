@@ -11,6 +11,7 @@ import com.lyf.bookreader.R;
 import com.lyf.bookreader.base.BaseActivity;
 import com.lyf.bookreader.readbook.contract.DirectoryContract;
 import com.lyf.bookreader.readbook.presenter.DirectoryPresenterImpl;
+import com.lyf.bookreader.view.SlideBar;
 import com.zhy.base.adapter.recyclerview.DividerItemDecoration;
 
 import butterknife.BindView;
@@ -33,7 +34,7 @@ import butterknife.OnClick;
  * @end
  */
 
-public class DirectoryActivity extends BaseActivity<DirectoryContract.Presenter> implements DirectoryContract.View {
+public class DirectoryActivity extends BaseActivity<DirectoryContract.Presenter> implements DirectoryContract.View, SlideBar.OnTouchingChangedListener {
     @BindView(R.id.tv_directory_bookname)
     TextView mTvDirectoryBookname;
     @BindView(R.id.rv_directory)
@@ -42,6 +43,8 @@ public class DirectoryActivity extends BaseActivity<DirectoryContract.Presenter>
     TextView mTvDirectoryClose;
     @BindView(R.id.loadpager_directory)
     LoadingPager mLoadpagerDirectory;
+    @BindView(R.id.slidebar)
+    SlideBar mSlideBar;
 
     @Override
     protected DirectoryContract.Presenter onLoadPresenter() {
@@ -59,11 +62,13 @@ public class DirectoryActivity extends BaseActivity<DirectoryContract.Presenter>
     public void init() {
         super.init();
         initRecycleview();
+        mSlideBar.setOnTouchingChangedListener(this);
+
     }
 
     private void initRecycleview() {
         mRvDirectory.setLayoutManager(new LinearLayoutManager(getmActivity()));
-        mRvDirectory.addItemDecoration(new DividerItemDecoration(getmActivity(),DividerItemDecoration.VERTICAL_LIST));
+        mRvDirectory.addItemDecoration(new DividerItemDecoration(getmActivity(), DividerItemDecoration.VERTICAL_LIST));
         mRvDirectory.setAdapter(getPresenter().getAdapter());
     }
 
@@ -83,5 +88,20 @@ public class DirectoryActivity extends BaseActivity<DirectoryContract.Presenter>
     @Override
     public LoadingPager getLoadPager() {
         return mLoadpagerDirectory;
+    }
+
+    /**
+     * SlideBar的回调
+     * @param position
+     */
+    @Override
+    public void onTouchingChanged(int position) {
+        //将recycleview滑动到指定位置
+        mRvDirectory.smoothScrollToPosition(position);
+    }
+
+    @Override
+    public SlideBar getSlideBar() {
+        return mSlideBar;
     }
 }

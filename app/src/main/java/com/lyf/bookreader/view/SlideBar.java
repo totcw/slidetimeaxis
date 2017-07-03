@@ -1,6 +1,8 @@
 package com.lyf.bookreader.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
+import com.lyf.bookreader.R;
+
 /**
  * 版权：版权所有 (厦门北特达软件有限公司) 2017
  * author : lyf
@@ -17,7 +21,7 @@ import android.view.ViewConfiguration;
  * email:totcw@qq.com
  * see:
  * 创建日期： 2017/7/1
- * 功能说明：
+ * 功能说明： 控制recycleview滑动的控件
  * begin
  * 修改记录:
  * 修改后版本:
@@ -27,10 +31,12 @@ import android.view.ViewConfiguration;
  */
 
 public class SlideBar extends View {
-    private int mTouchSlop;
+    private int mSlideBarHeight =100;//滑动控件的高度
     Paint mPaint;
     private float mDownY;
     private OnTouchingChangedListener mOnTouchingChangedListener;
+    private int size; //容器的大小
+    private int mWidth;//滑动控件的宽度
 
     public SlideBar(Context context) {
         this(context, null);
@@ -41,7 +47,6 @@ public class SlideBar extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(Color.GRAY);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     @Override
@@ -79,7 +84,13 @@ public class SlideBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRect(0, 0, 100,  100, mPaint);
+
+        Bitmap bitmap =BitmapFactory.decodeResource(getResources(), R.mipmap.title_scroll_n);
+        int height = bitmap.getHeight();
+        mWidth = bitmap.getWidth();
+        mSlideBarHeight = height > mWidth ? height : mWidth;
+        canvas.drawBitmap(bitmap,getMeasuredWidth()- mWidth,0,mPaint);
+
     }
 
 
@@ -89,51 +100,62 @@ public class SlideBar extends View {
             case MotionEvent.ACTION_DOWN:
                 float downX = event.getX();
                 mDownY = event.getY();
-                if (downX < 100 && downX > 0) {
-                    if (mDownY < Math.abs(getScrollY()) + 100 && mDownY > Math.abs(getScrollY())) {
-
-                    } else {
-                        return false;
-                    }
-                } else {
+                //如果按下的位置不是拖拽图片就不响应事件
+                if (downX > getMeasuredWidth() || downX < getMeasuredWidth()- mWidth|| mDownY > Math.abs(getScrollY()) + mSlideBarHeight
+                        || mDownY < Math.abs(getScrollY())) {
                     return false;
                 }
 
                 break;
             case MotionEvent.ACTION_MOVE:
-
-                float diffY = event.getY() - mDownY;
-                //判断界限
-                if (getScrollY() - diffY > 0) {
-                    diffY = getScrollY();
-                }
-                if (getScrollY() - diffY < -(getMeasuredHeight()-100)) {
-                    diffY = getScrollY() + getMeasuredHeight()-100;
-                }
-                int scrollHeight = getScrollY() - (int) diffY;
-
-                float i = Math.abs(scrollHeight)*1.0f / (getMeasuredHeight()-100);
-
-                System.out.println("scrollHeight:"+scrollHeight);
-                System.out.println("getMeasuredHeight:"+getMeasuredHeight());
-                System.out.println("i:"+i);
-                if (mOnTouchingChangedListener != null) {
-
-                    mOnTouchingChangedListener.onTouchingChanged(0);
-                }
-
+                float diffY = move(event);
                 //滑动
                 scrollBy(0, -(int) diffY);
                 mDownY = event.getY();
-
                 break;
             case MotionEvent.ACTION_UP:
+                move(event);
+                break;
+            case MotionEvent.ACTION_OUTSIDE:
+                move(event);
                 break;
         }
         return true;
     }
 
+    private float move(MotionEvent event) {
+        float diffY = event.getY() - mDownY;
+        //判断界限
+        if (getScrollY() - diffY > 0) {
+            diffY = getScrollY();
+        }
+        if (getScrollY() - diffY < -(getMeasuredHeight()-mSlideBarHeight)) {
+            diffY = getScrollY() + getMeasuredHeight()-mSlideBarHeight;
+        }
+        //已经滑动的距离
+        int scrollHeight = getScrollY() - (int) diffY;
+        //求出滑动的距离占View的高度的百分比
+        float progress = Math.abs(scrollHeight)*1.0f / (getMeasuredHeight()-mSlideBarHeight);
+        //使得返回的position的范围在0~size之间
+        if (progress >= 0 && progress <= 1) {
+            int position = (int) Math.ceil(progress * size);
+            if (mOnTouchingChangedListener != null) {
+                mOnTouchingChangedListener.onTouchingChanged(position);
+            }
+        }
+
+        return diffY;
+    }
+
     public interface OnTouchingChangedListener {
         void onTouchingChanged(int position);
+    }
+
+    public void setOnTouchingChangedListener(OnTouchingChangedListener onTouchingChangedListener) {
+        mOnTouchingChangedListener = onTouchingChangedListener;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

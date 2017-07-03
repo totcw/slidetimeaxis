@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import com.lyf.bookreader.base.IModel;
 import com.lyf.bookreader.base.IPresenter;
 import com.lyf.bookreader.base.IView;
+import com.lyf.bookreader.view.SlideBar;
 
 /**
  * @author : lyf
@@ -25,6 +26,7 @@ import com.lyf.bookreader.base.IView;
 public class DirectoryContract {
 
     public interface View extends IView{
+        SlideBar getSlideBar();
     }
 
     public interface Presenter extends IPresenter<View>{

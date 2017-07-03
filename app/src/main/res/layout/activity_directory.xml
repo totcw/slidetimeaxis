@@ -29,6 +29,7 @@
 
 
                 <com.lyf.bookreader.view.SlideBar
+                    android:id="@+id/slidebar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
