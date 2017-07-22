@@ -21,6 +21,10 @@ import com.betterda.mylibrary.ShapeLoadingDialog;
 /**
  * 界面相关的工具类
  * Created by Administrator on 2016/12/5.
+ *
+ *
+ *
+ *
  */
 
 public class UiUtils {
