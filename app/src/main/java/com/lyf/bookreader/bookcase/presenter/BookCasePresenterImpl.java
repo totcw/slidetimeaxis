@@ -135,7 +135,7 @@ public class BookCasePresenterImpl extends BasePresenter<BookCaseContract.View, 
 
     @Override
     public void destroy() {
-        System.out.println("ff");
+
     }
 
 }

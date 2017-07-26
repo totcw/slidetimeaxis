@@ -5,4 +5,8 @@
     <!--阅读界面相关文字大小-->
     <dimen name="book_read_bottom_text">12dp</dimen>
     <dimen name="book_read_top_text">16sp</dimen>
+    <dimen name="textsize_little">13.0sp</dimen>
+    <dimen name="fragment_my_marginright">12dp</dimen>
+    <dimen name="fragment_my_left">40dp</dimen>
+    <dimen name="fragment_my_iv">30dp</dimen>
 </resources>

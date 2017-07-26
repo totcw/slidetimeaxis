@@ -34,6 +34,7 @@
     <string name="tv_addbookcase_introduce">简介:</string>
 
     <string name="fragment_my_disclaimer">免责声明</string>
+    <string name="fragment_my_download">下载管理</string>
 
 
 </resources>

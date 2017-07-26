@@ -55,6 +55,11 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity
+            android:name=".personalcenter.DownloadActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
 
         <service android:name=".service.DownloadBookService">
 

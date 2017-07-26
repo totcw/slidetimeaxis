@@ -20,4 +20,7 @@
     <!--阅读页面状态栏背景颜色-->
     <color name="reader_menu_bg_color">#191919</color>
 
+    <color name="text_color">#ffffffff</color>
+    <color name="bg_green">#5ed3ff</color>
+
 </resources>

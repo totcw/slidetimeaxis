@@ -37,10 +37,15 @@ public class PersonalCenterFragment extends BaseFragment<PersonalCenterContract.
     }
 
 
-
-
-    @OnClick(R.id.tv_my_about)
-    public void onClick() {
-        UiUtils.startIntent(getmActivity(),DisclaimerActivity.class);
+    @OnClick({R.id.tv_my_about, R.id.tv_my_download})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_my_about:
+                UiUtils.startIntent(getmActivity(), DisclaimerActivity.class);
+                break;
+            case R.id.tv_my_download:
+                UiUtils.startIntent(getmActivity(), DownloadActivity.class);
+                break;
+        }
     }
 }

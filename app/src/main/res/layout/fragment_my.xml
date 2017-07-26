@@ -1,25 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/bg_gray"
+    android:background="@color/white"
     android:layout_height="match_parent"
 
     android:orientation="vertical">
 
-
-
-
-    <TextView
-        android:id="@+id/tv_my_about"
-        android:layout_margin="10dp"
+    <RelativeLayout
+        android:background="@color/bg_green"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@drawable/shape_bottom_top_line"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:text="@string/fragment_my_disclaimer"
+        android:layout_height="48dp">
 
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:id="@+id/tv_searchresult_title"
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:text="我的"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relative_my_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_green"
+        android:padding="15dp">
+
+
+        <RelativeLayout
+            android:id="@+id/relative_my_touxiang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/sv_touxiang"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_centerHorizontal="true"
+                android:background="@mipmap/up_dianzhang"
+                />
+
+            <TextView
+                android:id="@+id/tv_my_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sv_touxiang"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:maxLines="1"
+                android:maxWidth="200dp"
+
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/textsize_little" />
+
+            <TextView
+                android:id="@+id/tv_my_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_my_number"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:maxLines="1"
+                android:maxWidth="200dp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/textsize_little" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:background="@mipmap/wave"
         />
 
+    <RelativeLayout
+        android:id="@+id/tv_my_about"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_my_rating"
+            android:layout_width="@dimen/fragment_my_iv"
+            android:layout_height="@dimen/fragment_my_iv"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@mipmap/wodeqianbao" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/iv_my_rating"
+            android:text="@string/fragment_my_disclaimer"
+            android:textColor="@color/shouye_renmen_tv" />
+
+
+        <ImageView
+            android:id="@+id/iv_my_jiantou2"
+            android:layout_width="8dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/fragment_my_marginright"
+            android:background="@mipmap/jiantou" />
+
+
+    </RelativeLayout>
+
+    <View
+
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="@dimen/fragment_my_left"
+        android:background="@color/lv_divider"></View>
+    <RelativeLayout
+        android:id="@+id/tv_my_download"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_my_rating2"
+            android:layout_width="@dimen/fragment_my_iv"
+            android:layout_height="@dimen/fragment_my_iv"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@mipmap/wodexinyongka" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/iv_my_rating2"
+            android:text="@string/fragment_my_download"
+            android:textColor="@color/shouye_renmen_tv" />
+
+
+        <ImageView
+
+            android:layout_width="8dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/fragment_my_marginright"
+            android:background="@mipmap/jiantou" />
+
+
+    </RelativeLayout>
+
+    <View
+
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="@dimen/fragment_my_left"
+        android:background="@color/lv_divider"></View>
 
 </LinearLayout>
